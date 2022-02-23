@@ -4,4 +4,12 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return "Heipparallaa!"
+    return "Hello world!"
+
+@app.route("/1")
+def page1():
+    return "What's up?"
+
+@app.route("/page2")
+def page2():
+    return "Hello there"
