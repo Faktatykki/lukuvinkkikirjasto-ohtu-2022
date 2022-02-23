@@ -10,6 +10,6 @@ def index():
 def page1():
     return "What's up?"
 
-@app.route("/page2")
+@app.route("/2")
 def page2():
-    return "Hello there"
+    return "Hi there"
