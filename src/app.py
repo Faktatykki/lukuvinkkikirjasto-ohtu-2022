@@ -12,4 +12,4 @@ def page1():
 
 @app.route("/2")
 def page2():
-    return "Hi there"
+    return "Hi there!"
