@@ -22,7 +22,7 @@ pip install -r requirements.txt
 
 Virtuaaliympäristöstä poistuminen:
 ```
-source venv/bin/activate
+deactivate
 ```
 
 Riippuvuuksien päivittäminen requirements.txt-tiedostoon:
