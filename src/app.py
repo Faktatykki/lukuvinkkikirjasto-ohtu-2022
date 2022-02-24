@@ -15,5 +15,5 @@ def page2():
     return "Hi there! :)"
 
 @app.route("/test")
-def page2():
+def page3():
     return "testing..."
