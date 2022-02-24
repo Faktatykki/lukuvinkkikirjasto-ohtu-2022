@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from os import getenv
 
@@ -25,3 +25,10 @@ def test():
     contents = result.fetchall()
     return render_template("test.html", contents=contents)
 
+@app.route("/add", methods=["POST"])
+def add():
+    content = request.form["message"]
+    sql = "INSERT INTO test (content) VALUES (:content)"
+    db.session.execute(sql, {"content":content})
+    db.session.commit()
+    return redirect("/test")
