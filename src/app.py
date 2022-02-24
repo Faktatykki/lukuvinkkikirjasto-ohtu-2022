@@ -3,7 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from os import getenv
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL")
+# app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL")
+app.config["SQLALCHEMY_DATABASE_URI"] = "" # Has to defined, but will be overwritten by the Heroku config variables.
 db = SQLAlchemy(app)
 
 
