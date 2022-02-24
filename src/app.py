@@ -8,7 +8,7 @@ def index():
 
 @app.route("/1")
 def page1():
-    return "What's up?"
+    return "What's up? :)"
 
 @app.route("/2")
 def page2():
