@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from os import getenv
 
@@ -20,8 +20,8 @@ def page2():
     return "Hi there! :)"
 
 @app.route("/test")
-def page3():
+def test():
     result = db.session.execute("SELECT content FROM test")
     contents = result.fetchall()
-    return contents
+    return render_template("test.html", contents=contents)
 
