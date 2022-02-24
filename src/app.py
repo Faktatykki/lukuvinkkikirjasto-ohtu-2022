@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return "Hello world!"
+    return "Hello world! :)"
 
 @app.route("/1")
 def page1():
