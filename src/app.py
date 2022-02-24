@@ -13,3 +13,7 @@ def page1():
 @app.route("/2")
 def page2():
     return "Hi there! :)"
+
+@app.route("/test")
+def page2():
+    return "testing..."
