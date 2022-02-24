@@ -37,4 +37,3 @@ pip freeze > requirements.txt
 - Koodin staattinen analyysi on kunnossa (pylint >8 pistettä)
 - Koodi on dokumentoitu suomeksi docstringia noudattaen
 - Koodi on puskettu tuotantoympäristöön
-- 
