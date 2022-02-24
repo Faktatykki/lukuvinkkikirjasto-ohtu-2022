@@ -1,6 +1,8 @@
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+db = SQLAlchemy(app)
 
 @app.route("/")
 def index():
@@ -16,4 +18,7 @@ def page2():
 
 @app.route("/test")
 def page3():
-    return "testing..."
+    result = db.session.execute("SELECT content FROM test")
+    contents = result.fetchall()
+    return contents
+
