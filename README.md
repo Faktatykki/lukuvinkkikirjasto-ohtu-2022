@@ -30,3 +30,11 @@ Riippuvuuksien päivittäminen requirements.txt-tiedostoon:
 pip freeze > requirements.txt
 ```
 
+## Definition of Done
+
+- Testikattavuus >75%
+- Kaikki testit menevät läpi
+- Koodin staattinen analyysi on kunnossa (pylint >8 pistettä)
+- Koodi on dokumentoitu suomeksi docstringia noudattaen
+- Koodi on puskettu tuotantoympäristöön
+- 
