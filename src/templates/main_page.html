@@ -1,0 +1,7 @@
+<h1>Lukuvinkit</h1>
+{% for tip in tips %}
+<p>
+    Title: <b>{{ tip.title }}</b><br/>
+    URL: <a href = //{{ tip.url }}>{{ tip.url }}</a>
+</p>
+{% endfor %}
