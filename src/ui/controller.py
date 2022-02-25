@@ -2,7 +2,7 @@ from flask import redirect, request, render_template
 
 from app import app
 
-from logic import logic
+from logic.logic import logic
 
 
 @app.route("/mainpage")

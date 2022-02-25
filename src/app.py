@@ -8,7 +8,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 #important that this import is after variable declaration
-from ui import controller
+import ui.controller
 
 
 @app.route("/")
