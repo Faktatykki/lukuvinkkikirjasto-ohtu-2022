@@ -30,6 +30,10 @@ Riippuvuuksien päivittäminen requirements.txt-tiedostoon:
 pip freeze > requirements.txt
 ```
 
+Robot Framework testien suorittaminen:
+```
+robot src/tests
+```
 ## Definition of Done
 
 - Testikattavuus >75%
