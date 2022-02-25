@@ -11,7 +11,7 @@ db = SQLAlchemy(app)
 @app.route("/")
 def index():
     print(getenv("DATABASE_URL"))
-    return "Hello world! Testing heroku deploy from github actions"
+    return "Hello world! Testing heroku deploy from github actions. Python v 3.9.10"
 
 @app.route("/1")
 def page1():
