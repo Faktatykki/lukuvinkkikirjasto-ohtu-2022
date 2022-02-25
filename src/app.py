@@ -4,7 +4,7 @@ from os import getenv
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL") # Has to defined, but will be overwritten by the Heroku config variables.
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 
@@ -15,7 +15,7 @@ def index():
 
 @app.route("/1")
 def page1():
-    return "What's up? :)"
+    return "Tsemppiä!"
 
 @app.route("/2")
 def page2():
