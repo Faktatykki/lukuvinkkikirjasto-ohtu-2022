@@ -1,3 +1,4 @@
+![Github Actions](https://github.com/Faktatykki/lukuvinkkikirjasto-ohtu-2022/workflows/CI/badge.svg)
 # lukuvinkkikirjasto-ohtu-2022
 Miniprojekti OhTu kevät 2022
 
