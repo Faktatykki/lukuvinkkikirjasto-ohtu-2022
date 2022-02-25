@@ -1,4 +1,6 @@
 ![Github Actions](https://github.com/Faktatykki/lukuvinkkikirjasto-ohtu-2022/workflows/CI/badge.svg)
+[![codecov](https://codecov.io/gh/Faktatykki/lukuvinkkikirjasto-ohtu-2022/branch/main/graph/badge.svg?token=65YU2VW5CH)](https://codecov.io/gh/Faktatykki/lukuvinkkikirjasto-ohtu-2022)
+
 # lukuvinkkikirjasto-ohtu-2022
 Miniprojekti OhTu kevät 2022
 
