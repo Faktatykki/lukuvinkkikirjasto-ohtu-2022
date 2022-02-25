@@ -11,7 +11,7 @@ db = SQLAlchemy(app)
 @app.route("/")
 def index():
     print(getenv("DATABASE_URL"))
-    return "Hello world! :)"
+    return "Hello world!!! :)"
 
 @app.route("/1")
 def page1():
