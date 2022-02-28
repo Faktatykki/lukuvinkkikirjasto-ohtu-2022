@@ -2,8 +2,8 @@
 from data.db import DBManager
 
 class TipsLogic:
-    def __init__(self):
-        self.db = DBManager()
+    def __init__(self, app):
+        self.db = DBManager(app)
 
     def get_all_tips(self) -> list:
         '''Kutsuu data-layeria ja saa vastaukseksi tietokannasta löytyvät vinkit'''
