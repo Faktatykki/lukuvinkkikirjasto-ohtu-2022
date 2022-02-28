@@ -3,7 +3,7 @@ from app import app
 
 class DBManager:
     def __init__(self):
-        db = SQLAlchemy(app)
+        self.db = SQLAlchemy(app)
 
     def get_all_tips(self):
         '''hakee tietokannasta kaikki vinkit'''
