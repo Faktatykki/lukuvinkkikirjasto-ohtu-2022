@@ -12,11 +12,33 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+<<<<<<< HEAD
       - name: Set up Python 3.8
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
+=======
+      - name: Set up Python 3.9.10
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9.10
+>>>>>>> test
       - name: Install dependencies
         run: pip install -r requirements.txt
       - name: Run tests
         run: coverage run --branch -m pytest
+<<<<<<< HEAD
+=======
+      - name: Coverage XML report
+        run: coverage xml
+      - name: Coverage report to Codecov
+        uses: codecov/codecov-action@v2
+      - name: Lint
+        run: pylint src
+      - name: Heroku deploy
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "lit-brushlands-38911"
+          heroku_email: "rami.piik@gmail.com"
+>>>>>>> test
