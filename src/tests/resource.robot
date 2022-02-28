@@ -7,8 +7,6 @@ ${SERVER}  lit-brushlands-38911.herokuapp.com
 ${BROWSER}  headlesschrome
 ${DELAY}  0 seconds
 ${HOME URL}  http://${SERVER}/mainpage
-# ${HOME URL}  https://lit-brushlands-38911.herokuapp.com/mainpage
-
 
 
 *** Keywords ***
