@@ -1,7 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
+from app import app
 
 class DBManager():
-    def __init__(self, app):
+    def __init__(self):
         self.db = SQLAlchemy(app)
 
     def get_all_tips(self):
