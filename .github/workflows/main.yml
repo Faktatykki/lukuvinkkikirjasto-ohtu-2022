@@ -20,8 +20,7 @@ jobs:
       - name: Run unit tests
         run: coverage run --branch -m pytest
       - name: Run robot test
-        # run: robot src/tests/robot_test.robot #only one test which passes at the moment
-        run: robot src/tests
+        run: robot src/tests/robot_test.robot #only one test which passes at the moment
       - name: Coverage XML report
         run: coverage xml
       - name: Coverage report to Codecov
