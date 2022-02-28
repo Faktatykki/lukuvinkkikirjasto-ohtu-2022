@@ -1,5 +1,5 @@
 import unittest
-from data.db import DBManager
+#from data.db import DBManager
 
 class TestDBManager(unittest.TestCase):
     def setUp(self):
