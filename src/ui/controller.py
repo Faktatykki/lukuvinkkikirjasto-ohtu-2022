@@ -2,7 +2,7 @@ from flask import redirect, request, render_template
 from app import app
 from logic.app_logic import TipsLogic
 
-logic = TipsLogic(app)
+logic = TipsLogic()
 
 @app.route("/mainpage")
 def browse_tips():
