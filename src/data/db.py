@@ -1,26 +1,23 @@
 from flask_sqlalchemy import SQLAlchemy
 from app import app
 
-db = SQLAlchemy(app)
+class DBManager:
+    def __init__(self):
+        db = SQLAlchemy(app)
 
+    def get_all_tips(self):
+        '''hakee tietokannasta kaikki vinkit'''
+        sql = self.db.session.execute("SELECT title, url FROM tips")
+        result = sql.fetchall()
+        return result
 
-def get_all_tips():
-    '''hakee tietokannasta kaikki vinkit'''
-
-    sql = db.session.execute("SELECT title, url FROM tips")
-    result = sql.fetchall()
-
-    return result
-
-
-def add_tip(title: str, url: str) -> bool:
-    '''yrittää lisätä tietokantaan uuden vinkin. Jos onnistuu = palauttaa True, jos ei = False'''
-    try:
-        sql = "INSERT INTO tips (title, url) VALUES (:title, :url)"
-        db.session.execute(sql, {"title": title, "url": url})
-        db.session.commit()
-    except Exception as exception:
-        print(exception)
-        return False
-
-    return True
+    def add_tip(self, title: str, url: str) -> bool:
+        '''yrittää lisätä tietokantaan uuden vinkin.'''
+        try:
+            sql = "INSERT INTO tips (title, url) VALUES (:title, :url)"
+            self.db.session.execute(sql, {"title": title, "url": url})
+            self.db.session.commit()
+        except Exception as exception:
+            print(exception)
+            return False
+        return True

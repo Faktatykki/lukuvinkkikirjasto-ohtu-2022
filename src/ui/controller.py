@@ -1,15 +1,15 @@
 from flask import redirect, request, render_template
-
 from app import app
+from data.db import DBManager
 
 import logic.app_logic as logic
 
+db = DBManager()
 
 @app.route("/mainpage")
 def browse_tips():
     '''Näyttää pääsivun jossa näkyy tietokannasta löytyvät vinkit ja lomake jolla lisätä uusi'''
-    tips = logic.get_all_tips()
-
+    tips = logic.get_all_tips(db.db)
     return render_template("main_page.html", tips=tips)
 
 # if add_tip returns false, maybe some warning?
@@ -24,7 +24,7 @@ def add_tip():
     title = request.form["title"]
     url = request.form["url"]
 
-    success = logic.add_tip(title, url)
+    success = logic.add_tip(db.db, title, url)
 
     if success:
         return redirect("/mainpage")
