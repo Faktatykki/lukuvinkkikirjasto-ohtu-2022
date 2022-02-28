@@ -2,12 +2,12 @@
 Library  SeleniumLibrary
 
 *** Variables ***
-${SERVER}  localhost:5000
+# ${SERVER}  localhost:5000
 ${SERVER}  lit-brushlands-38911.herokuapp.com
 ${BROWSER}  headlesschrome
 ${DELAY}  0 seconds
-# ${HOME URL}  http://${SERVER}/mainpage
-${HOME URL}  https://lit-brushlands-38911.herokuapp.com/mainpage
+${HOME URL}  http://${SERVER}/mainpage
+# ${HOME URL}  https://lit-brushlands-38911.herokuapp.com/mainpage
 
 
 
