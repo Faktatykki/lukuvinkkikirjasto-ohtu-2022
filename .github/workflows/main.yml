@@ -23,8 +23,8 @@ jobs:
         run: coverage xml
       - name: Coverage report to Codecov
         uses: codecov/codecov-action@v2
-      # - name: Lint
-      #   run: pylint src
+      - name: Lint
+        run: pylint src
       - name: Heroku deploy
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
