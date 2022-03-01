@@ -12,7 +12,7 @@ db = SQLAlchemy(app)
 @app.route("/mainpage")
 def browse_tips():
     '''Näyttää pääsivun jossa näkyy tietokannasta löytyvät vinkit ja lomake jolla lisätä uusi'''
-    tips = logic.get_all_tips(db)
+    tips = logic.get_all_tips()
     return render_template("main_page.html", tips=tips)
 
 @app.route("/add", methods=["POST"])
@@ -23,7 +23,7 @@ def add_tip():
      """
     title = request.form["title"]
     url = request.form["url"]
-    success = logic.add_tip(db, title, url)
+    success = logic.add_tip(title, url)
     if success:
         return redirect("/mainpage")
     print("Something went wrong")
