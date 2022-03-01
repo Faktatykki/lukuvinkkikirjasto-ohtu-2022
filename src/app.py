@@ -5,9 +5,19 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 # Has to defined, but will be overwritten by the Heroku config variables.
+
+class DingDong:
+    def __init__(self):
+        self.diipadaapa = "10"
+
+    def __str__(self):
+        return self.diipadaapa
+
+thing = DingDong()
+
 @app.route("/")
 def index():
-    return "hello world"
+    return str(thing)
 
 # app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL")
 # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
