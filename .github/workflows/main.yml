@@ -25,7 +25,7 @@ jobs:
       - name: Coverage XML report
         run: echo "hello world3" #coverage xml
       - name: Coverage report to Codecov
-        uses: echo "hello world4" #codecov/codecov-action@v2
+        run: echo "hello world4" #uses: codecov/codecov-action@v2
       - name: Lint
         run: echo "hello world5" #pylint --fail-under=1 src #was 5
       - name: Heroku deploy
