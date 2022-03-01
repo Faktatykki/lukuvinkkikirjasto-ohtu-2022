@@ -2,7 +2,8 @@ from flask import redirect, request, render_template
 from app import app
 import logic.app_logic as logic
 from logic.user_logic import signup
-
+from entities.user import User
+from sqlalchemy.exc import IntegrityError
 
 @app.route("/mainpage")
 def browse_tips():
@@ -33,7 +34,7 @@ def add_tip():
 
 
 @app.route("/signup", methods=["POST"])
-def signup():
+def add_new_user():
     """Käsittelee uuden käyttäjän luonnin."""
     username = request.form["username"]
     password1 = request.form["password1"]
@@ -48,6 +49,15 @@ def signup():
         )
     if password1 != password2:
         return render_template("error.html", message="Salasanat eivät täsmää.")
-    if signup(username, password1):
+    response=signup(username, password1)
+    if isinstance(response, User):
         return redirect("/mainpage")
-    return render_template("error.html", message="Käyttäjänimi on jo käytössä")
+    if isinstance(response, IntegrityError):
+        return render_template("error.html", message="Käyttäjänimi on varattu.")
+    return render_template("error.html", message=response)
+
+
+@app.route("/signup", methods=["GET"])
+def get_signup_page():
+    """Palauttaa signup-sivun"""
+    return render_template("signup.html")

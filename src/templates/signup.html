@@ -1,16 +1,20 @@
 <div>
     <h2>Luo uusi käyttäjä</h2>
     <form action="/signup" method="post">
-        <div >
-            <label>Käyttäjänimi</label>    
-            <input type="username" name="username">
-        </div>
-            <label>Salasana</label>    
-            <input type="password" name="password1">
         <div>
-            <label>Salasana uudestaan</label>
-            <input type="password" name="password2">
+            <p style="margin-bottom: 1px;"">Käyttäjänimi</p>
+            <p style="margin-top: 1px;"><input type="username" name="username" value=""></p>
         </div>
-        <button type="submit">Luo käyttäjä</button>
+        <div>
+            <p style="margin-bottom: 1px">Salasana</p>
+            <p style="margin-top: 1px;"><input type="password" name="password1"></p>
+        </div>
+        <div>
+            <p style="margin-bottom: 1px">Salasana uudestaan</p>
+            <p style="margin-top: 1px;"><input type="password" name="password2"></p>
+        </div>
+        <div style="margin-top: 20px">
+            <button type="submit">Luo käyttäjä</button>
+        </div>  
     </form>
 </div>
