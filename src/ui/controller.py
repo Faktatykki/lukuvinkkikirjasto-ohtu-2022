@@ -4,8 +4,6 @@ from data.db import DBManager
 
 import logic.app_logic as logic
 
-db = DBManager()
-
 @app.route("/mainpage")
 def browse_tips():
     '''Näyttää pääsivun jossa näkyy tietokannasta löytyvät vinkit ja lomake jolla lisätä uusi'''
