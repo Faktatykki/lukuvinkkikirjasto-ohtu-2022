@@ -1,7 +1,8 @@
 from flask import redirect, request, render_template
+
 from app import app
+
 import logic.app_logic as logic
-from logic.user_logic import signup
 
 
 @app.route("/mainpage")
@@ -30,24 +31,3 @@ def add_tip():
 
     print("Something went wrong")
     return redirect("/mainpage")
-
-
-@app.route("/signup", methods=["POST"])
-def signup():
-    """Käsittelee uuden käyttäjän luonnin."""
-    username = request.form["username"]
-    password1 = request.form["password1"]
-    password2 = request.form["password2"]
-    if len(username) < 2 or len(username) > 20:
-        return render_template(
-            "error.html", message="Käyttäjänimen tulee olla 2-20 merkkiä pitkä"
-        )
-    if len(password1) < 2 or len(password1) > 20:
-        return render_template(
-            "error.html", message="Salasanan tulee olla 2-20 merkkiä pitkä"
-        )
-    if password1 != password2:
-        return render_template("error.html", message="Salasanat eivät täsmää.")
-    if signup(username, password1):
-        return redirect("/mainpage")
-    return render_template("error.html", message="Käyttäjänimi on jo käytössä")
