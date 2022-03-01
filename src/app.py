@@ -2,9 +2,9 @@ from os import getenv
 from flask import Flask, redirect
 from flask_sqlalchemy import SQLAlchemy
 
-snapp = Flask(__name__)
+app = Flask(__name__)
 
-@snapp.route('/')
+@app.route('/')
 def hello_world():
    return "Hello World"
 
