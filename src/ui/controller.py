@@ -1,12 +1,10 @@
 from flask import redirect, request, render_template
-
+from sqlalchemy.exc import IntegrityError
 from app import app
-
 import logic.app_logic as logic
-
 from logic.user_logic import signup
 from entities.user import User
-from sqlalchemy.exc import IntegrityError
+
 
 @app.route("/mainpage")
 def browse_tips():
