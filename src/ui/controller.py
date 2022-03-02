@@ -56,6 +56,7 @@ def add_new_user():
     if isinstance(response, User):
         return redirect("/mainpage")
     if isinstance(response, IntegrityError):
+        print(response)
         return render_template("error.html", message="Käyttäjänimi on varattu.")
     return render_template("error.html", message=response)
 
