@@ -92,7 +92,7 @@ invoke coverage-html
 Koodin laatutarkistus PyLintin avulla:
 
 ```sh
-invoke pylint
+invoke lint
 ```
 
 Koodin syntaktinen formatointi (PEP8):
