@@ -1,6 +1,9 @@
 from flask import redirect, request, render_template
+
 from app import app
+
 import logic.app_logic as logic
+
 from logic.user_logic import signup
 from entities.user import User
 from sqlalchemy.exc import IntegrityError
