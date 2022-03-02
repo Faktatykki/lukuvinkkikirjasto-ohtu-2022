@@ -4,7 +4,7 @@ from data import db
 
 def get_all_tips() -> list:
     '''kutsuu data-layeria ja saa vastaukseksi tietokannasta löytyvät vinkit'''
-    
+
     tips = db.get_all_tips()
 
     return tips

@@ -1,4 +1,3 @@
-from sqlite3 import IntegrityError
 from xmlrpc.client import boolean
 from flask_sqlalchemy import SQLAlchemy
 from app import app
@@ -27,10 +26,13 @@ def add_tip(title: str, url: str) -> bool:
     return True
 
 def add_user(username:str, hashed_password:str, admin:boolean):
-    '''Tallentaa uuden käyttäjän tietokantaan. Palauttaa dictionaryn, jossa user-id, käyttäjänimi ja admin jos onnistuu. Muutoin palauttaa False'''
+    '''Tallentaa uuden käyttäjän tietokantaan.
+    Palauttaa dictionaryn, jossa user-id, käyttäjänimi ja admin jos onnistuu.
+    Muutoin palauttaa False'''
+
     try:
-        sql = "INSERT INTO users (username, password) VALUES (:username, :password) RETURNING id, username, admin"
-        res=db.session.execute(sql, {"username": username, "password": hashed_password})
+        sql = "INSERT INTO users (username, password, admin) VALUES (:username, :password, :admin) RETURNING id, username, admin"
+        res=db.session.execute(sql, {"username": username, "password": hashed_password, "admin": admin})
         db.session.commit()
         data={}
         for row in res:
