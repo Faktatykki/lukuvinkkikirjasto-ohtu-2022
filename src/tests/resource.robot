@@ -20,6 +20,14 @@ Mainpage Should Be Open
     Page Should Contain  Title: 
     Page Should Contain  URL:
 
+Signuppage Should Be Open
+    Page Should Contain  Luo uusi käyttäjä
+    Page Should Contain  Käyttäjänimi
+    Page Should Contain  Salasana
+    Page Should Contain  Salasana uudestaan
+    Page Should Contain  Luo käyttäjä
+    
+
 Lisäyslomake Should Be Open
     Page Should Contain  Lisää vinkki
     Page Should Contain  Otsikko: 
@@ -27,3 +35,7 @@ Lisäyslomake Should Be Open
 
 Go To Mainpage
     Go To  ${HOME URL}
+
+Go To Signuppage
+    Go To  ${HOME URL}
+    Click Link  id=signup
