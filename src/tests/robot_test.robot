@@ -8,4 +8,4 @@ A Test Test Case
 
 *** Keywords ***
 A Test Should Run And Pass
-    Should Be True  1 < 2
+    Should Be True  4 < 2
