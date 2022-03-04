@@ -42,3 +42,24 @@ def add_user(username:str, hashed_password:str, admin:boolean):
         return data
     except Exception as exception:
         return exception
+
+def get_user(username: str):
+    '''
+        Tarkistaa, löytyykö tietokannasta usernamea vastaava käyttäjä.
+        Jos löytyy, palauttaa sanakirjan, jossa id, käyttäjänimi ja salasanahash
+        Jos ei, palauttaa False
+    '''
+    try:
+        sql = "SELECT * FROM users WHERE username=(:username)"
+        user = db.session.execute(sql, {"username": username})
+        db.session.commit()
+        data = {}
+        for row in user:
+            data["user_id"]=row[0]
+            data["username"]=row[1]
+            data["password"]=row[2]
+        return data
+    except Exception:
+        return False
+
+

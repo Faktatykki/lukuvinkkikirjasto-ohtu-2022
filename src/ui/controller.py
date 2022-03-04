@@ -1,8 +1,8 @@
-from flask import redirect, request, render_template
+from flask import redirect, request, render_template, session
 from sqlalchemy.exc import IntegrityError
 from app import app
 import logic.app_logic as logic
-from logic.user_logic import signup
+from logic.user_logic import signup, signin
 from entities.user import User
 
 
@@ -10,9 +10,10 @@ from entities.user import User
 def browse_tips():
     '''Näyttää pääsivun jossa näkyy tietokannasta löytyvät vinkit ja lomake jolla lisätä uusi'''
     tips = logic.get_all_tips()
-
-    return render_template("main_page.html", tips=tips)
-
+    if 'username' in session:
+        return render_template("main_page.html", tips=tips, username=session["username"])
+    return render_template("main_page.html", tips=tips, username=None)
+     
 # if add_tip returns false, maybe some warning?
 
 
@@ -52,6 +53,7 @@ def add_new_user():
         return render_template("error.html", message="Salasanat eivät täsmää.")
     response=signup(username, password1)
     if isinstance(response, User):
+        session["username"] = username
         return redirect("/mainpage")
     if isinstance(response, IntegrityError):
         return render_template("error.html", message="Käyttäjänimi on varattu.")
@@ -62,3 +64,22 @@ def add_new_user():
 def get_signup_page():
     """Palauttaa signup-sivun"""
     return render_template("signup.html")
+
+@app.route("/login", methods=["POST"])
+def login():
+    username = request.form["username"]
+    password = request.form["password"]
+    logged_in_user = signin(username, password)
+    if isinstance(logged_in_user, User):
+        session["username"] = username
+        return redirect("/mainpage")
+    return render_template("error.html", message="Väärä käyttäjä tai salasana")
+
+@app.route("/login", methods=["GET"])
+def login_page():
+    return render_template("login.html")
+
+@app.route("/logout")
+def logout():
+    session.pop("username", None)
+    return redirect("/mainpage")

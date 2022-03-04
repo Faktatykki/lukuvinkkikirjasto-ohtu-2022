@@ -1,7 +1,16 @@
 <div>
+    {% if username == None %}
     <div style="margin-bottom: 20px">
         <a href="/signup" id="signup">Luo käyttäjä</a>
+        <a href="/login" id="login">Kirjaudu sisään</a>
     </div>
+    {% else %}
+    <div>
+        <p>{{ username }} kirjautuneena
+        <a href="/logout" id="logout">Kirjaudu ulos</a>
+    </p>
+    </div>
+    {% endif %}
     <div>
         <h1>Lukuvinkit v0.01 :)</h1>
         {% for tip in tips %}
