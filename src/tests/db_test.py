@@ -6,7 +6,7 @@ from os import getenv
 
 class TestDBManager(unittest.TestCase):
     def setUp(self):
-        self.db = DBManager(env_location="src/.env")
+        self.db = DBManager(env_location="src/.db_env")
         self._generate_mock_data()
         load_dotenv("src/.db_env") # ei ehkä tarpeen
 
