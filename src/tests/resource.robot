@@ -30,8 +30,8 @@ Signuppage Should Be Open
 
 Lisäyslomake Should Be Open
     Page Should Contain  Lisää vinkki
-    Page Should Contain  title: 
-    Page Should Contain  url:
+    Page Should Contain  title
+    Page Should Contain  url
 
 Go To Mainpage
     Go To  ${HOME URL}
