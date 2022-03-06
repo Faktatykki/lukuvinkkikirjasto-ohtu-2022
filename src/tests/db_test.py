@@ -2,10 +2,14 @@ from pickle import NONE
 import unittest
 from data.db import DBManager
 from dotenv import load_dotenv
-from os import getenv
+from os import getenv, remove
 
 class TestDBManager(unittest.TestCase):
     def setUp(self):
+        try:
+            remove("mock_data.db")
+        except:
+            pass
         self.db = DBManager(env_location="src/.db_env")
         self._generate_mock_data()
         load_dotenv("src/.db_env") # ei ehkä tarpeen
@@ -19,29 +23,21 @@ class TestDBManager(unittest.TestCase):
         self.db.cursor.executemany("INSERT INTO users VALUES (?, ?, ?, ?)", mock_users)
         self.db.connect.commit()
 
-    def test_get_all_tips_retrieves_title_column_title(self):
-        self.assertEqual(self.db.get_all_tips()[0][0], "title") 
-
-    def test_get_all_tips_retrieves_url_column_title(self):
-        self.assertEqual(self.db.get_all_tips()[0][1], "url") 
-
     def test_get_all_tips_retrieves_titles(self):
-        self._generate_mock_data()
         titles = []
-        for tip in self.db.get_all_tips()[1:]:
+        for tip in self.db.get_all_tips():
             titles.append(tip[0])
         self.assertEqual(titles, ["Mock tip 1", "Mock tip 2"])
 
     def test_get_all_tips_retrieves_urls(self):
-        self._generate_mock_data()
         urls = []
-        for tip in self.db.get_all_tips()[1:]:
+        for tip in self.db.get_all_tips():
             urls.append(tip[1])
         self.assertEqual(urls, ["http://mock_tip_1.fi", "http://mock_tip_2.fi"])
 
     def test_add_tip_adds_one_tip(self):
         self.db.add_tip("test_tip", "tip.test")
-        self.assertEqual(4, len(self.db.get_all_tips()))
+        self.assertEqual(3, len(self.db.get_all_tips()))
 
     def test_add_tip_adds_tip_title(self):
         self.db.add_tip("test_tip", "tip.test")
@@ -53,23 +49,23 @@ class TestDBManager(unittest.TestCase):
         
     def test_add_tip_cannot_add_tip_if_no_url(self):
         self.db.add_tip("test_tip", None)
-        self.assertEqual(3, len(self.db.get_all_tips()))
+        self.assertEqual(2, len(self.db.get_all_tips()))
 
     def test_add_tip_cannot_add_tip_if_url_is_empty_string(self):
         self.db.add_tip("test_tip", "")
-        self.assertEqual(3, len(self.db.get_all_tips()))
+        self.assertEqual(2, len(self.db.get_all_tips()))
 
     def test_add_tip_cannot_add_tip_if_no_title(self):
         self.db.add_tip(None, "tip.test")
-        self.assertEqual(3, len(self.db.get_all_tips()))
+        self.assertEqual(2, len(self.db.get_all_tips()))
 
     def test_add_tip_cannot_add_tip_if_title_is_empty_string(self):
         self.db.add_tip("", "tip.test")
-        self.assertEqual(3, len(self.db.get_all_tips()))
+        self.assertEqual(2, len(self.db.get_all_tips()))
 
-    def test_get_user_returns_empty_dict_if_no_such_user(self):
+    def test_get_user_returns_false_if_no_such_user(self):
         data = self.db.get_user("Granberryuser")
-        self.assertEqual({}, data)
+        self.assertEqual(False, data)
 
     def test_get_user_returns_user_if_user_exists(self):
         data = self.db.get_user("Jim_Hacker")

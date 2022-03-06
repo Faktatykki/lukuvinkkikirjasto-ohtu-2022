@@ -47,6 +47,8 @@ class DBManager:
 
     def add_tip(self, title: str, url: str) -> bool: #refactor -> take tip info list instead of specifically title and url
         '''yrittää lisätä tietokantaan uuden vinkin. Jos onnistuu = palauttaa True, jos ei = False'''
+        if "" in [title, url] or None in [title, url]:
+            return False
         try:
             self.init_connection()
             self.cursor.execute("INSERT INTO tips VALUES (?, ?)", (title, url))#further refactor to fit the .env usage here too
@@ -60,6 +62,8 @@ class DBManager:
         '''Tallentaa uuden käyttäjän tietokantaan.
         Palauttaa dictionaryn, jossa user-id, käyttäjänimi ja admin jos onnistuu.
         Muutoin palauttaa False'''
+        if "" in [username, hashed_password] or None in [username, hashed_password]:
+            return False
         try:
             if getenv("DEV_ENVIRON"):
                 self.cursor.execute("INSERT INTO users VALUES (?, ?, ?, ?)", ("1", username, hashed_password, str(admin)))
@@ -75,8 +79,10 @@ class DBManager:
                     data["user_id"]=row[0]
                     data["username"]=row[1]
                     data["admin"]=row[2]
+                if data == {}:
+                    return False
                 return data
-        except Exception as exception:
+        except Exception as exception: # Pitäisi löytää mikä tietty exception tässä tulee ja testata vain sitä
             return exception
 
     def get_user(self, username: str):
@@ -93,6 +99,8 @@ class DBManager:
                 data["user_id"]=row[0]
                 data["username"]=row[1]
                 data["password"]=row[2]
+            if data == {}:
+                return False
             return data
-        except Exception:
+        except Exception: # Pitäisi löytää mikä tietty exception tässä tulee ja testata vain sitä
             return False
