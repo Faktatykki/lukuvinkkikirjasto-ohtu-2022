@@ -1,22 +1,49 @@
-<div>
-    <div style="margin-bottom: 20px">
-        <a href="/signup" id="signup">Luo käyttäjä</a>
-    </div>
-    <div>
-        <h1>Lukuvinkit v0.01 :)</h1>
-        {% for tip in tips %}
-        <p>
-            Title: <b>{{ tip.title }}</b><br/>
-            URL: <a href = //{{ tip.url }}>{{ tip.url }}</a>
-        </p>
-        {% endfor %}
-    </div>
-    <div>
-        <h2>Lisää vinkki</h2>
-        <form action = "/add" method = "POST">
-            Otsikko: <input type = "text" name = "title"><br>
-            URL: <input type = "text" name = "url"><br>
-            <input type = "submit" value = "Lisää">
-        </form>
-    </div>
-</div>
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Lukuvinkit - Kotisivu</title>
+	</head>
+	<body>
+		<header>
+			<h1>Lukuvinkit v0.02 :) - Uh - vieläkö me tehdään 98 versiota?</h1>
+		</header>
+		{% if username == None %}
+		<div style="margin-bottom: 20px">
+			<a href="/signup" id="signup">Luo käyttäjä</a>
+			<a href="/login" id="login">Kirjaudu sisään</a>
+		</div>
+		{% else %}
+		<div>
+			<p>{{ username }} kirjautuneena
+			<a href="/logout" id="logout">Kirjaudu ulos</a>
+		</p>
+		</div>
+		{% endif %}
+		<div>
+			{% for tip in tips[1:] %}
+			<p>
+				{{ tips[0][0] }}: <b>{{ tip[0] }}</b><br/>
+				{{ tips[0][1] }}: <a href = //{{ tip[1] }}>{{ tip[1] }}</a>
+				<!-- see below a nested for loop to get all other parts of given tip info 
+					(because tip[1] has url, 0 and 1 above) 
+				This is for scalability - now there is no more changes required here if we want to add data points.
+				(this doesn't necessarily mean it will print everything in the table - just parse the necessary parts in
+				before rendering this template)
+				-->
+				{% for i in range(2, (tips[0]|length)) %}
+				{{ tips[0][i] }}: <b>{{ tip[i] }}</b><br/>
+				{% endfor %}
+			</p>
+			{% endfor %}
+		</div>
+		<div>
+			<h2>Lisää vinkki</h2>
+			<form action = "/add" method = "POST">
+				{% for i in range((tips[0]|length)) %}
+				{{ tips[0][i] }} <input type = "text" name = {{ tips[0][i] }}><br>
+				{% endfor %}
+				<input type = "submit" value = "Lisää">
+			</form>
+		</div>
+	</body>
+</html>

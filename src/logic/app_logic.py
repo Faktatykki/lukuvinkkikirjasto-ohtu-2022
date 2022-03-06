@@ -1,22 +1,20 @@
-# from app import app
-# import data.db as db
-from data import db
+from flask import render_template
 
-def get_all_tips() -> list:
-    '''kutsuu data-layeria ja saa vastaukseksi tietokannasta löytyvät vinkit'''
+class AppLogic:
+    def __init__(self, db):
+        self.db = db
 
-    tips = db.get_all_tips()
+    def get_all_tips(self) -> list:
+        '''kutsuu data-layeria ja saa vastaukseksi tietokannasta löytyvät vinkit'''
+        tips = self.db.get_all_tips()
+        return tips
 
-    return tips
+    def add_tip(self, title: str, url: str) -> bool:
+        """
+            passaa eteenpäin käyttöliittymästä saadut parametrit uuden vinkin lisäämiseksi data-layerille.
+            Tarkistetaan myös että parametrit eivät ole tyhjiä (myös välilyöntien varalta)
+        """
+        if not title.strip() or not url.strip():
+           return False
+        return self.db.add_tip(title, url)
 
-
-def add_tip(title: str, url: str) -> bool:
-    """
-        passaa eteenpäin käyttöliittymästä saadut parametrit uuden vinkin lisäämiseksi data-layerille.
-        Tarkistetaan myös että parametrit eivät ole tyhjiä (myös välilyöntien varalta)
-    """
-
-    if not title.strip() or not url.strip():
-        return False
-
-    return db.add_tip(title, url)
