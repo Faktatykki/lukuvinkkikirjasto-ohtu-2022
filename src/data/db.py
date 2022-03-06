@@ -8,8 +8,11 @@ class DBManager:
     def __init__(self, env_location=None):
         if env_location:
             load_dotenv(env_location)
+        else:
+            load_dotenv(".db_env")
         if getenv("DEV_ENVIRON"):
             self.init_connection = self._init_connection_to_sqlite
+            self._generate_tables_to_sqlite()
         else:
             self.db = SQLAlchemy()
             self.init_connection = self._init_connection_to_sql_server
@@ -64,26 +67,23 @@ class DBManager:
         Muutoin palauttaa False'''
         if "" in [username, hashed_password] or None in [username, hashed_password]:
             return False
-        try:
-            if getenv("DEV_ENVIRON"):
-                self.cursor.execute("INSERT INTO users VALUES (?, ?, ?, ?)", ("1", username, hashed_password, str(admin)))
-                self.connect.commit()
-                data = {"user_id": 3, "username": username, "admin": admin} #hardcoded 3 -> but basically just because sqlite implementation is just for test
-                return data
-            else:
-                sql = "INSERT INTO users (username, password, admin) VALUES (:username, :password, :admin) RETURNING id, username, admin"
-                res=self.cursor.execute(sql, {"username": username, "password": hashed_password, "admin": admin})
-                self.connect.commit()
-                data={}
-                for row in res:
-                    data["user_id"]=row[0]
-                    data["username"]=row[1]
-                    data["admin"]=row[2]
-                if data == {}:
-                    return False
-                return data
-        except Exception as exception: # Pitäisi löytää mikä tietty exception tässä tulee ja testata vain sitä
-            return exception
+        if getenv("DEV_ENVIRON"):
+            self.cursor.execute("INSERT INTO users VALUES (?, ?, ?, ?)", ("1", username, hashed_password, str(admin)))
+            self.connect.commit()
+            data = {"user_id": 3, "username": username, "admin": admin} #hardcoded 3 -> but basically just because sqlite implementation is just for test
+            return data
+        else:
+            sql = "INSERT INTO users (username, password, admin) VALUES (:username, :password, :admin) RETURNING id, username, admin"
+            res=self.cursor.execute(sql, {"username": username, "password": hashed_password, "admin": admin})
+            self.connect.commit()
+            data={}
+            for row in res:
+                data["user_id"]=row[0]
+                data["username"]=row[1]
+                data["admin"]=row[2]
+            if data == {}:
+                return False
+            return data
 
     def get_user(self, username: str):
         '''Tarkistaa, löytyykö tietokannasta usernamea vastaava käyttäjä.
