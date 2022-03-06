@@ -1,2 +1,2 @@
-TIPS_TABLE_COLUMNS="title;text UNIQUE NOT NULL,url;text UNIQUE NOT NULL"
-USERS_TABLE_COLUMNS="id;integer NOT NULL,username;text UNIQUE NOT NULL,password;text NOT NULL,admin;boolean DEFAULT false"
+TIPS_TABLE_COLUMNS="title;text NOT NULL UNIQUE,url;text NOT NULL UNIQUE"
+USERS_TABLE_COLUMNS="id;integer NOT NULL,username;text NOT NULL UNIQUE,password;text NOT NULL,admin;boolean DEFAULT false"
