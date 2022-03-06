@@ -17,8 +17,8 @@ Open And Configure Browser
 
 Mainpage Should Be Open
     Page Should Contain  Lukuvinkit
-    Page Should Contain  title: 
-    Page Should Contain  url:
+    Page Should Contain  title
+    Page Should Contain  url
 
 Signuppage Should Be Open
     Page Should Contain  Luo uusi käyttäjä
