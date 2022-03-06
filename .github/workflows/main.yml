@@ -24,9 +24,7 @@ jobs:
       - name: Run unit tests
         run: coverage run --branch -m pytest
       - name: Run robot test
-        run: |
-              invoke start
-              robot src/tests
+        run: timeout 5m invoke start & robot src/tests
       - name: Coverage XML report
         run: coverage xml
       - name: Coverage report to Codecov
