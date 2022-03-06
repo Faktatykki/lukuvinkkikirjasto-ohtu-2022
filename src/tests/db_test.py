@@ -8,7 +8,7 @@ class TestDBManager(unittest.TestCase):
     def setUp(self):
         self.db = DBManager(env_location="src/.env")
         self._generate_mock_data()
-        load_dotenv("src/.env") # ei ehkä tarpeen
+        load_dotenv("src/.db_env") # ei ehkä tarpeen
 
     def _generate_mock_data(self): #migrate this to db_test.py instead
         self.db._generate_tables_to_sqlite()
