@@ -42,9 +42,11 @@
 			<h2>Lisää vinkki</h2>
 			<form action = "/add" method = "POST">
 				{% for i in range((tips[0]|length)) %}
+					{% if tips[0][i] != 'user_id' %}
 					<label for = {{ tips[0][i] }}>
 						{{ tips[0][i] }}
 					</label>
+					{% endif %}
 					<input 
 						type = {{ 'hidden' if tips[0][i] == 'user_id' else 'text' }} 
 						name = {{ tips[0][i] }}

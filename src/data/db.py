@@ -70,11 +70,12 @@ class DBManager:
             return False
         try:
             if getenv("DEV_ENVIRON"):
-                self.cursor.execute("INSERT INTO users VALUES (?, ?, ?, ?)",
-                                    ("1", username, hashed_password, str(admin)))
+                self.cursor.execute("INSERT INTO users (username, password, admin) VALUES (?, ?, ?)",
+                                    (username, hashed_password, str(admin)))
                 self.connect.commit()
                 # hardcoded 3 -> but basically just because sqlite implementation is just for test
-                data = {"user_id": 3, "username": username, "admin": admin}
+                # data = {"user_id": 3, "username": username, "admin": admin}
+                data = self.get_user(username)
             else:
                 sql = """INSERT INTO
                     users (username, password, admin)

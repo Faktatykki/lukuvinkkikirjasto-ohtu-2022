@@ -1,2 +1,2 @@
 TIPS_TABLE_COLUMNS="title;text NOT NULL,url;text NOT NULL,user_id;integer NOT NULL"
-USERS_TABLE_COLUMNS="id;integer NOT NULL,username;text NOT NULL,password;text NOT NULL,admin;boolean DEFAULT False"
+USERS_TABLE_COLUMNS="id;integer PRIMARY KEY autoincrement,username;text NOT NULL,password;text NOT NULL,admin;boolean DEFAULT False"
