@@ -3,6 +3,7 @@ from os import remove
 from logic.app_logic import AppLogic
 from data.db import DBManager
 
+
 class TestAppLogic(unittest.TestCase):
     def setUp(self):
         try:
@@ -23,7 +24,8 @@ class TestAppLogic(unittest.TestCase):
         urls = []
         for tip in self.logic.get_all_tips():
             urls.append(tip[1])
-        self.assertEqual(urls, ["http://mock_tip_1.fi", "http://mock_tip_2.fi"])
+        self.assertEqual(
+            urls, ["http://mock_tip_1.fi", "http://mock_tip_2.fi"])
 
     def test_add_tip_adds_one_tip(self):
         self.logic.add_tip("test_tip", "tip.test")
@@ -36,7 +38,7 @@ class TestAppLogic(unittest.TestCase):
     def test_add_tip_adds_tip_url(self):
         self.logic.add_tip("test_tip", "tip.test")
         self.assertEqual("tip.test", self.db.get_all_tips()[-1][1])
-        
+
     def test_add_tip_cannot_add_tip_if_no_url(self):
         self.logic.add_tip("test_tip", None)
         self.assertEqual(2, len(self.db.get_all_tips()))

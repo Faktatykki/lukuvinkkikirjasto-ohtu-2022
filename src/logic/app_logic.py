@@ -1,5 +1,6 @@
 from data.db import DBManager
 
+
 class AppLogic:
     def __init__(self, db: DBManager):
         self.db = db
@@ -7,6 +8,7 @@ class AppLogic:
     def get_all_tips(self) -> list:
         '''kutsuu data-layeria ja saa vastaukseksi tietokannasta löytyvät vinkit'''
         tips = self.db.get_all_tips()
+        print('----- tips in app_logic.get_all_tips: ', tips)
         return tips
 
     def add_tip(self, title: str, url: str) -> bool:
@@ -15,6 +17,5 @@ class AppLogic:
             Tarkistetaan myös että parametrit eivät ole tyhjiä (myös välilyöntien varalta)
         """
         if not title or not url or not title.strip() or not url.strip():
-           return False
+            return False
         return self.db.add_tip(title, url)
-

@@ -3,6 +3,7 @@ from os import remove
 from data.db import DBManager
 from dotenv import load_dotenv
 
+
 class TestDBManager(unittest.TestCase):
     def setUp(self):
         try:
@@ -22,7 +23,8 @@ class TestDBManager(unittest.TestCase):
         urls = []
         for tip in self.db.get_all_tips():
             urls.append(tip[1])
-        self.assertEqual(urls, ["http://mock_tip_1.fi", "http://mock_tip_2.fi"])
+        self.assertEqual(
+            urls, ["http://mock_tip_1.fi", "http://mock_tip_2.fi"])
 
     def test_add_tip_adds_one_tip(self):
         self.db.add_tip("test_tip", "tip.test")
@@ -35,7 +37,7 @@ class TestDBManager(unittest.TestCase):
     def test_add_tip_adds_tip_url(self):
         self.db.add_tip("test_tip", "tip.test")
         self.assertEqual("tip.test", self.db.get_all_tips()[-1][1])
-        
+
     def test_add_tip_cannot_add_tip_if_no_url(self):
         self.db.add_tip("test_tip", None)
         self.assertEqual(2, len(self.db.get_all_tips()))
