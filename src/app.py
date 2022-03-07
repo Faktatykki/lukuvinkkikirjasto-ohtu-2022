@@ -1,13 +1,12 @@
 from os import getenv
 from dotenv import load_dotenv
 from flask import Flask, redirect
-from flask_sqlalchemy import SQLAlchemy
 from ui.controller import Controller
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-controller = Controller()
+controller = Controller(app)
 load_dotenv(".db_env")
 
 @app.route("/")
