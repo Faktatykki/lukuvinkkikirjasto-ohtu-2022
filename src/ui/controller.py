@@ -50,7 +50,7 @@ class Controller:
             )
         if password1 != password2:
             return render_template("error.html", message="Salasanat eivät täsmää.")
-        response=self.user_logic.signup(self.app_logic.db, username, password1) #(see above comment) because this self.app_logic.db isn't great
+        response=self.user_logic.signup(username, password1) #(see above comment) because this self.app_logic.db isn't great
         if isinstance(response, User):
             self.session["username"] = username
             return redirect("/")
