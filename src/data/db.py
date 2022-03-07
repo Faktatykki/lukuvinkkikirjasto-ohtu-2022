@@ -83,6 +83,38 @@ class DBManager:
         y = 10
         y = 10
         y = 10
+        y = 10
+        y = 10
+        y = 10
+        y = 10
+        y = 10
+        y = 10
+        y = 10
+        y = 10
+        y = 10
+        y = 10
+        y = 10
+        y = 10
+        y = 10
+        y = 10
+        y = 10
+        y = 10
+        y = 10
+        y = 10
+        y = 10
+        y = 10
+        y = 10
+        y = 10
+        y = 10
+        y = 10
+        y = 10
+        y = 10
+        y = 10
+        y = 10
+        y = 10
+        y = 10
+        y = 10
+        y = 10
         return y
 
     def add_user(self, username: str, hashed_password: str, admin: boolean):
