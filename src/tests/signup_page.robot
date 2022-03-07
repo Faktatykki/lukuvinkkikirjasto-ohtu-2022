@@ -41,6 +41,14 @@ User Can Not Submit Non-matching Passwords
     Signuppage Should Be Open
 
 
+User Can Signup
+    Set Username  testi
+    Set Password1  testi
+    Set Password2  testi
+    Create User
+    Page Should Contain  testi kirjautuneena
+
+
 *** Keywords ***
 Set Username
     [Arguments]  ${username}
