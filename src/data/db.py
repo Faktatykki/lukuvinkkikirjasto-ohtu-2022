@@ -20,7 +20,7 @@ class DBManager:
 
     def _init_connection_to_sqlite(self):
         """Init a connection to local database for testing"""
-        self.connect = sqlite3.connect("mock_data.db")
+        self.connect = sqlite3.connect("mock_data.db", check_same_thread=False)
         self.cursor = self.connect.cursor()
 
     def _init_connection_to_sql_server(self):
