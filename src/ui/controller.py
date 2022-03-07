@@ -1,5 +1,7 @@
 from flask import redirect, request, render_template, session
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError as IntegrityErrorProd
+from sqlite3 import IntegrityError as IntegrityErrorDev
+from sqlite3 import ProgrammingError
 from os import getenv
 from logic.app_logic import AppLogic
 from logic.user_logic import UserLogic
@@ -57,7 +59,7 @@ class Controller:
         if isinstance(response, User):
             self.session["username"] = username
             return redirect("/")
-        if isinstance(response, IntegrityError):
+        if isinstance(response, IntegrityErrorProd) or isinstance(response, IntegrityErrorDev) or isinstance(response, ProgrammingError):
             return render_template("error.html", message="Käyttäjänimi on varattu.")
         return render_template("error.html", message=response)
 
