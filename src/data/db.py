@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 
 class DBManager:
-    def __init__(self, env_location=None):
+    def __init__(self, env_location=None, app=None):
         if env_location:
             load_dotenv(env_location)
         else:
@@ -14,7 +14,7 @@ class DBManager:
             self.init_connection = self._init_connection_to_sqlite
             self._generate_tables_to_sqlite()
         else:
-            self.db = SQLAlchemy()
+            self.db = SQLAlchemy(app)
             self.init_connection = self._init_connection_to_sql_server
 
     def _init_connection_to_sqlite(self):

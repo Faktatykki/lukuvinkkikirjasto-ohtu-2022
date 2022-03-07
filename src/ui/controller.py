@@ -7,8 +7,8 @@ from entities.user import User
 from data.db import DBManager
 
 class Controller:
-    def __init__(self):
-        self.db = DBManager()
+    def __init__(self, app=False):
+        self.db = DBManager(app=app)
         self.app_logic = AppLogic(self.db)
         self.user_logic = UserLogic(self.db)
         if getenv("DEV_ENVIRON"):

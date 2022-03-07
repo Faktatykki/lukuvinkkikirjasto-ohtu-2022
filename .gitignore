@@ -8,3 +8,4 @@ report.html
 selenium-*
 htmlcov
 .coverage
+mock_data.db
