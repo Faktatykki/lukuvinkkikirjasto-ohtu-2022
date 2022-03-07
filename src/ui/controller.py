@@ -1,10 +1,11 @@
+from os import getenv
 from flask import redirect, request, render_template, session
 from sqlalchemy.exc import IntegrityError
-from os import getenv
 from logic.app_logic import AppLogic
 from logic.user_logic import UserLogic
 from entities.user import User
 from data.db import DBManager
+
 
 class Controller:
     def __init__(self):
@@ -30,12 +31,14 @@ class Controller:
     def add_tip(self):
         title = request.form["title"]
         url = request.form["url"]
-        if self.app_logic.add_tip(title, url):
+        username = self.session["username"]
+        if self.app_logic.add_tip(title, url, username):
             return redirect("/")
         print("Something went wrong")
         return redirect("/")
 
-    def add_new_user(self): #maybe refactor so that functionality is moved to app_logic_class and user_logic is made into a class
+    # maybe refactor so that functionality is moved to app_logic_class and user_logic is made into a class
+    def add_new_user(self):
         """Käsittelee uuden käyttäjän luonnin."""
         username = request.form["username"]
         password1 = request.form["password1"]
@@ -50,7 +53,9 @@ class Controller:
             )
         if password1 != password2:
             return render_template("error.html", message="Salasanat eivät täsmää.")
-        response=self.user_logic.signup(self.app_logic.db, username, password1) #(see above comment) because this self.app_logic.db isn't great
+        # (see above comment) because this self.app_logic.db isn't great
+        response = self.user_logic.signup(
+            self.app_logic.db, username, password1)
         if isinstance(response, User):
             self.session["username"] = username
             return redirect("/")
@@ -61,6 +66,9 @@ class Controller:
     def get_signup_page(self):
         """Palauttaa signup-sivun"""
         return render_template("signup.html")
+
+    def get_session_username(self):
+        return self.session["username"]
 
     def login(self):
         username = request.form["username"]

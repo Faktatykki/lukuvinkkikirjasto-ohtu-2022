@@ -1,8 +1,9 @@
-from pickle import NONE
 import unittest
+import pytest
 from data.db import DBManager
 from dotenv import load_dotenv
 from os import getenv, remove
+
 
 class TestDBManager(unittest.TestCase):
     def setUp(self):
@@ -12,15 +13,23 @@ class TestDBManager(unittest.TestCase):
             pass
         self.db = DBManager(env_location="src/.db_env")
         self._generate_mock_data()
-        load_dotenv("src/.db_env") # ei ehkä tarpeen
+        load_dotenv("src/.db_env")  # ei ehkä tarpeen
 
-    def _generate_mock_data(self): #migrate this to db_test.py instead
+    def _generate_mock_data(self):  # migrate this to db_test.py instead
         self.db._generate_tables_to_sqlite()
         self.db.init_connection()
-        mock_tips = [("Mock tip 1", "http://mock_tip_1.fi"), ("Mock tip 2", "http://mock_tip_2.fi")]
-        self.db.cursor.executemany("INSERT INTO tips VALUES (?, ?)", mock_tips)
-        mock_users = [("1", "Jim_Hacker", "minister", "false"), ("2", "Humphrey_Appleby", "yes_minster", "true")]
-        self.db.cursor.executemany("INSERT INTO users VALUES (?, ?, ?, ?)", mock_users)
+        mock_tips = [
+            ("Mock tip 1", "http://mock_tip_1.fi", "1"),
+            ("Mock tip 2", "http://mock_tip_2.fi", "2")
+        ]
+        self.db.cursor.executemany(
+            "INSERT INTO tips VALUES (?, ?, ?)", mock_tips)
+        mock_users = [
+            ("1", "Jim_Hacker", "minister", "False"),
+            ("2", "Humphrey_Appleby", "yes_minster", "true")
+        ]
+        self.db.cursor.executemany(
+            "INSERT INTO users VALUES (?, ?, ?, ?)", mock_users)
         self.db.connect.commit()
 
     def test_get_all_tips_retrieves_titles(self):
@@ -33,34 +42,44 @@ class TestDBManager(unittest.TestCase):
         urls = []
         for tip in self.db.get_all_tips():
             urls.append(tip[1])
-        self.assertEqual(urls, ["http://mock_tip_1.fi", "http://mock_tip_2.fi"])
+        self.assertEqual(
+            urls, ["http://mock_tip_1.fi", "http://mock_tip_2.fi"])
 
     def test_add_tip_adds_one_tip(self):
-        self.db.add_tip("test_tip", "tip.test")
+        self.db.add_tip("test_tip", "tip.test", "Jim_Hacker")
         self.assertEqual(3, len(self.db.get_all_tips()))
 
     def test_add_tip_adds_tip_title(self):
-        self.db.add_tip("test_tip", "tip.test")
+        self.db.add_tip("test_tip", "tip.test", "Jim_Hacker")
         self.assertEqual("test_tip", self.db.get_all_tips()[-1][0])
 
     def test_add_tip_adds_tip_url(self):
-        self.db.add_tip("test_tip", "tip.test")
+        self.db.add_tip("test_tip", "tip.test", "Jim_Hacker")
         self.assertEqual("tip.test", self.db.get_all_tips()[-1][1])
-        
+
     def test_add_tip_cannot_add_tip_if_no_url(self):
-        self.db.add_tip("test_tip", None)
+        self.db.add_tip("test_tip", None, "Jim_Hacker")
         self.assertEqual(2, len(self.db.get_all_tips()))
 
     def test_add_tip_cannot_add_tip_if_url_is_empty_string(self):
-        self.db.add_tip("test_tip", "")
+        self.db.add_tip("test_tip", "", "Jim_Hacker")
         self.assertEqual(2, len(self.db.get_all_tips()))
 
     def test_add_tip_cannot_add_tip_if_no_title(self):
-        self.db.add_tip(None, "tip.test")
+        self.db.add_tip(None, "tip.test", "Jim_Hacker")
         self.assertEqual(2, len(self.db.get_all_tips()))
 
     def test_add_tip_cannot_add_tip_if_title_is_empty_string(self):
-        self.db.add_tip("", "tip.test")
+        self.db.add_tip("", "tip.test", "Jim_Hacker")
+        self.assertEqual(2, len(self.db.get_all_tips()))
+
+    def test_add_tip_cannot_add_tip_if_user_id_not_in_users(self):
+        self.db.add_tip("test_tip", "tip.test", "Non_Existing_Test_User")
+        self.assertEqual(2, len(self.db.get_all_tips()))
+
+    def test_add_tip_cannot_add_tip_if_user_id_empty(self):
+        with pytest.raises(TypeError) as Error:
+            self.db.add_tip("test_tip", "tip.test")
         self.assertEqual(2, len(self.db.get_all_tips()))
 
     def test_get_user_returns_false_if_no_such_user(self):

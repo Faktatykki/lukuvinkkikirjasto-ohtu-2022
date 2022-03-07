@@ -5,7 +5,7 @@
 	</head>
 	<body>
 		<header>
-			<h1>Lukuvinkit v0.02 :) - Uh - vieläkö me tehdään 98 versiota?</h1>
+			<h1>Lukuvinkit v0.02 :)</h1>
 		</header>
 		{% if username == None %}
 		<div style="margin-bottom: 20px">
@@ -29,21 +29,31 @@
 				This is for scalability - now there is no more changes required here if we want to add data points.
 				(this doesn't necessarily mean it will print everything in the table - just parse the necessary parts in
 				before rendering this template)
-				-->
+
 				{% for i in range(2, (tips[0]|length)) %}
-				{{ tips[0][i] }}: <b>{{ tip[i] }}</b><br/>
+					{{ tips[0][i] }}: <b>{{ tip[i] }}</b><br/>
 				{% endfor %}
+				-->
 			</p>
 			{% endfor %}
 		</div>
+		{% if username != None %}
 		<div>
 			<h2>Lisää vinkki</h2>
 			<form action = "/add" method = "POST">
 				{% for i in range((tips[0]|length)) %}
-				{{ tips[0][i] }} <input type = "text" name = {{ tips[0][i] }}><br>
+					<label for = {{ tips[0][i] }}>
+						{{ tips[0][i] }}
+					</label>
+					<input 
+						type = {{ 'hidden' if tips[0][i] == 'user_id' else 'text' }} 
+						name = {{ tips[0][i] }}
+					>
+					<br>
 				{% endfor %}
 				<input type = "submit" value = "Lisää">
 			</form>
 		</div>
+		{% endif %}
 	</body>
 </html>
