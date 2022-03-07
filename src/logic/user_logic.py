@@ -9,13 +9,13 @@ class UserLogic:
 
     def signup(self, username: str, password: str, admin=False):
         '''Pyytää data-layeria tallentamaan uuden käyttäjän. Palauttaa käyttäjäolion jos onnistui'''
+        
         if username in [None, ""] or password in [None, ""]:
             return False
         hashed_password = generate_password_hash(password)
         res = self.db.add_user(username, hashed_password, admin)
         try:
             if "user_id" in res:
-                # print("Tietokanta palauttaa1:", res["user_id"], res["username"], res["admin"])
                 return self.signin(username, password)
         except:  # if we need to use except here it should not be without defining what kind of error
             pass
@@ -23,9 +23,6 @@ class UserLogic:
 
     def signin(self, username: str, password: str):
         '''Palauttaa User-olion, jos kirjautuminen onnistuu'''
-        # Jere - alkuperäinen salasana on hashattu werkzeug-kirjaston generate_password_hash-metodilla
-        # Sun pitää siksi käyttää saman kirjaston check_password_hash metodia,
-        # kun tsekkaat salasalan oikeellisuutta.
 
         user_in_database = self.db.get_user(username)
         if user_in_database:
