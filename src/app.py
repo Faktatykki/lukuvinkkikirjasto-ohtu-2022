@@ -1,6 +1,6 @@
 from os import getenv
 from dotenv import load_dotenv
-from flask import Flask, redirect
+from flask import Flask, redirect, request
 from ui.controller import Controller
 
 app = Flask(__name__)
@@ -44,3 +44,11 @@ def login():
 @app.route("/login", methods=["GET"])
 def login_page():
     return controller.login_page()
+
+@app.route("/search", methods = ["POST", "GET"])
+def search_page():
+    if request.method == "POST":
+        return controller.search_tips_by_title(request.method)
+        
+
+    return controller.search_tips_by_title(request.method)

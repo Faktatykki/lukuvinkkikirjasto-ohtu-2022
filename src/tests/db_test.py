@@ -86,3 +86,11 @@ class TestDBManager(unittest.TestCase):
         self.db.add_user("", "password27", False)
         data = self.db.get_user("")
         self.assertEqual(data, False)
+
+    def test_searches_by_title_are_case_insensitive(self):
+        tips = self.db.get_tips_by_title("mock")
+        self.assertEqual(2, len(tips))
+
+    def test_searches_by_title_with_non_matching_param_returns_empty_list(self):
+        tips = self.db.get_tips_by_title("Operating Systems")
+        self.assertEqual(0, len(tips))
