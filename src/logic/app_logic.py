@@ -1,5 +1,7 @@
+from data.db import DBManager
+
 class AppLogic:
-    def __init__(self, db):
+    def __init__(self, db: DBManager):
         self.db = db
 
     def get_all_tips(self) -> list:
