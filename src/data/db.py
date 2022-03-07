@@ -100,6 +100,7 @@ class DBManager:
             return False
         try:
             user_id = self.get_user(username)["user_id"]
+            print(f'user_id {user_id} lisää uuden vinkin')
             sql = "INSERT INTO tips (title, url, user_id) VALUES (:title, :url, :user_id)"
             self.cursor.execute(sql, {"title": title, "url": url, "user_id": user_id})
             self.connect.commit()
