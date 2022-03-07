@@ -6,6 +6,7 @@ from ui.controller import Controller
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.secret_key = getenv("SECRET_KEY")
 controller = Controller(app)
 load_dotenv(".db_env")
 
