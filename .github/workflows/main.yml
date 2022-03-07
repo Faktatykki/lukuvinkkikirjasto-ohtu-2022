@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [main]
 
+env:
+  DEV_ENVIRON: True
+
 jobs:
   build:
     name: github actions
@@ -21,7 +24,7 @@ jobs:
       - name: Run unit tests
         run: coverage run --branch -m pytest
       - name: Run robot test
-        run: robot src/tests
+        run: timeout 5m invoke start & robot src/tests
       - name: Coverage XML report
         run: coverage xml
       - name: Coverage report to Codecov
