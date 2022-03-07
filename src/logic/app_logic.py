@@ -8,7 +8,6 @@ class AppLogic:
     def get_all_tips(self) -> list:
         '''kutsuu data-layeria ja saa vastaukseksi tietokannasta löytyvät vinkit'''
         tips = self.db.get_all_tips()
-        print('----- tips in app_logic.get_all_tips: ', tips)
         return tips
 
     def add_tip(self, title: str, url: str) -> bool:
