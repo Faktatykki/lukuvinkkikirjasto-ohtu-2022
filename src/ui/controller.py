@@ -59,7 +59,7 @@ class Controller:
         if isinstance(response, User):
             self.session["username"] = username
             return redirect("/")
-        if isinstance(response, IntegrityErrorProd) or isinstance(response, IntegrityErrorDev) or isinstance(response, ProgrammingError):
+        if isinstance(response, IntegrityErrorProd) or isinstance(response, IntegrityErrorDev):
             return render_template("error.html", message="Käyttäjänimi on varattu.")
         return render_template("error.html", message=response)
 
