@@ -4,6 +4,7 @@ from data.db import DBManager
 from logic.user_logic import UserLogic
 from entities.user import User
 
+
 class TestUserLogic(unittest.TestCase):
     def setUp(self):
         try:
@@ -14,7 +15,7 @@ class TestUserLogic(unittest.TestCase):
         self.db._generate_mock_data()
         self.logic = UserLogic(self.db)
 
-    #TÄYTYY SELVITTÄÄ MYÖHEMMIN MIKSI LOGGAUTUMISTESTI EI TOIMI:
+    # TÄYTYY SELVITTÄÄ MYÖHEMMIN MIKSI LOGGAUTUMISTESTI EI TOIMI:
     # def test_signin_returns_user_instance_if_succesfull(self):
     #     self.assertIsInstance(self.logic.signin("Humphrey_Appleby", "yes_minister"), User)
 

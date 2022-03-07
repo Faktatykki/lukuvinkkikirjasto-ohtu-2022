@@ -6,6 +6,7 @@ from logic.user_logic import UserLogic
 from entities.user import User
 from data.db import DBManager
 
+
 class Controller:
     def __init__(self, app=False):
         self.db = DBManager(app=app)
@@ -35,7 +36,8 @@ class Controller:
         print("Something went wrong")
         return redirect("/")
 
-    def add_new_user(self): #maybe refactor so that functionality is moved to app_logic_class and user_logic is made into a class
+    # maybe refactor so that functionality is moved to app_logic_class and user_logic is made into a class
+    def add_new_user(self):
         """Käsittelee uuden käyttäjän luonnin."""
         username = request.form["username"]
         password1 = request.form["password1"]
@@ -50,7 +52,8 @@ class Controller:
             )
         if password1 != password2:
             return render_template("error.html", message="Salasanat eivät täsmää.")
-        response=self.user_logic.signup(username, password1) #(see above comment) because this self.app_logic.db isn't great
+        # (see above comment) because this self.app_logic.db isn't great
+        response = self.user_logic.signup(username, password1)
         if isinstance(response, User):
             self.session["username"] = username
             return redirect("/")
