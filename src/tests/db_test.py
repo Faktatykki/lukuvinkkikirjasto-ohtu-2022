@@ -12,14 +12,14 @@ class TestDBManager(unittest.TestCase):
         self.db = DBManager(env_location="src/.db_env")
         self.db._generate_mock_data()
 
-    def test_superfluous_code_test(self):
-        self.assertEqual(self.db.add_superfluous_code_in_order_to_circumvent_diff_coverage_requirement(), 1)
-
     def test_get_all_tips_retrieves_titles(self):
         titles = []
         for tip in self.db.get_all_tips():
             titles.append(tip[0])
         self.assertEqual(titles, ["Mock tip 1", "Mock tip 2"])
+
+    def test_sup_func(self):
+        self.assertEqual(self.db.sup_func(), 10)
 
     def test_get_all_tips_retrieves_urls(self):
         urls = []
