@@ -88,29 +88,32 @@ class DBManager:
         '''Tallentaa uuden käyttäjän tietokantaan.
         Palauttaa dictionaryn, jossa user-id, käyttäjänimi ja admin jos onnistuu.
         Muutoin palauttaa False'''
-        if "" in [username, hashed_password] or None in [username, hashed_password]:
-            return False
-        if getenv("DEV_ENVIRON"):
-            self.cursor.execute("INSERT INTO users VALUES (?, ?, ?, ?)",
-                                ("1", username, hashed_password, str(admin)))
-            self.connect.commit()
-            # hardcoded 3 -> but basically just because sqlite implementation is just for test
-            data = {"user_id": 1, "username": username, "admin": admin}
-        else:
-            sql = """INSERT INTO users (username, password, admin)
-                VALUES (:username, :password, :admin)
-                RETURNING id, username, admin"""
-            res = self.cursor.execute(
-                sql, {"username": username, "password": hashed_password, "admin": admin})
-            self.connect.commit()
-            data = {}
-            for row in res:
-                data["user_id"] = row[0]
-                data["username"] = row[1]
-                data["admin"] = row[2]
-            if not data:
+        try: 
+            if "" in [username, hashed_password] or None in [username, hashed_password]:
                 return False
-        return data
+            if getenv("DEV_ENVIRON"):
+                self.cursor.execute("INSERT INTO users VALUES (?, ?, ?, ?)",
+                                    ("1", username, hashed_password, str(admin)))
+                self.connect.commit()
+                # hardcoded 3 -> but basically just because sqlite implementation is just for test
+                data = {"user_id": 1, "username": username, "admin": admin}
+            else:
+                sql = """INSERT INTO users (username, password, admin)
+                    VALUES (:username, :password, :admin)
+                    RETURNING id, username, admin"""
+                res = self.cursor.execute(
+                    sql, {"username": username, "password": hashed_password, "admin": admin})
+                self.connect.commit()
+                data = {}
+                for row in res:
+                    data["user_id"] = row[0]
+                    data["username"] = row[1]
+                    data["admin"] = row[2]
+                if not data:
+                    return False
+            return data
+        except Exception as exception:
+            return exception
 
     def get_user(self, username: str):
         '''Tarkistaa, löytyykö tietokannasta usernamea vastaava käyttäjä.
