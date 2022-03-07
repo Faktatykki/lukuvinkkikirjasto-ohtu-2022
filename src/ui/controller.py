@@ -30,6 +30,16 @@ class Controller:
             return render_template("main_page.html", tips=tips, username=self.session["username"])
         return render_template("main_page.html", tips=tips, username=None)
 
+    def search_tips_by_title(self, method):
+        '''Näyttää hakusivun jossa voi hakea vinkkejä otsikon perusteella'''
+
+        if method == "POST":
+            search_param = request.form["search_param"]
+            tips = self.app_logic.search_tips_by_title(search_param)
+            return render_template("search.html", tips = tips)
+        
+        return render_template("search.html")
+
     def add_tip(self):
         title = request.form["title"]
         url = request.form["url"]

@@ -33,9 +33,17 @@ Lisäyslomake Should Be Open
     Page Should Contain  title
     Page Should Contain  url
 
+Searchpage Should Be Open
+    Page Should Contain  Kotisivu
+    Page Should Contain  Tulokset
+
 Go To Mainpage
     Go To  ${HOME URL}
 
 Go To Signuppage
     Go To  ${HOME URL}
     Click Link  id=signup
+
+Go To Searchpage
+    Go To  ${HOME URL}
+    Click Link  id=searchpage

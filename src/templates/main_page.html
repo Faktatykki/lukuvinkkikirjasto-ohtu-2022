@@ -11,11 +11,14 @@
 		<div style="margin-bottom: 20px">
 			<a href="/signup" id="signup">Luo käyttäjä</a>
 			<a href="/login" id="login">Kirjaudu sisään</a>
+			<a href = "/search" id="searchpage">Haku</a>
 		</div>
 		{% else %}
 		<div>
-			<p>{{ username }} kirjautuneena
+			<p>
+			{{ username }} kirjautuneena
 			<a href="/logout" id="logout">Kirjaudu ulos</a>
+			<a href = "/search" id="searchpage">Haku</a>
 		</p>
 		</div>
 		{% endif %}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Lukuvinkit - Hakusivu</title>
+	</head>
+	<body>
+		<header>
+			<h1>Lukuvinkit v0.02 :) - Uh - vieläkö me tehdään 98 versiota?</h1>
+		</header>
+		{% if username == None %}
+		<div style="margin-bottom: 20px">
+            <a href="/" id = "mainpage">Kotisivu</a>
+			<a href="/signup" id="signup">Luo käyttäjä</a>
+			<a href="/login" id="login">Kirjaudu sisään</a>
+		</div>
+		{% else %}
+		<div>
+            
+			<p><a href="/" id = "mainpage">Kotisivu</a> 
+            {{ username }} kirjautuneena  
+			<a href="/logout" id="logout">Kirjaudu ulos</a>
+		</p>
+		</div>
+		{% endif %}
+        <div>
+            <form action = "/search" method = "POST">
+                <input type = "text" name = "search_param">
+                <input type = "submit" value = "search">
+            </form>
+        </div>
+        <div>
+			
+            <h3>Tulokset</h3><br>
+			{% for tip in tips %}
+			<p>
+				title: <b>{{ tip.title }}</b><br>
+				url: <a href = //{{ tip.url }}>{{ tip.url }}</a><br>
+			</p>
+			{% endfor %}
+        </div>
+    </body>
+</html>
