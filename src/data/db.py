@@ -71,52 +71,6 @@ class DBManager:
             return False
         return True
 
-    def sup_func(self):
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        y = 10
-        return y
-
     def add_user(self, username: str, hashed_password: str, admin: boolean):
         '''Tallentaa uuden käyttäjän tietokantaan.
         Palauttaa dictionaryn, jossa user-id, käyttäjänimi ja admin jos onnistuu.

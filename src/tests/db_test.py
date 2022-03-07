@@ -18,9 +18,6 @@ class TestDBManager(unittest.TestCase):
             titles.append(tip[0])
         self.assertEqual(titles, ["Mock tip 1", "Mock tip 2"])
 
-    def test_sup_func(self):
-        self.assertEqual(self.db.sup_func(), 10)
-
     def test_get_all_tips_retrieves_urls(self):
         urls = []
         for tip in self.db.get_all_tips():
