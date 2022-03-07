@@ -1,5 +1,8 @@
+from data.db import DBManager
+
+
 class AppLogic:
-    def __init__(self, db):
+    def __init__(self, db: DBManager):
         self.db = db
 
     def get_all_tips(self) -> list:
@@ -12,6 +15,6 @@ class AppLogic:
             passaa eteenpäin käyttöliittymästä saadut parametrit uuden vinkin lisäämiseksi data-layerille.
             Tarkistetaan myös että parametrit eivät ole tyhjiä (myös välilyöntien varalta)
         """
-        if not title.strip() or not url.strip():
+        if not title or not url or not title.strip() or not url.strip():
             return False
         return self.db.add_tip(title, url, username)

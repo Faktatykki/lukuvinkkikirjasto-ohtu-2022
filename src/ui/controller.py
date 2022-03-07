@@ -8,8 +8,8 @@ from data.db import DBManager
 
 
 class Controller:
-    def __init__(self):
-        self.db = DBManager()
+    def __init__(self, app=False):
+        self.db = DBManager(app=app)
         self.app_logic = AppLogic(self.db)
         self.user_logic = UserLogic(self.db)
         if getenv("DEV_ENVIRON"):
@@ -54,8 +54,7 @@ class Controller:
         if password1 != password2:
             return render_template("error.html", message="Salasanat eivät täsmää.")
         # (see above comment) because this self.app_logic.db isn't great
-        response = self.user_logic.signup(
-            self.app_logic.db, username, password1)
+        response = self.user_logic.signup(username, password1)
         if isinstance(response, User):
             self.session["username"] = username
             return redirect("/")

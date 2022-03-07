@@ -1,36 +1,19 @@
 import unittest
 import pytest
+from os import remove
 from data.db import DBManager
 from dotenv import load_dotenv
-from os import getenv, remove
+
 
 
 class TestDBManager(unittest.TestCase):
     def setUp(self):
         try:
             remove("mock_data.db")
-        except:
+        except FileNotFoundError:
             pass
         self.db = DBManager(env_location="src/.db_env")
-        self._generate_mock_data()
-        load_dotenv("src/.db_env")  # ei ehkä tarpeen
-
-    def _generate_mock_data(self):  # migrate this to db_test.py instead
-        self.db._generate_tables_to_sqlite()
-        self.db.init_connection()
-        mock_tips = [
-            ("Mock tip 1", "http://mock_tip_1.fi", "1"),
-            ("Mock tip 2", "http://mock_tip_2.fi", "2")
-        ]
-        self.db.cursor.executemany(
-            "INSERT INTO tips VALUES (?, ?, ?)", mock_tips)
-        mock_users = [
-            ("1", "Jim_Hacker", "minister", "False"),
-            ("2", "Humphrey_Appleby", "yes_minster", "true")
-        ]
-        self.db.cursor.executemany(
-            "INSERT INTO users VALUES (?, ?, ?, ?)", mock_users)
-        self.db.connect.commit()
+        self.db._generate_mock_data()
 
     def test_get_all_tips_retrieves_titles(self):
         titles = []
