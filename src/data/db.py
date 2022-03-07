@@ -43,6 +43,15 @@ class DBManager:
         self._generate_table("users")
         self.connect.commit()
 
+    def _generate_mock_data(self):
+        self._generate_tables_to_sqlite()
+        self.init_connection()
+        mock_tips = [("Mock tip 1", "http://mock_tip_1.fi"), ("Mock tip 2", "http://mock_tip_2.fi")]
+        self.cursor.executemany("INSERT INTO tips VALUES (?, ?)", mock_tips)
+        mock_users = [("1", "Jim_Hacker", "minister", "false"), ("2", "Humphrey_Appleby", "yes_minster", "true")]
+        self.cursor.executemany("INSERT INTO users VALUES (?, ?, ?, ?)", mock_users)
+        self.connect.commit()
+
     def get_all_tips(self): # refactor! Select all the tip info asked for in param
         '''hakee tietokannasta kaikki vinkit'''
         self.init_connection()

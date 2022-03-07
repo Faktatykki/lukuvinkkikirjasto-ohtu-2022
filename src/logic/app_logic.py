@@ -1,5 +1,3 @@
-from flask import render_template
-
 class AppLogic:
     def __init__(self, db):
         self.db = db
@@ -14,7 +12,7 @@ class AppLogic:
             passaa eteenpäin käyttöliittymästä saadut parametrit uuden vinkin lisäämiseksi data-layerille.
             Tarkistetaan myös että parametrit eivät ole tyhjiä (myös välilyöntien varalta)
         """
-        if not title.strip() or not url.strip():
+        if not title or not url or not title.strip() or not url.strip():
            return False
         return self.db.add_tip(title, url)
 
