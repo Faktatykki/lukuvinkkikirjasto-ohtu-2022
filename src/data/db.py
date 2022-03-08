@@ -153,7 +153,10 @@ class DBManager:
                     sql, {"username": username, "password": hashed_password, "admin": admin})
                 self.connect.commit()
                 data = {}
-                data["user_id"], data["username"], data["admin"] = res
+                for row in res:
+                    data["user_id"] = row[0]
+                    data["username"] = row[1]
+                    data["password"] = row[2]
                 if not data:
                     return False
             return data
