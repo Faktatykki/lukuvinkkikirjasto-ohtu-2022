@@ -1,7 +1,7 @@
 *** Settings ***
 Resource  resource.robot
 Suite Setup  Open And Configure Browser
-Suite Teardown  Close All Browsers
+Suite Teardown  Signup Teardown
 Test Setup  Go To Signuppage
 
 *** Test Cases *** 
@@ -63,3 +63,6 @@ Create User
     Click Button  submit
 Go Back
     Click Button  back
+Signup Teardown
+    Click Link  logout
+    Close All Browsers

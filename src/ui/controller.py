@@ -34,7 +34,7 @@ class Controller:
                 username=self.session["username"],
                 user_id=self.session["user_id"]
             )
-        return render_template("main_page.html", tips=tips, username=None, user_id=None)
+        return render_template("main_page.html", tips=tips, username=None, user_id=0)
 
     def search_tips_by_title(self, method):
         '''Näyttää hakusivun jossa voi hakea vinkkejä otsikon perusteella'''
@@ -79,6 +79,7 @@ class Controller:
         response = self.user_logic.signup(username, password1)
         if isinstance(response, User):
             self.session["username"] = username
+            self.session["user_id"] = response.user_id
             return redirect("/")
         if isinstance(response, (IntegrityErrorDev, IntegrityErrorProd)):
             return render_template("error.html", message="Käyttäjänimi on varattu.")
