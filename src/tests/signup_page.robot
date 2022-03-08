@@ -65,5 +65,6 @@ Create User
 Go Back
     Click Button  back
 Signup Teardown
-    Click Link  Kirjaudu ulos
+    Wait Until Element Is Visible  tipsList
+    Click Link  logout
     Close All Browsers
