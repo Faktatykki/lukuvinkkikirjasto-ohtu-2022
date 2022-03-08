@@ -8,7 +8,6 @@ class AppLogic:
     def get_all_tips(self) -> list:
         '''kutsuu data-layeria ja saa vastaukseksi tietokannasta löytyvät vinkit'''
         tips = self.db.get_all_tips()
-        print('----- tips in app_logic.get_all_tips: ', tips)
         return tips
 
     def search_tips_by_title(self, title: str) -> list:
@@ -18,11 +17,13 @@ class AppLogic:
 
         return self.db.get_tips_by_title(title)
 
-    def add_tip(self, title: str, url: str) -> bool:
+    def add_tip(self, title: str, url: str, username: str = '') -> bool:
         """
             passaa eteenpäin käyttöliittymästä saadut parametrit uuden vinkin lisäämiseksi data-layerille.
             Tarkistetaan myös että parametrit eivät ole tyhjiä (myös välilyöntien varalta)
         """
         if not title or not url or not title.strip() or not url.strip():
             return False
+        if username != '':
+            return self.db.add_tip(title, url, username)
         return self.db.add_tip(title, url)

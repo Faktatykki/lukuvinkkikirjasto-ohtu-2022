@@ -1,5 +1,4 @@
 from werkzeug.security import check_password_hash, generate_password_hash
-from data.db import DBManager
 from entities.user import User
 
 
@@ -9,7 +8,7 @@ class UserLogic:
 
     def signup(self, username: str, password: str, admin=False):
         '''Pyytää data-layeria tallentamaan uuden käyttäjän. Palauttaa käyttäjäolion jos onnistui'''
-        
+
         if username in [None, ""] or password in [None, ""]:
             return False
         hashed_password = generate_password_hash(password)
@@ -17,7 +16,7 @@ class UserLogic:
         try:
             if "user_id" in res:
                 return self.signin(username, password)
-        except:  # if we need to use except here it should not be without defining what kind of error
+        except Exception:
             pass
         return res
 

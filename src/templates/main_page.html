@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Lukuvinkit - Kotisivu</title>
+		<title>Lukuvinkit - Etusivu</title>
 	</head>
 	<body>
 		<header>
-			<h1>Lukuvinkit v0.02 :) - Uh - vieläkö me tehdään 98 versiota?</h1>
+			<h1>Lukuvinkit <span style="color:#a8a7aa">v0.02 :)</span></h1>
 		</header>
 		{% if username == None %}
 		<div style="margin-bottom: 20px">
@@ -16,37 +16,82 @@
 		{% else %}
 		<div>
 			<p>
-			{{ username }} kirjautuneena
-			<a href="/logout" id="logout">Kirjaudu ulos</a>
-			<a href = "/search" id="searchpage">Haku</a>
-		</p>
+				{{ username }} kirjautuneena
+			</p>
+			<p>
+				<a href="/logout" id="logout">Kirjaudu ulos</a>
+				<label for="ownTips">
+					<input type="checkbox" id="ownTips"> Omat vinkit
+				</label>
+				<a href = "/search" id="searchpage">Haku</a>
+			</p>
 		</div>
 		{% endif %}
-		<div>
-			{% for tip in tips[1:] %}
-			<p>
-				{{ tips[0][0] }}: <b>{{ tip[0] }}</b><br/>
-				{{ tips[0][1] }}: <a href = //{{ tip[1] }}>{{ tip[1] }}</a>
-				<!-- see below a nested for loop to get all other parts of given tip info 
-					(because tip[1] has url, 0 and 1 above) 
-				This is for scalability - now there is no more changes required here if we want to add data points.
-				(this doesn't necessarily mean it will print everything in the table - just parse the necessary parts in
-				before rendering this template)
-				-->
-				{% for i in range(2, (tips[0]|length)) %}
-				{{ tips[0][i] }}: <b>{{ tip[i] }}</b><br/>
-				{% endfor %}
-			</p>
-			{% endfor %}
+		<div id="tipsWrapper">
 		</div>
 		<div>
 			<h2>Lisää vinkki</h2>
-			<form action = "/add" method = "POST">
+			<form action="/add" method="POST">
 				{% for i in range((tips[0]|length)) %}
-				{{ tips[0][i] }} <input type = "text" name = {{ tips[0][i] }}><br>
+					{% if tips[0][i] != 'user_id' and tips[0][i] != 'id' %}
+					<label for = {{ tips[0][i] }}>
+						{{ tips[0][i] }}
+					</label>
+					<input type="text" name={{ tips[0][i] }} />
+					<br />
+					{% endif %}
 				{% endfor %}
-				<input type = "submit" value = "Lisää">
+				<input type="submit" value="Lisää" />
 			</form>
 		</div>
+
+		<script type="text/javascript">
+			{% if username != None %}
+			let ownTipsCheckbox = document.getElementById('ownTips');
+			{% endif %}
+			let tipsWrapper = document.getElementById('tipsWrapper');
+
+			let tips = [{% for t in tips[1:] %}{
+				"title": "{{ t[0] }}",
+				"url": "{{ t[1] }}",
+				"own": {{ 1 if t[2] == user_id else 0}}
+			},{% endfor %}];
+
+			let ownTips = tips.filter(t => t['own'] == 1);
+
+			const refreshTips = () => {
+				tipsWrapper.innerHTML = '';
+				{% if username != None %}
+				let tipsToShow = ownTipsCheckbox.checked ? ownTips : tips;
+				{% else %}
+				let tipsToShow = tips;
+				{% endif %}
+
+				let ul = document.createElement('ul');
+				ul.setAttribute('id', 'tipsList');
+				for (let i = 0; i < tipsToShow.length; i++) {
+					let li = document.createElement('li');
+					let a = document.createElement('a'); 
+					let linkText = document.createTextNode(tipsToShow[i].url);
+					a.appendChild(linkText); 
+					a.title = tipsToShow[i].title;
+					let prefix = '';
+					if (tipsToShow[i].url.substring(0,4) != 'http') {
+						prefix += 'https://';
+					}
+					a.href = prefix + tipsToShow[i].url;
+					a.target = '_blank';
+					li.innerHTML = tipsToShow[i].title + ' - ';
+					li.append(a);
+					ul.append(li);
+				}
+				tipsWrapper.append(ul);
+			};
+
+			{% if username != None %}
+			ownTipsCheckbox.addEventListener('click', refreshTips);
+			{% endif %}
+			refreshTips();
+		</script>
 	</body>
 </html>

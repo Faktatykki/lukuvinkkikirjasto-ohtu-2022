@@ -27,32 +27,40 @@ class TestDBManager(unittest.TestCase):
             urls, ["http://mock_tip_1.fi", "http://mock_tip_2.fi"])
 
     def test_add_tip_adds_one_tip(self):
-        self.db.add_tip("test_tip", "tip.test")
+        self.db.add_tip("test_tip", "tip.test", "Jim_Hacker")
         self.assertEqual(3, len(self.db.get_all_tips()))
 
     def test_add_tip_adds_tip_title(self):
-        self.db.add_tip("test_tip", "tip.test")
+        self.db.add_tip("test_tip", "tip.test", "Jim_Hacker")
         self.assertEqual("test_tip", self.db.get_all_tips()[-1][0])
 
     def test_add_tip_adds_tip_url(self):
-        self.db.add_tip("test_tip", "tip.test")
+        self.db.add_tip("test_tip", "tip.test", "Jim_Hacker")
         self.assertEqual("tip.test", self.db.get_all_tips()[-1][1])
 
     def test_add_tip_cannot_add_tip_if_no_url(self):
-        self.db.add_tip("test_tip", None)
+        self.db.add_tip("test_tip", None, "Jim_Hacker")
         self.assertEqual(2, len(self.db.get_all_tips()))
 
     def test_add_tip_cannot_add_tip_if_url_is_empty_string(self):
-        self.db.add_tip("test_tip", "")
+        self.db.add_tip("test_tip", "", "Jim_Hacker")
         self.assertEqual(2, len(self.db.get_all_tips()))
 
     def test_add_tip_cannot_add_tip_if_no_title(self):
-        self.db.add_tip(None, "tip.test")
+        self.db.add_tip(None, "tip.test", "Jim_Hacker")
         self.assertEqual(2, len(self.db.get_all_tips()))
 
     def test_add_tip_cannot_add_tip_if_title_is_empty_string(self):
-        self.db.add_tip("", "tip.test")
+        self.db.add_tip("", "tip.test", "Jim_Hacker")
         self.assertEqual(2, len(self.db.get_all_tips()))
+
+    def test_add_tip_cannot_add_tip_if_user_id_not_in_users(self):
+        self.db.add_tip("test_tip", "tip.test", "Non_Existing_Test_User")
+        self.assertEqual(2, len(self.db.get_all_tips()))
+
+    def test_add_tip_can_be_done_without_username(self):
+        self.db.add_tip("test_tip", "tip.test")
+        self.assertEqual(3, len(self.db.get_all_tips()))
 
     def test_get_user_returns_false_if_no_such_user(self):
         data = self.db.get_user("Granberryuser")

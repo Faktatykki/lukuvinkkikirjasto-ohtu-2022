@@ -3,6 +3,10 @@
 ignore=tests,app.py
 load-plugins=pylint.extensions.mccabe
 ignored-classes=scoped_session
+good-names=
+        i,
+        e,
+        db
 
 [MESSAGE CONTROL]
 

@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 14.0
--- Dumped by pg_dump version 14.0
+-- Dumped from database version 13.6 (Ubuntu 13.6-1.pgdg20.04+1)
+-- Dumped by pg_dump version 14.2
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -21,7 +21,70 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: rami
+-- Name: test; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.test (
+    id integer NOT NULL,
+    content text
+);
+
+
+--
+-- Name: test_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.test_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: test_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.test_id_seq OWNED BY public.test.id;
+
+
+--
+-- Name: tips; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.tips (
+    id integer NOT NULL,
+    url text NOT NULL,
+    title text NOT NULL,
+    user_id integer,
+    CONSTRAINT title_url_notnull CHECK ((NOT ((title IS NULL) OR (title = ''::text) OR ((url IS NULL) OR (url = ''::text)))))
+);
+
+
+--
+-- Name: tips_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.tips_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: tips_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.tips_id_seq OWNED BY public.tips.id;
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.users (
@@ -32,10 +95,8 @@ CREATE TABLE public.users (
 );
 
 
-ALTER TABLE public.users OWNER TO rami;
-
 --
--- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: rami
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.users_id_seq
@@ -47,24 +108,89 @@ CREATE SEQUENCE public.users_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.users_id_seq OWNER TO rami;
-
 --
--- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: rami
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
--- Name: users id; Type: DEFAULT; Schema: public; Owner: rami
+-- Name: test id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.test ALTER COLUMN id SET DEFAULT nextval('public.test_id_seq'::regclass);
+
+
+--
+-- Name: tips id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tips ALTER COLUMN id SET DEFAULT nextval('public.tips_id_seq'::regclass);
+
+
+--
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
 
 
 --
--- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: rami
+-- Name: test_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.test_id_seq', 7, true);
+
+
+--
+-- Name: tips_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.tips_id_seq', 523, true);
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 40, true);
+
+
+--
+-- Name: test test_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.test
+    ADD CONSTRAINT test_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tips tips_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tips
+    ADD CONSTRAINT tips_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tips tips_title_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tips
+    ADD CONSTRAINT tips_title_key UNIQUE (title);
+
+
+--
+-- Name: tips tips_url_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tips
+    ADD CONSTRAINT tips_url_key UNIQUE (url);
+
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.users
@@ -72,11 +198,19 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: users users_username_key; Type: CONSTRAINT; Schema: public; Owner: rami
+-- Name: users users_username_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_username_key UNIQUE (username);
+
+
+--
+-- Name: tips tips_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tips
+    ADD CONSTRAINT tips_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
