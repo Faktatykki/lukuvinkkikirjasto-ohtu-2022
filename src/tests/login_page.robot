@@ -12,13 +12,13 @@ User Can Open Login Page
     Login Page Should Be Open
 
 User Can Login With Correct Username
-    Create User  asd10  Test  Test
+    Create User  Testaaja  Test  Test
     Click Link  Kirjaudu sisään
-    Set Username  asd10
+    Set Username  Testaaja
     Set Password  Test
     Click Button  Kirjaudu
     Mainpage Should Be Open
-    Page Should Contain  asd10 kirjautuneena
+    Page Should Contain  Testaaja kirjautuneena
 
 User Can Log Out
     Click Link  Kirjaudu ulos
@@ -41,8 +41,7 @@ Create User
     Set Password1  ${password1}
     Set Password2  ${password2}
     Click Button  submit
-    Mainpage Should Be Open
-    Click Link  Kirjaudu ulos
+    Go To Main Page
 
 Set Username
     [Arguments]  ${username}
