@@ -1,7 +1,7 @@
 *** Settings ***
 Resource  resource.robot
 Suite Setup  Open And Configure Browser
-Suite Teardown  Close Browser
+Suite Teardown  Close All Browsers
 Test Setup  Go To Mainpage
 
 *** Test Cases *** 

@@ -1,8 +1,9 @@
-from flask import redirect, request, render_template, session
-from sqlalchemy.exc import IntegrityError as IntegrityErrorProd
-from sqlite3 import IntegrityError as IntegrityErrorDev
-from sqlite3 import ProgrammingError
 from os import getenv
+
+from sqlite3 import IntegrityError as IntegrityErrorDev
+from sqlalchemy.exc import IntegrityError as IntegrityErrorProd
+from flask import redirect, request, render_template, session
+
 from logic.app_logic import AppLogic
 from logic.user_logic import UserLogic
 from entities.user import User
@@ -27,14 +28,34 @@ class Controller:
         tips = [titles]
         tips += self.app_logic.get_all_tips()
         if 'username' in self.session:
-            return render_template("main_page.html", tips=tips, username=self.session["username"])
-        return render_template("main_page.html", tips=tips, username=None)
+            return render_template(
+                "main_page.html",
+                tips=tips,
+                username=self.session["username"],
+                user_id=self.session["user_id"]
+            )
+        return render_template("main_page.html", tips=tips, username=None, user_id=0)
+
+    def search_tips_by_title(self, method):
+        '''Näyttää hakusivun jossa voi hakea vinkkejä otsikon perusteella'''
+
+        if method == "POST":
+            search_param = request.form["search_param"]
+            tips = self.app_logic.search_tips_by_title(search_param)
+            return render_template("search.html", tips = tips)
+        
+        return render_template("search.html")
 
     def add_tip(self):
         title = request.form["title"]
         url = request.form["url"]
-        if self.app_logic.add_tip(title, url):
-            return redirect("/")
+        if 'username' in self.session:
+            username = self.session["username"]
+            if self.app_logic.add_tip(title, url, username):
+                return redirect("/")
+        else:
+            if self.app_logic.add_tip(title, url):
+                return redirect("/")
         print("Something went wrong")
         return redirect("/")
 
@@ -58,8 +79,9 @@ class Controller:
         response = self.user_logic.signup(username, password1)
         if isinstance(response, User):
             self.session["username"] = username
+            self.session["user_id"] = response.user_id
             return redirect("/")
-        if isinstance(response, IntegrityErrorProd) or isinstance(response, IntegrityErrorDev) or isinstance(response, ProgrammingError):
+        if isinstance(response, (IntegrityErrorDev, IntegrityErrorProd)):
             return render_template("error.html", message="Käyttäjänimi on varattu.")
         return render_template("error.html", message=response)
 
@@ -73,6 +95,7 @@ class Controller:
         logged_in_user = self.user_logic.signin(username, password)
         if isinstance(logged_in_user, User):
             self.session["username"] = username
+            self.session["user_id"] = logged_in_user.user_id
             return redirect("/")
         return render_template("error.html", message="Väärä käyttäjä tai salasana")
 

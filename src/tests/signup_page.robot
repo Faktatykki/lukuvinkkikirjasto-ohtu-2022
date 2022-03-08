@@ -1,7 +1,7 @@
 *** Settings ***
 Resource  resource.robot
 Suite Setup  Open And Configure Browser
-Suite Teardown  Close Browser
+Suite Teardown  Signup Teardown
 Test Setup  Go To Signuppage
 
 *** Test Cases *** 
@@ -41,6 +41,14 @@ User Can Not Submit Non-matching Passwords
     Signuppage Should Be Open
 
 
+User Can Signup
+    Set Username  testi
+    Set Password1  testi
+    Set Password2  testi
+    Create User
+    Page Should Contain  testi kirjautuneena
+
+
 *** Keywords ***
 Set Username
     [Arguments]  ${username}
@@ -55,3 +63,6 @@ Create User
     Click Button  submit
 Go Back
     Click Button  back
+Signup Teardown
+    Click Link  logout
+    Close All Browsers

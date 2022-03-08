@@ -17,8 +17,7 @@ Open And Configure Browser
 
 Mainpage Should Be Open
     Page Should Contain  Lukuvinkit
-    Page Should Contain  title
-    Page Should Contain  url
+    Title Should Be      Lukuvinkit - Etusivu
 
 Signuppage Should Be Open
     Page Should Contain  Luo uusi käyttäjä
@@ -38,6 +37,10 @@ Lisäyslomake Should Be Open
     Page Should Contain  title
     Page Should Contain  url
 
+Searchpage Should Be Open
+    Page Should Contain  Kotisivu
+    Page Should Contain  Tulokset
+
 Go To Mainpage
     Go To  ${HOME URL}
 
@@ -47,3 +50,6 @@ Go To Signuppage
 
 Go To Login Page
     Go To  ${LOGIN URL}
+Go To Searchpage
+    Go To  ${HOME URL}
+    Click Link  id=searchpage

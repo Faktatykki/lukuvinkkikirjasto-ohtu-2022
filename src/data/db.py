@@ -1,12 +1,11 @@
 import sqlite3
 from os import getenv
-from xmlrpc.client import boolean
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 
 
 class DBManager:
-    def __init__(self, env_location=None, app=None):
+    def __init__(self, env_location=None, app=None) -> None:
         if env_location:
             load_dotenv(env_location)
         else:
@@ -18,18 +17,27 @@ class DBManager:
             self.db = SQLAlchemy(app)
             self.init_connection = self._init_connection_to_sql_server
 
-    def _init_connection_to_sqlite(self):
-        """Init a connection to local database for testing"""
-        self.connect = sqlite3.connect("mock_data.db")
+    def _init_connection_to_sqlite(self) -> None:
+        """Alusta yhteys lokaaliin SQLiten tietokantaan, käytetään testauksessa"""
+        self.connect = sqlite3.connect("mock_data.db", check_same_thread=False)
         self.cursor = self.connect.cursor()
 
     def _init_connection_to_sql_server(self):
-        """Set self.cursor to point to sqlalchemy session"""
+        """Aseta self.cursor osoittamaan SQLAlchemyn sessioon
+
+        - reruns are needless, but this may lessen separate methods
+        """
         self.cursor = self.db.session
         self.connect = self.cursor
-        # reruns are needless, but this may lessen separate methods
 
-    def _generate_table(self, table: str):
+    def _generate_table(self, table: str) -> None:
+        """Luo tietokantataulu SQLiteen
+
+        Sarakkeiden nimet ja tyypit haetaan .db_env ympäristömuuttujasta taulun nimen perusteella
+
+        Args:
+            table (str): Generoitavan taulun nimi
+        """
         table_items = getenv(f"{table.upper()}_TABLE_COLUMNS").split(",")
         for i in range(len(table_items)):
             table_items[i] = table_items[i].split(";")
@@ -39,64 +47,104 @@ class DBManager:
         sql = sql[:-2] + ")"
         self.cursor.execute(sql)
 
-    def _generate_tables_to_sqlite(self):
+    def _generate_tables_to_sqlite(self) -> None:
+        """Generoi SQLite tietokantataulut"""
         self.init_connection()
         self._generate_table("tips")
         self._generate_table("users")
         self.connect.commit()
 
-    def _generate_mock_data(self):
+    def _generate_mock_data(self) -> None:
+        """Generoi testidataa tietokantaan"""
         self._generate_tables_to_sqlite()
         self.init_connection()
-        mock_tips = [("Mock tip 1", "http://mock_tip_1.fi"),
-                     ("Mock tip 2", "http://mock_tip_2.fi")]
-        self.cursor.executemany("INSERT INTO tips VALUES (?, ?)", mock_tips)
-        mock_users = [("1", "Jim_Hacker", "minister", "false"),
-                      ("2", "Humphrey_Appleby", "yes_minster", "true")]
+        mock_tips = [
+            ("Mock tip 1", "http://mock_tip_1.fi"),
+            ("Mock tip 2", "http://mock_tip_2.fi")
+        ]
         self.cursor.executemany(
-            "INSERT INTO users VALUES (?, ?, ?, ?)", mock_users)
+            "INSERT INTO tips (title, url) VALUES (?, ?)", mock_tips)
+        mock_users = [
+            ("Jim_Hacker", "minister", "false"),
+            ("Humphrey_Appleby", "yes_minster", "true")
+        ]
+        self.cursor.executemany(
+            "INSERT INTO users (username, password, admin) VALUES (?, ?, ?)", mock_users)
         self.connect.commit()
 
-    def get_all_tips(self):  # refactor! Select all the tip info asked for in param
-        '''hakee tietokannasta kaikki vinkit'''
+    def get_all_tips(self) -> tuple:
+        """Hae kaikki vinkit tietokannasta
+
+        TODO:
+        - Refactor: Valitse vinkin kentät annettujen parametrien perusteella
+        - Refactor #2: Tee vinkeistä oma luokka, joka sisältää kaiken yksittäisen vinkin datan
+
+        Returns:
+            tuple: Vinkit tuplena; (title, url, user_id)
+        """
         self.init_connection()
-        tips = self.cursor.execute("SELECT title, url FROM tips").fetchall()
+        tips = self.cursor.execute("SELECT title, url, user_id FROM tips").fetchall()
         return tips
 
+    def get_tips_by_title(self, title: str):
+        try:
+            sql = "SELECT title, url FROM tips WHERE LOWER(title) LIKE LOWER(:title)"
+            result = self.cursor.execute(sql, {"title": '%' + title + '%'})
+            tips = result.fetchall()
+            return tips
+        except Exception as exception:
+            return []
+
     # refactor -> take tip info list instead of specifically title and url
-    def add_tip(self, title: str, url: str) -> bool:
-        '''yrittää lisätä tietokantaan uuden vinkin. Jos onnistuu = palauttaa True, jos ei = False'''
+    def add_tip(self, title: str, url: str, username: str = '') -> bool:
+        """Lisää uusi vinkki tietokantaan
+
+        Args:
+            title (str): Vinkin otsikko
+            url (str): Vinkin URL
+            username (str): Vinkin lisääjän käyttäjänimi
+
+        Returns:
+            bool: True, jos vinkki lisätty onnistuneesti. Muutoin, False
+        """
         if "" in [title, url] or None in [title, url]:
             return False
         try:
-            # [Original]: uuden vinkin lisäys herokussa epäoonistuu
-            # self.init_connection()
-            # self.cursor.execute("INSERT INTO tips (title, url) VALUES (?, ?)", (title, url))
-            # self.connect.commit()
-
-            # [FIX]: uuden vinkin lisäys herokussa epäoonistuu
-            sql = "INSERT INTO tips (title, url) VALUES (:title, :url)"
-            self.cursor.execute(sql, {"title": title, "url": url})
-            self.connect.commit()
-
+            if username != '':
+                user_id = self.get_user(username)["user_id"]
+                sql = "INSERT INTO tips (title, url, user_id) VALUES (:title, :url, :user_id)"
+                self.cursor.execute(
+                    sql, {"title": title, "url": url, "user_id": user_id})
+                self.connect.commit()
+            else:
+                sql = "INSERT INTO tips (title, url) VALUES (:title, :url)"
+                self.cursor.execute(sql, {"title": title, "url": url})
+                self.connect.commit()
         except Exception as exception:
             print(exception)
             return False
         return True
 
-    def add_user(self, username: str, hashed_password: str, admin: boolean):
-        '''Tallentaa uuden käyttäjän tietokantaan.
-        Palauttaa dictionaryn, jossa user-id, käyttäjänimi ja admin jos onnistuu.
-        Muutoin palauttaa False'''
-        try: 
+    def add_user(self, username: str, hashed_password: str, admin: bool) -> tuple:
+        """Lisää uusi käyttäjä tietokantaan
+
+        Args:
+            username (str): Käyttäjänimi
+            hashed_password (str): Salasana, hashattu Werkzeug generate_password_hash:lla
+            admin (bool): Käyttäjän admin status, True=admin, False=normaali käyttäjä
+
+        Returns:
+            tuple: Palauttaa käyttäjän tiedot tuplena, (user_id, username, admin)
+        """
+
+        try:
             if "" in [username, hashed_password] or None in [username, hashed_password]:
                 return False
             if getenv("DEV_ENVIRON"):
-                self.cursor.execute("INSERT INTO users VALUES (?, ?, ?, ?)",
-                                    ("1", username, hashed_password, str(admin)))
+                self.cursor.execute("""INSERT INTO users (username, password, admin)
+                    VALUES (?, ?, ?)""", (username, hashed_password, admin))
                 self.connect.commit()
-                # hardcoded 3 -> but basically just because sqlite implementation is just for test
-                data = {"user_id": 1, "username": username, "admin": admin}
+                data = self.get_user(username)
             else:
                 sql = """INSERT INTO users (username, password, admin)
                     VALUES (:username, :password, :admin)
@@ -105,10 +153,7 @@ class DBManager:
                     sql, {"username": username, "password": hashed_password, "admin": admin})
                 self.connect.commit()
                 data = {}
-                for row in res:
-                    data["user_id"] = row[0]
-                    data["username"] = row[1]
-                    data["admin"] = row[2]
+                data["user_id"], data["username"], data["admin"] = res
                 if not data:
                     return False
             return data
@@ -116,10 +161,19 @@ class DBManager:
             return exception
 
     def get_user(self, username: str):
-        '''Tarkistaa, löytyykö tietokannasta usernamea vastaava käyttäjä.
-        Jos löytyy, palauttaa sanakirjan, jossa id, käyttäjänimi ja salasanahash
-        Jos ei, palauttaa False
-        '''
+        """Hakee tietokannasta käyttäjän käyttäjänimen perusteella
+
+        TODO:
+        - Refactor: Käyttäjä -luokan palautus, sisältäen kaiken käyttäjän datan
+        - Epäonnistunut haku tuottaa Exceptionin
+
+        Args:
+            username (str): Haettavan käyttäjän nimi
+
+        Returns:
+            tuple: Käyttäjätiedot (user_id, username, password_hash)
+                   tai False, jos käyttäjää ei löytynyt
+        """
         try:
             sql = "SELECT * FROM users WHERE username=(:username)"
             user = self.cursor.execute(sql, {"username": username})
@@ -129,6 +183,25 @@ class DBManager:
                 data["user_id"] = row[0]
                 data["username"] = row[1]
                 data["password"] = row[2]
+            if not data:
+                return False
+            return data
+        except Exception:  # Pitäisi löytää mikä tietty exception tässä tulee ja testata vain sitä
+            return False
+
+    def get_all_users(self) -> dict:
+        """Hakee kaikki käyttäjät tietokannasta sanakirjana muodossa {'user_id': 'username'}
+
+        Returns:
+            dict: Kaikkien tietokannan käyttäjien ID:t ja käyttäjänimet
+        """
+        try:
+            sql = "SELECT id, username FROM users"
+            users = self.cursor.execute(sql)
+            self.connect.commit()
+            data = {}
+            for row in users:
+                data[row[0]] = row[1]
             if not data:
                 return False
             return data
