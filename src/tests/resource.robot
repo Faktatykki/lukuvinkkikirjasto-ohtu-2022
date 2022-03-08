@@ -7,7 +7,7 @@ ${SERVER}  127.0.0.1:5000
 ${BROWSER}  headlesschrome
 ${DELAY}  0 seconds
 ${HOME URL}  http://${SERVER}/
-
+${LOGIN URL}  http://${SERVER}/login
 
 *** Keywords ***
 Open And Configure Browser
@@ -27,6 +27,11 @@ Signuppage Should Be Open
     Page Should Contain  Salasana uudestaan
     Page Should Contain  Luo käyttäjä
     
+Login Page Should Be Open 
+    Page Should Contain  Kirjaudu sisään
+    Page Should Contain  Käyttäjänimi
+    Page Should Contain  Salasana
+    Page Should Contain  Kirjaudu
 
 Lisäyslomake Should Be Open
     Page Should Contain  Lisää vinkki
@@ -39,3 +44,6 @@ Go To Mainpage
 Go To Signuppage
     Go To  ${HOME URL}
     Click Link  id=signup
+
+Go To Login Page
+    Go To  ${LOGIN URL}
