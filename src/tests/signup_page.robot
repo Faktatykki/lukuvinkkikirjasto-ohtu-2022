@@ -46,7 +46,7 @@ User Can Signup
     Set Password1  testi
     Set Password2  testi
     Create User
-    Wait Until Page Contains Element  submit
+    Wait Until Element Is Visible  tipsList
     Page Should Contain  testi kirjautuneena
 
 

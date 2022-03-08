@@ -26,8 +26,6 @@
 		</div>
 		{% endif %}
 		<div id="tipsWrapper">
-			<ul id="tipsList">
-			</ul>
 		</div>
 		<div>
 			<h2>Lisää vinkki</h2>
@@ -49,7 +47,7 @@
 			{% if username != None %}
 			let ownTipsCheckbox = document.getElementById('ownTips');
 			{% endif %}
-			let tipsListDiv = document.getElementById('tipsList');
+			let tipsWrapper = document.getElementById('tipsWrapper');
 
 			let tips = [{% for t in tips[1:] %}{
 				"title": "{{ t[0] }}",
@@ -60,13 +58,15 @@
 			let ownTips = tips.filter(t => t['own'] == 1);
 
 			const refreshTips = () => {
-				tipsListDiv.innerHTML = '';
+				tipsWrapper.innerHTML = '';
 				{% if username != None %}
 				let tipsToShow = ownTipsCheckbox.checked ? ownTips : tips;
 				{% else %}
 				let tipsToShow = tips;
 				{% endif %}
 
+				let ul = document.createElement('ul');
+				ul.setAttribute('id', 'tipsList');
 				for (let i = 0; i < tipsToShow.length; i++) {
 					let li = document.createElement('li');
 					let a = document.createElement('a'); 
@@ -81,8 +81,9 @@
 					a.target = '_blank';
 					li.innerHTML = tipsToShow[i].title + ' - ';
 					li.append(a);
-					tipsListDiv.append(li);
+					ul.append(li);
 				}
+				tipsWrapper.append(ul);
 			};
 
 			{% if username != None %}
