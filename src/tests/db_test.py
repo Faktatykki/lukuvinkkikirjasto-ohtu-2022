@@ -58,6 +58,10 @@ class TestDBManager(unittest.TestCase):
         self.db.add_tip("test_tip", "tip.test", "Non_Existing_Test_User")
         self.assertEqual(2, len(self.db.get_all_tips()))
 
+    def test_add_tip_can_be_done_without_username(self):
+        self.db.add_tip("test_tip", "tip.test")
+        self.assertEqual(3, len(self.db.get_all_tips()))
+
     def test_get_user_returns_false_if_no_such_user(self):
         data = self.db.get_user("Granberryuser")
         self.assertEqual(False, data)
