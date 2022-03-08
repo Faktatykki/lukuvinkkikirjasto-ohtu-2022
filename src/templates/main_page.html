@@ -16,13 +16,15 @@
 		{% else %}
 		<div>
 			<p>
-			{{ username }} kirjautuneena
-			<a href="/logout" id="logout">Kirjaudu ulos</a>
-			<label for="own-tips">
-				<input type="checkbox" id="ownTips"> Omat vinkit
-			</label>
-			<a href = "/search" id="searchpage">Haku</a>
-		</p>
+				{{ username }} kirjautuneena
+			</p>
+			<p>
+				<a href="/logout" id="logout">Kirjaudu ulos</a>
+				<label for="ownTips">
+					<input type="checkbox" id="ownTips"> Omat vinkit
+				</label>
+				<a href = "/search" id="searchpage">Haku</a>
+			</p>
 		</div>
 		{% endif %}
 		<div id="tipsWrapper">
