@@ -1,6 +1,9 @@
 from os import getenv
+
+from sqlite3 import IntegrityError as IntegrityErrorDev
+from sqlalchemy.exc import IntegrityError as IntegrityErrorProd
 from flask import redirect, request, render_template, session
-from sqlalchemy.exc import IntegrityError
+
 from logic.app_logic import AppLogic
 from logic.user_logic import UserLogic
 from entities.user import User
@@ -31,9 +34,13 @@ class Controller:
     def add_tip(self):
         title = request.form["title"]
         url = request.form["url"]
-        username = self.session["username"]
-        if self.app_logic.add_tip(title, url, username):
-            return redirect("/")
+        if 'username' in self.session:
+            username = self.session["username"]
+            if self.app_logic.add_tip(title, url, username):
+                return redirect("/")
+        else:
+            if self.app_logic.add_tip(title, url):
+                return redirect("/")
         print("Something went wrong")
         return redirect("/")
 
@@ -58,7 +65,7 @@ class Controller:
         if isinstance(response, User):
             self.session["username"] = username
             return redirect("/")
-        if isinstance(response, IntegrityError):
+        if isinstance(response, (IntegrityErrorDev, IntegrityErrorProd)):
             return render_template("error.html", message="Käyttäjänimi on varattu.")
         return render_template("error.html", message=response)
 

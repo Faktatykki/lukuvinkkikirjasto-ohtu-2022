@@ -1,9 +1,7 @@
 import unittest
-import pytest
 from os import remove
 from data.db import DBManager
 from dotenv import load_dotenv
-
 
 
 class TestDBManager(unittest.TestCase):
@@ -58,11 +56,6 @@ class TestDBManager(unittest.TestCase):
 
     def test_add_tip_cannot_add_tip_if_user_id_not_in_users(self):
         self.db.add_tip("test_tip", "tip.test", "Non_Existing_Test_User")
-        self.assertEqual(2, len(self.db.get_all_tips()))
-
-    def test_add_tip_cannot_add_tip_if_user_id_empty(self):
-        with pytest.raises(TypeError) as Error:
-            self.db.add_tip("test_tip", "tip.test")
         self.assertEqual(2, len(self.db.get_all_tips()))
 
     def test_get_user_returns_false_if_no_such_user(self):

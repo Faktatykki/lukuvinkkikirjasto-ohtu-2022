@@ -4,8 +4,8 @@ Library  SeleniumLibrary
 *** Variables ***
 ${SERVER}  127.0.0.1:5000
 # ${SERVER}  lit-brushlands-38911.herokuapp.com
-${BROWSER}  headlesschrome
-${DELAY}  0 seconds
+${BROWSER}  Chrome
+${DELAY}  0.1 seconds
 ${HOME URL}  http://${SERVER}/
 
 
@@ -17,8 +17,7 @@ Open And Configure Browser
 
 Mainpage Should Be Open
     Page Should Contain  Lukuvinkit
-    Page Should Contain  title
-    Page Should Contain  url
+    Title Should Be      Lukuvinkit - Etusivu
 
 Signuppage Should Be Open
     Page Should Contain  Luo uusi käyttäjä
@@ -27,7 +26,6 @@ Signuppage Should Be Open
     Page Should Contain  Salasana uudestaan
     Page Should Contain  Luo käyttäjä
     
-
 Lisäyslomake Should Be Open
     Page Should Contain  Lisää vinkki
     Page Should Contain  title

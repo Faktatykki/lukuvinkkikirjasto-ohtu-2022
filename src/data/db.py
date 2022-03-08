@@ -19,7 +19,7 @@ class DBManager:
 
     def _init_connection_to_sqlite(self) -> None:
         """Alusta yhteys lokaaliin SQLiten tietokantaan, käytetään testauksessa"""
-        self.connect = sqlite3.connect("mock_data.db")
+        self.connect = sqlite3.connect("mock_data.db", check_same_thread=False)
         self.cursor = self.connect.cursor()
 
     def _init_connection_to_sql_server(self):
@@ -32,7 +32,7 @@ class DBManager:
 
     def _generate_table(self, table: str) -> None:
         """Luo tietokantataulu SQLiteen
-        
+
         Sarakkeiden nimet ja tyypit haetaan .db_env ympäristömuuttujasta taulun nimen perusteella
 
         Args:
@@ -62,7 +62,8 @@ class DBManager:
             ("Mock tip 1", "http://mock_tip_1.fi"),
             ("Mock tip 2", "http://mock_tip_2.fi")
         ]
-        self.cursor.executemany("INSERT INTO tips (title, url) VALUES (?, ?)", mock_tips)
+        self.cursor.executemany(
+            "INSERT INTO tips (title, url) VALUES (?, ?)", mock_tips)
         mock_users = [
             ("Jim_Hacker", "minister", "false"),
             ("Humphrey_Appleby", "yes_minster", "true")
@@ -85,7 +86,7 @@ class DBManager:
         tips = self.cursor.execute("SELECT title, url FROM tips").fetchall()
         return tips
 
-    def add_tip(self, title: str, url: str, username: str) -> bool:
+    def add_tip(self, title: str, url: str, username: str = '') -> bool:
         """Lisää uusi vinkki tietokantaan
 
         Args:
@@ -96,14 +97,19 @@ class DBManager:
         Returns:
             bool: True, jos vinkki lisätty onnistuneesti. Muutoin, False
         """
-        if "" in [title, url, username] or None in [title, url, username]:
+        if "" in [title, url] or None in [title, url]:
             return False
         try:
-            user_id = self.get_user(username)["user_id"]
-            print(f'user_id {user_id} lisää uuden vinkin')
-            sql = "INSERT INTO tips (title, url, user_id) VALUES (:title, :url, :user_id)"
-            self.cursor.execute(sql, {"title": title, "url": url, "user_id": user_id})
-            self.connect.commit()
+            if username != '':
+                user_id = self.get_user(username)["user_id"]
+                sql = "INSERT INTO tips (title, url, user_id) VALUES (:title, :url, :user_id)"
+                self.cursor.execute(
+                    sql, {"title": title, "url": url, "user_id": user_id})
+                self.connect.commit()
+            else:
+                sql = "INSERT INTO tips (title, url) VALUES (:title, :url)"
+                self.cursor.execute(sql, {"title": title, "url": url})
+                self.connect.commit()
         except Exception as exception:
             print(exception)
             return False
@@ -119,28 +125,30 @@ class DBManager:
 
         Returns:
             tuple: Palauttaa käyttäjän tiedot tuplena, (user_id, username, admin)
-        """        
+        """
 
-        if "" in [username, hashed_password] or None in [username, hashed_password]:
-            return False
-        if getenv("DEV_ENVIRON"):
-            self.cursor.execute("INSERT INTO users (username, password, admin) VALUES (?, ?, ?)",
-                                (username, hashed_password, admin))
-            self.connect.commit()
-            data = self.get_user(username)
-            # data = {"user_id": 1, "username": username, "admin": admin}
-        else:
-            sql = """INSERT INTO users (username, password, admin)
-                VALUES (:username, :password, :admin)
-                RETURNING id, username, admin"""
-            res = self.cursor.execute(
-                sql, {"username": username, "password": hashed_password, "admin": admin})
-            self.connect.commit()
-            data = {}
-            data["user_id"], data["username"], data["admin"] = res
-            if not data:
+        try:
+            if "" in [username, hashed_password] or None in [username, hashed_password]:
                 return False
-        return data
+            if getenv("DEV_ENVIRON"):
+                self.cursor.execute("""INSERT INTO users (username, password, admin)
+                    VALUES (?, ?, ?)""", (username, hashed_password, admin))
+                self.connect.commit()
+                data = self.get_user(username)
+            else:
+                sql = """INSERT INTO users (username, password, admin)
+                    VALUES (:username, :password, :admin)
+                    RETURNING id, username, admin"""
+                res = self.cursor.execute(
+                    sql, {"username": username, "password": hashed_password, "admin": admin})
+                self.connect.commit()
+                data = {}
+                data["user_id"], data["username"], data["admin"] = res
+                if not data:
+                    return False
+            return data
+        except Exception as exception:
+            return exception
 
     def get_user(self, username: str):
         """Hakee tietokannasta käyttäjän käyttäjänimen perusteella
@@ -153,7 +161,8 @@ class DBManager:
             username (str): Haettavan käyttäjän nimi
 
         Returns:
-            tuple: Käyttäjätiedot tuplena; (user_id, username, password_hash), tai False, jos käyttäjää ei löytynyt
+            tuple: Käyttäjätiedot (user_id, username, password_hash)
+                   tai False, jos käyttäjää ei löytynyt
         """
         try:
             sql = "SELECT * FROM users WHERE username=(:username)"
