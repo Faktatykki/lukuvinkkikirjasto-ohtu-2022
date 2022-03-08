@@ -42,6 +42,7 @@ Create User
     Set Password2  ${password2}
     Click Button  submit
     Go To Main Page
+    Click Link  Kirjaudu ulos
 
 Set Username
     [Arguments]  ${username}
