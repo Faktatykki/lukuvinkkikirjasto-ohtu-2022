@@ -95,6 +95,7 @@ class DBManager:
         except Exception as exception:
             return []
 
+    # refactor -> take tip info list instead of specifically title and url
     def add_tip(self, title: str, url: str, username: str = '') -> bool:
         """Lisää uusi vinkki tietokantaan
 
