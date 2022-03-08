@@ -2,9 +2,6 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from entities.user import User
 
 
-class UserSignUpError(BaseException):
-    pass
-
 class UserLogic:
     def __init__(self, db):
         self.db = db
@@ -19,7 +16,7 @@ class UserLogic:
         try:
             if "user_id" in res:
                 return self.signin(username, password)
-        except UserSignUpError("Virhe sisäänkirjautumisessa"):
+        except Exception:
             pass
         return res
 

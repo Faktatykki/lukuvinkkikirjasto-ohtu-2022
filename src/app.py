@@ -15,7 +15,6 @@ load_dotenv(".db_env")
 def index():
     return controller.browse_tips()
 
-
 @app.route("/add", methods=["POST"])
 def add_tip():
     return controller.add_tip()

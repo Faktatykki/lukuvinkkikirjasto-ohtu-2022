@@ -28,8 +28,13 @@ class Controller:
         tips = [titles]
         tips += self.app_logic.get_all_tips()
         if 'username' in self.session:
-            return render_template("main_page.html", tips=tips, username=self.session["username"])
-        return render_template("main_page.html", tips=tips, username=None)
+            return render_template(
+                "main_page.html",
+                tips=tips,
+                username=self.session["username"],
+                user_id=self.session["user_id"]
+            )
+        return render_template("main_page.html", tips=tips, username=None, user_id=None)
 
     def add_tip(self):
         title = request.form["title"]
@@ -73,15 +78,13 @@ class Controller:
         """Palauttaa signup-sivun"""
         return render_template("signup.html")
 
-    def get_session_username(self):
-        return self.session["username"]
-
     def login(self):
         username = request.form["username"]
         password = request.form["password"]
         logged_in_user = self.user_logic.signin(username, password)
         if isinstance(logged_in_user, User):
             self.session["username"] = username
+            self.session["user_id"] = logged_in_user.user_id
             return redirect("/")
         return render_template("error.html", message="Väärä käyttäjä tai salasana")
 

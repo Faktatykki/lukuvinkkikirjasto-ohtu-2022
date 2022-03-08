@@ -21,6 +21,36 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: test; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.test (
+    id integer NOT NULL,
+    content text
+);
+
+
+--
+-- Name: test_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.test_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: test_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.test_id_seq OWNED BY public.test.id;
+
+
+--
 -- Name: tips; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -28,6 +58,7 @@ CREATE TABLE public.tips (
     id integer NOT NULL,
     url text NOT NULL,
     title text NOT NULL,
+    user_id integer,
     CONSTRAINT title_url_notnull CHECK ((NOT ((title IS NULL) OR (title = ''::text) OR ((url IS NULL) OR (url = ''::text)))))
 );
 
@@ -85,6 +116,13 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
+-- Name: test id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.test ALTER COLUMN id SET DEFAULT nextval('public.test_id_seq'::regclass);
+
+
+--
 -- Name: tips id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -96,6 +134,35 @@ ALTER TABLE ONLY public.tips ALTER COLUMN id SET DEFAULT nextval('public.tips_id
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- Name: test_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.test_id_seq', 7, true);
+
+
+--
+-- Name: tips_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.tips_id_seq', 523, true);
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 40, true);
+
+
+--
+-- Name: test test_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.test
+    ADD CONSTRAINT test_pkey PRIMARY KEY (id);
 
 
 --
@@ -139,5 +206,14 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: tips tips_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tips
+    ADD CONSTRAINT tips_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
+

@@ -4,8 +4,8 @@ Library  SeleniumLibrary
 *** Variables ***
 ${SERVER}  127.0.0.1:5000
 # ${SERVER}  lit-brushlands-38911.herokuapp.com
-${BROWSER}  Chrome
-${DELAY}  0.1 seconds
+${BROWSER}  headlesschrome
+${DELAY}  0 seconds
 ${HOME URL}  http://${SERVER}/
 
 

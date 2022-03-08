@@ -80,10 +80,10 @@ class DBManager:
         - Refactor #2: Tee vinkeistä oma luokka, joka sisältää kaiken yksittäisen vinkin datan
 
         Returns:
-            tuple: Vinkit tuplena; (title, url)
+            tuple: Vinkit tuplena; (title, url, user_id)
         """
         self.init_connection()
-        tips = self.cursor.execute("SELECT title, url FROM tips").fetchall()
+        tips = self.cursor.execute("SELECT title, url, user_id FROM tips").fetchall()
         return tips
 
     def add_tip(self, title: str, url: str, username: str = '') -> bool:
