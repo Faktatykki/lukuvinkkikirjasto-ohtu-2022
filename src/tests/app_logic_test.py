@@ -54,3 +54,11 @@ class TestAppLogic(unittest.TestCase):
     def test_add_tip_cannot_add_tip_if_title_is_empty_string(self):
         self.logic.add_tip("", "tip.test", "Jim_Hacker")
         self.assertEqual(2, len(self.db.get_all_tips()))
+
+    def test_search_tips_with_empty_param_returns_empty_list(self):
+        tips = self.logic.search_tips_by_title("")
+        self.assertEqual(0, len(tips))
+
+    def test_search_tips_with_right_param_returns_correct_results(self):
+        tips = self.logic.search_tips_by_title("Mock")
+        self.assertEqual(2, len(tips))

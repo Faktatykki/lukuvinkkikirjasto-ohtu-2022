@@ -10,6 +10,13 @@ class AppLogic:
         tips = self.db.get_all_tips()
         return tips
 
+    def search_tips_by_title(self, title: str) -> list:
+        '''Kutsuu data-layerin metodia josta palauttaa listan tuloksia tietokannasta. Palauttaa tyhjän listan jos parametri on tyhjä'''
+        if not title.strip():
+            return []
+
+        return self.db.get_tips_by_title(title)
+
     def add_tip(self, title: str, url: str, username: str = '') -> bool:
         """
             passaa eteenpäin käyttöliittymästä saadut parametrit uuden vinkin lisäämiseksi data-layerille.

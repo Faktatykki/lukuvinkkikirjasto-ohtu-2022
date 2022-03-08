@@ -86,6 +86,16 @@ class DBManager:
         tips = self.cursor.execute("SELECT title, url, user_id FROM tips").fetchall()
         return tips
 
+    def get_tips_by_title(self, title: str):
+        try:
+            sql = "SELECT title, url FROM tips WHERE LOWER(title) LIKE LOWER(:title)"
+            result = self.cursor.execute(sql, {"title": '%' + title + '%'})
+            tips = result.fetchall()
+            return tips
+        except Exception as exception:
+            return []
+
+    # refactor -> take tip info list instead of specifically title and url
     def add_tip(self, title: str, url: str, username: str = '') -> bool:
         """Lisää uusi vinkki tietokantaan
 
