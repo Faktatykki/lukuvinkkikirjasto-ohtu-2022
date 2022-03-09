@@ -50,6 +50,7 @@ Go To Signuppage
 
 Go To Login Page
     Go To  ${LOGIN URL}
+
 Go To Searchpage
     Go To  ${HOME URL}
     Click Link  id=searchpage
