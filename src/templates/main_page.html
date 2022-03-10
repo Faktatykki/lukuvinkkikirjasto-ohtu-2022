@@ -32,8 +32,8 @@
 		<div>
 			<h2>Lisää vinkki</h2>
 			<form action="/add" method="POST">
-				title <input type = "text" id = "title"><br>
-				url <input type = "text" id = "url"><br>
+				title <input type = "text" name = "title" id = "title"><br>
+				url <input type = "text" name = "url" id = "url"><br>
 				<input type="submit" value="Lisää" />
 			</form>
 		</div>
@@ -45,16 +45,22 @@
 
 			urlField.addEventListener('focusout', (e) => {
 				givenUrl = urlField.value
-			
-				jqXHR = $.ajax({
+					//ajax tekee asynkronisen post-pyynnön urliin '/check', joka kutsuu
+					//kerrosten kautta loppupeleissä funktiota joka tekee pyynnön
+					//pyydettyyn urliin ja kattoo mitä palauttaa
+					//tällä hetkellä tulos palautetaan titlen input-kenttään
+					$.ajax({
 					type: "POST",
 					url: "/check",
 					data: givenUrl,
 					success: function(response) {
-						titleInput = document.getElementById('title').value = response
+						document.getElementById('title').value = response
+						console.log(response)
 					}
 				})
-			})			
+			})
+
+			
 		</script>
 		
 		
