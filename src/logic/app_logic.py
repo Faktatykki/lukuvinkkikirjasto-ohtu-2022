@@ -1,5 +1,5 @@
 from data.db import DBManager
-
+import requests
 
 class AppLogic:
     def __init__(self, db: DBManager):
@@ -27,3 +27,26 @@ class AppLogic:
         if username != '':
             return self.db.add_tip(title, url, username)
         return self.db.add_tip(title, url)
+
+    def check_status(self, url: str) -> int:
+        '''ottaa parametrina urlin, tarkistaa requests-kirjaston avulla että saako yhteyden. Jos onnistuu, niin palauttaa sivun titlen.'''
+        #tällä hetkellä palauttaa siis vaan statuskoodin, vakiona 404. Jos saa yhteyden niin mitä vaan se puskee ulos, palauttaa.
+        req_data = url
+        
+        schema = ""
+
+        if "https://" not in url:
+            schema = "https://"
+
+        final_url = schema + req_data
+
+        status_code = 404
+
+        try:
+            req = requests.get(final_url)
+            #toi req-olio palauttaa koko sivun json-muodossa. Sieltä title pitää parsettaa tavalla tai toisella
+            status_code = req.status_code
+        except Exception as exception:
+            print(exception)
+
+        return status_code

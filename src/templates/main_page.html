@@ -32,18 +32,36 @@
 		<div>
 			<h2>Lisää vinkki</h2>
 			<form action="/add" method="POST">
-				{% for i in range((tips[0]|length)) %}
-					{% if tips[0][i] != 'user_id' and tips[0][i] != 'id' %}
-					<label for = {{ tips[0][i] }}>
-						{{ tips[0][i] }}
-					</label>
-					<input type="text" name={{ tips[0][i] }} />
-					<br />
-					{% endif %}
-				{% endfor %}
+				title <input type = "text" name = "title" id = "title"><br>
+				url <input type = "text" name = "url" id = "url"><br>
 				<input type="submit" value="Lisää" />
 			</form>
 		</div>
+		
+		<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+		<script type = "text/javascript">
+			const urlField = document.getElementById('url')
+
+			urlField.addEventListener('focusout', (e) => {
+				givenUrl = urlField.value
+					//ajax tekee asynkronisen post-pyynnön urliin '/check', joka kutsuu
+					//kerrosten kautta loppupeleissä funktiota joka tekee pyynnön
+					//pyydettyyn urliin ja kattoo mitä palauttaa.
+					//tällä hetkellä tulos palautetaan titlen input-kenttään
+					$.ajax({
+					type: "POST",
+					url: "/check",
+					data: givenUrl,
+					success: function(response) {
+						document.getElementById('title').value = response
+						console.log(response)
+					}
+				})
+			})
+		</script>
+		
+		
 
 		<script type="text/javascript">
 			{% if username != None %}
@@ -93,5 +111,6 @@
 			{% endif %}
 			refreshTips();
 		</script>
+		
 	</body>
 </html>

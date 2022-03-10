@@ -1,7 +1,8 @@
 from os import getenv
 from dotenv import load_dotenv
-from flask import Flask, redirect, request
+from flask import Flask, redirect, render_template, request
 from ui.controller import Controller
+from logic.app_logic import AppLogic
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL")
@@ -49,5 +50,8 @@ def search_page():
     if request.method == "POST":
         return controller.search_tips_by_title(request.method)
         
-
     return controller.search_tips_by_title(request.method)
+
+@app.route("/check", methods = ["POST"])
+def check_status():
+    return controller.check_status(request.get_data().decode("UTF-8"))
