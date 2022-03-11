@@ -29,7 +29,7 @@ class AppLogic:
             return self.db.add_tip(title, url, username)
         return self.db.add_tip(title, url)
 
-    def check_status(self, url: str) -> int: #should probably change name now that getting title is main reason for this
+    def check_url(self, url: str) -> int:
         '''ottaa parametrina urlin, tarkistaa requests-kirjaston avulla että saako yhteyden. Jos onnistuu, niin palauttaa sivun titlen.'''
         req_data = url
         title = None

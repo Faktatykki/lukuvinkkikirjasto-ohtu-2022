@@ -107,9 +107,9 @@ class Controller:
         self.session.pop("username", None)
         return redirect("/")
 
-    def check_status(self, url: str) -> str:
+    def check_url(self, url: str) -> str:
         '''palauttaa logiikasta saamansa titlen'''
         #tällä hetkellä palauttaa merkkijonona tilakoodin
-        return str(self.app_logic.check_status(url))
+        return str(self.app_logic.check_url(url))
         
 
