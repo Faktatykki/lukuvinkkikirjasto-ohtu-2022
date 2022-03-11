@@ -3,6 +3,8 @@ from os import getenv
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 
+from entities.user import User
+
 
 class DBManager:
     def __init__(self, env_location=None, app=None) -> None:
@@ -90,6 +92,21 @@ class DBManager:
         try:
             sql = "SELECT title, url FROM tips WHERE LOWER(title) LIKE LOWER(:title)"
             result = self.cursor.execute(sql, {"title": '%' + title + '%'})
+            tips = result.fetchall()
+            return tips
+        except Exception as exception:
+            return []
+
+    def get_users_read_tips(self, user: User) -> list:
+        try:
+            sql = """SELECT title, url 
+                FROM tips 
+                WHERE id IN (
+                    SELECT tip_id 
+                    FROM read_tips 
+                    WHERE user_id=:user_id 
+                        AND is_read=true)"""
+            result = self.cursor.execute(sql, {"user_id": user.user_id})
             tips = result.fetchall()
             return tips
         except Exception as exception:
