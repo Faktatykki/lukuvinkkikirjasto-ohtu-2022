@@ -27,17 +27,19 @@
 			</p>
 		</div>
 		{% endif %}
-		<div id="tipsWrapper">
-		</div>
+		
 		<div>
 			<h2>Lisää vinkki</h2>
 			<form action="/add" method="POST">
-				title <input type = "text" name = "title" id = "title"><br>
 				url <input type = "text" name = "url" id = "url"><br>
+				title <input type = "text" name = "title" id = "title"><br>
 				<input type="submit" value="Lisää" />
 			</form>
 		</div>
-		
+
+		<div id="tipsWrapper">
+		</div>
+
 		<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 		<script type = "text/javascript">
