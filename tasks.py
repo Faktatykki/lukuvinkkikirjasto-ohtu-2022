@@ -14,11 +14,15 @@ def dev(ctx):
 
 @task
 def test(ctx):
-    ctx.run('pytest src')
+    ctx.run(f'export DEV_ENVIRON=True && pytest {dir_path}/src')
+
+@task
+def robot(ctx):
+    ctx.run(f'robot {dir_path}/src/tests')
 
 @task
 def coverage(ctx):
-    ctx.run('coverage run --branch -m pytest src')
+    ctx.run(f'coverage run --branch -m pytest {dir_path}/src')
 
 @task(coverage)
 def coverage_report(ctx):
@@ -30,9 +34,9 @@ def coverage_html(ctx):
 
 @task
 def lint(ctx):
-    ctx.run('pylint src')
+    ctx.run(f'pylint {dir_path}/src')
 
 @task
 def format(ctx):
-    ctx.run('autopep8 --in-place --recursive src')
+    ctx.run(f'autopep8 --in-place --recursive {dir_path}/src')
 
