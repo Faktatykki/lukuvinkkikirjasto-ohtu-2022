@@ -53,5 +53,5 @@ def search_page():
     return controller.search_tips_by_title(request.method)
 
 @app.route("/check", methods = ["POST"])
-def check_status():
-    return controller.check_status(request.get_data().decode("UTF-8"))
+def check_url():
+    return controller.check_url(request.get_data().decode("UTF-8"))

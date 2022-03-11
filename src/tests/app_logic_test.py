@@ -67,18 +67,18 @@ class TestAppLogic(unittest.TestCase):
         self.logic.add_tip("test_tip", "tip.test")
         self.assertEqual(3, len(self.db.get_all_tips()))
 
-    def test_proper_url_returns_200(self):
-        status = self.logic.check_status("www.hs.fi")
-        self.assertEqual(200, status)
+    def test_check_url_returns_title_for_url_without_protocol(self):
+        status = self.logic.check_url("www.hs.fi")
+        self.assertEqual('Uutiset | HS.fi', status)
 
-    def test_proper_url_returns_200_without_wwww(self):
-        status = self.logic.check_status("hs.fi")
-        self.assertEqual(200, status)
+    def test_check_url_returns_title_for_url_without_protocol_and_www(self):
+        status = self.logic.check_url("hs.fi")
+        self.assertEqual('Uutiset | HS.fi', status)
 
-    def test_proper_url_returns_200_with_protocol(self):
-        status = self.logic.check_status("https://www.hs.fi")
-        self.assertEqual(200, status)
+    def test_check_url_returns_title_for_url_with_protocol(self):
+        status = self.logic.check_url("https://www.hs.fi")
+        self.assertEqual('Uutiset | HS.fi', status)
 
-    def test_proper_url_returns_404(self):
-        status = self.logic.check_status("Mockasf3535135")
+    def test_check_url_returns_404(self):
+        status = self.logic.check_url("Mockasf3535135")
         self.assertEqual(404, status)
