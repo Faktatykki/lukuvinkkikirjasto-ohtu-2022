@@ -1,42 +1,49 @@
 <!DOCTYPE html>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 <html>
 	<head>
 		<title>Lukuvinkit - Hakusivu</title>
 	</head>
-	<body>
-		<header>
-			<h1>Lukuvinkit v0.02 :) - Uh - vieläkö me tehdään 98 versiota?</h1>
-		</header>
-		{% if username == None %}
-		<div style="margin-bottom: 20px">
-            <a href="/" id = "mainpage">Kotisivu</a>
-			<a href="/signup" id="signup">Luo käyttäjä</a>
-			<a href="/login" id="login">Kirjaudu sisään</a>
-		</div>
-		{% else %}
-		<div>
-            
-			<p><a href="/" id = "mainpage">Kotisivu</a> 
-            {{ username }} kirjautuneena  
-			<a href="/logout" id="logout">Kirjaudu ulos</a>
-		</p>
-		</div>
-		{% endif %}
-        <div>
-            <form action = "/search" method = "POST">
-                <input type = "text" name = "search_param">
-                <input type = "submit" value = "search">
-            </form>
-        </div>
-        <div>
-			
-            <h3>Tulokset</h3><br>
-			{% for tip in tips %}
-			<p>
-				title: <b>{{ tip.title }}</b><br>
-				url: <a href = //{{ tip.url }}>{{ tip.url }}</a><br>
-			</p>
-			{% endfor %}
-        </div>
-    </body>
+	<div class="container">
+		<body>
+			<nav class="navbar navbar-expand-sm bg-light text-dark">
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						<div style="margin-right: 40px; margin-left: -1px;" >
+							<img src= "{{ url_for('static',filename='images/logo_lukuvinkit.png') }}" alt="logo">
+						</div>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/">Pääsivulle</a>
+					</li>
+				</ul>
+			</nav>
+			<div style="margin-top: 25px;">
+				<header>
+					<h2>Hae vinkkejä</h2>
+				</header>
+				<div>
+					<form action = "/search" method = "POST">
+						<div class="form-group" style="width: 50%;">
+							<input type="text" class="form-control" name="search_param">
+							<!-- <input type = "text" name = "search_param"> -->
+						</div>
+						<div style="margin-top: 20px">
+							<button type="submit" class="btn btn-primary">Hae</button>
+						</div>
+						<!-- <input type = "submit" value = "search"> -->
+					</form>
+				</div>
+				<div style="margin-top: 40px;">
+					<h2>Tulokset</h2>
+					
+					{% for tip in tips %}
+					<p>
+						{{ tip.title }}: <a href = //{{ tip.url }}>{{ tip.url }}</a>
+					</p>
+					{% endfor %}
+				</div>
+			</div>
+		</body>
+	</div>
 </html>
