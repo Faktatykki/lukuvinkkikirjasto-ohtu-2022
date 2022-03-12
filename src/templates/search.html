@@ -36,12 +36,14 @@
 				</div>
 				<div style="margin-top: 40px;">
 					<h2>Tulokset</h2>
-					
-					{% for tip in tips %}
-					<p>
-						{{ tip.title }}: <a href = //{{ tip.url }}>{{ tip.url }}</a>
-					</p>
-					{% endfor %}
+					<ul class="list-group list-group-flush">
+						{% for tip in tips %}
+						<p>
+							<li class="list-group-item">{{ tip.title }}: <a href = //{{ tip.url }}>{{ tip.url }}</a></li>
+							<!-- {{ tip.title }}: <a href = //{{ tip.url }}>{{ tip.url }}</a> -->
+						</p>
+						{% endfor %}
+					</ul>
 				</div>
 			</div>
 		</body>
