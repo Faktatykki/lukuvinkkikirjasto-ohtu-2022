@@ -56,8 +56,10 @@
 					url: "/check",
 					data: givenUrl,
 					success: function(response) {
-						document.getElementById('title').value = response
-						console.log(response)
+						title_field=document.getElementById('title')
+						if (title_field.value=="") {
+							title_field.value = response
+						}
 					}
 				})
 			})
