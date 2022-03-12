@@ -38,13 +38,9 @@ class Controller:
 
     def search_tips_by_title(self, method):
         '''Näyttää hakusivun jossa voi hakea vinkkejä otsikon perusteella'''
-        print("hello word")
         if method == "POST":
-            print("hello word 2")
             search_param = request.form["search_param"]
-            print(search_param)
             tips = self.app_logic.search_tips_by_title(search_param)
-            print(tips)
             return render_template("search.html", tips = tips)
         if 'username' in self.session:
             return render_template("search.html", username=self.session["username"])
