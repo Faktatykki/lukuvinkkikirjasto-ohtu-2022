@@ -26,22 +26,17 @@
 					<form action = "/search" method = "POST">
 						<div class="form-group" style="width: 50%;">
 							<input type="text" class="form-control" name="search_param">
-							<!-- <input type = "text" name = "search_param"> -->
 						</div>
 						<div style="margin-top: 20px">
 							<button type="submit" class="btn btn-primary">Hae</button>
 						</div>
-						<!-- <input type = "submit" value = "search"> -->
 					</form>
 				</div>
 				<div style="margin-top: 40px;">
 					<h2>Tulokset</h2>
 					<ul class="list-group list-group-flush">
 						{% for tip in tips %}
-						<p>
 							<li class="list-group-item">{{ tip.title }}: <a href = //{{ tip.url }}>{{ tip.url }}</a></li>
-							<!-- {{ tip.title }}: <a href = //{{ tip.url }}>{{ tip.url }}</a> -->
-						</p>
 						{% endfor %}
 					</ul>
 				</div>
