@@ -60,6 +60,13 @@
 						<label for="ownTips" style="color: grey;">
 							<input type="checkbox" id="ownTips"> Näytä vain omat vinkit
 						</label>
+                        <label for="readTips" >
+							<select class="form-control" id="readTips">
+                                <option value="unread">Lukemattomat</option>
+                                <option value="read">Luetut</option>
+                                <option value="all">Kaikki</option>
+                            </select>
+						</label>
 					</p>
 				{% endif %}
 				<table class="table table-striped"
