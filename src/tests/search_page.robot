@@ -1,6 +1,6 @@
 *** Settings ***
 Resource  resource.robot
-Suite Setup  Open And Configure Browser For Search
+Suite Setup  Open And Configure Browser
 Suite Teardown  Close Browser
 Test Setup  Go To Searchpage
 
@@ -9,21 +9,21 @@ User Can Open Searchpage
     Searchpage Should Be Open
 
 User Search Finds Right Result
-    Set Search  Otsikko
-    Search
-    Page Should Contain  Otsikko
+    Searchpage Should Be Open
+    Set Search  eka
+    Page Should Contain  eka
 
 User Search Is Case Insensitive
-    Set Search  otsikko
-    Search
-    Page Should Contain  Otsikko
-    Page Should Contain  otsikkO
+    Searchpage Should Be Open
+    Set Search  Eka
+    Page Should Contain  eka
 
 User Search Searches Titles Containing Given Parameter
-    Set Search  ots
-    Search
-    Page Should Contain  Otsikko
-    Page Should Contain  otsikkO
+    Searchpage Should Be Open
+    Set Search  testi
+    Page Should Contain  testi
+    Page Should Contain  testi2
+    Page Should Contain  Testi Titteli
 
 *** Keywords ***
 Set Search

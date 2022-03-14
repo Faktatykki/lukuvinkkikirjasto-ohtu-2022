@@ -81,15 +81,6 @@ Create Tip
 	Set URL				${url}
 	Submit Vinkki
 
-Create User
-    [Arguments]  ${username}  ${password1}  ${password2}
-    Go To Signuppage
-    Set Username  ${username}
-    Set Password1  ${password1}
-    Set Password2  ${password2}
-    Click Button  submit
-    Go To Main Page
-
 Set Username
     [Arguments]  ${username}
     Input Text  username  ${username}
