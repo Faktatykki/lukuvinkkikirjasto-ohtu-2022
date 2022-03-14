@@ -9,7 +9,7 @@ User Can Open Searchpage
     Searchpage Should Be Open
 
 Search Finds Right Result
-    Go To Mainpage
+    Create User  Testi  Testi  Testi
     Set Title  Uniikki Otsikko 
     Set URL  www.fi
     Submit Vinkki
@@ -50,3 +50,25 @@ Set Search
 
 Search
     Click Button  Hae
+
+Create User
+    [Arguments]  ${username}  ${password1}  ${password2}
+    Go To Signuppage
+    Set Username  ${username}
+    Set Password1  ${password1}
+    Set Password2  ${password2}
+    Click Button  submit
+    Go To Main Page
+
+Set Username
+    [Arguments]  ${username}
+    Input Text  username  ${username}
+Set Password 
+    [Arguments]  ${password}
+    Input Text  password  ${password}
+Set Password1 
+    [Arguments]  ${password1}
+    Input Text  password1  ${password1}
+Set Password2 
+    [Arguments]  ${password2}
+    Input Text  password2  ${password2}
