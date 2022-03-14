@@ -57,8 +57,7 @@ class Controller:
         else:
             if self.app_logic.add_tip(title, url):
                 return redirect("/")
-        print("Something went wrong")
-        return redirect("/")
+        return render_template("error.html", message="URL tai otsikko ei voi olla tyhjä.")
 
     # maybe refactor so that functionality is moved to app_logic_class and user_logic is made into a class
     def add_new_user(self):
