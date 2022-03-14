@@ -9,29 +9,40 @@ User Can Open Searchpage
     Searchpage Should Be Open
 
 Search Finds Right Result
+    Go To Mainpage
+    Set Title  Uniikki Otsikko 
+    Set URL  www.fi
+    Submit Vinkki
+    Go To Searchpage
     Set Search  Uniikki
     Search
     Page Should Contain  www.fi
 
 Search Is Case Insensitive
+    Go To Mainpage
+    Set Title  Uniikki Otsikko 
+    Set URL  www.fi
+    Submit Vinkki
+    Go To Searchpage
     Set Search  uniikki
     Search
     Page Should Contain  www.fi
 
 Search Searches Titles Containing Given Parameter
+    Go To Mainpage
+    Set Title  Uniikki Otsikko 
+    Set URL  www.fi
+    Submit Vinkki
+    Set Title  Ensimmäinen Otsikko 
+    Set URL  www.uniikkilinkki.fi
+    Submit Vinkki
+    Go To Searchpage
     Set Search  otsikko
     Search
     Page Should Contain  Uniikki Otsikko
     Page Should Contain  Ensimmäinen Otsikko
+    
 
-Search Takes Special Characters
-    Set Search  '
-    Search
-    Page Should Contain  Anonymous' tip
-    Page Should Contain  Filterer's test
-    Page Should Contain  Anonymous' marker tip
-    
-    
 *** Keywords ***
 Set Search
     [Arguments]  ${search}

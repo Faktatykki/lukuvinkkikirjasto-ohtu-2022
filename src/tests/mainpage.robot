@@ -49,13 +49,3 @@ User Can Not Submit Empty url
     Set Title  Otsikko Joka Ei Näy 
     Submit Vinkki
     Page Should Not Contain  Otsikko Joka Ei Näy
-
-*** Keywords ***
-Set Title
-    [Arguments]  ${title}
-    Input Text  title  ${title}
-Set URL 
-    [Arguments]  ${url}
-    Input Text  url  ${url}
-Submit Vinkki
-    Click Button  Lisää
