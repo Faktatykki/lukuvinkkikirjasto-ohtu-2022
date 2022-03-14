@@ -21,7 +21,9 @@ Open And Configure Browser For Search
     Set Selenium Speed  ${DELAY}
     Create User  username  password1  Password1
     Create Tip  Mock Tip 1  mockurl1
+    Page Should Contain  mockurl1
     Create Tip  Mock Tip 2  mockurl2
+    Page Should Contain  mockurl2
     Go To Searchpage
 
 Mainpage Should Be Open
