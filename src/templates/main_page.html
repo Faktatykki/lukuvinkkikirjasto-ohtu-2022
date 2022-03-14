@@ -101,6 +101,7 @@
 			<script type="text/javascript">
 				{% if username != None %}
 				let ownTipsCheckbox = document.getElementById('ownTips');
+                let readTipsSelect = document.getElementById('readTips');
 				{% endif %}
 				let tipsWrapper = document.getElementById('tipsWrapper');
 
@@ -119,6 +120,12 @@
 					tipsWrapper.innerHTML = '';
 					{% if username != None %}
 					let tipsToShow = ownTipsCheckbox.checked ? ownTips : tips;
+                    if (readTipsSelect.value === "read") {
+                        tipsToShow = tipsToShow.filter(tip => tip['is_read'] === 1)
+                    } else if (readTipsSelect.value === "unread") {
+                        tipsToShow = tipsToShow.filter(tip => tip['is_read'] === 0)
+                    }
+
 					{% else %}
 					let tipsToShow = tips;
 					{% endif %}
@@ -162,9 +169,9 @@
 					}
 					tipsWrapper.append(ul);
 				};
-
 				{% if username != None %}
 				ownTipsCheckbox.addEventListener('click', refreshTips);
+				readTipsSelect.addEventListener('input', refreshTips);
 				{% endif %}
 				refreshTips();
 			</script>
