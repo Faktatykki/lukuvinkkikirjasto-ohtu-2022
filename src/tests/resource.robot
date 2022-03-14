@@ -22,7 +22,7 @@ Open And Configure Browser For Search
     Create User  testi  testi  testi
     Go To Mainpage
     Create Tip  Otsikko  Urli
-    Create Tip  otsikkO  urli
+    Create Tip  otsikko2  urli
 
 Mainpage Should Be Open
     Page Should Contain  Lukuvinkit
@@ -80,6 +80,15 @@ Create Tip
 	Set Title			${title}
 	Set URL				${url}
 	Submit Vinkki
+
+Create User
+    [Arguments]  ${username}  ${password1}  ${password2}
+    Go To Signuppage
+    Set Username  ${username}
+    Set Password1  ${password1}
+    Set Password2  ${password2}
+    Click Button  submit
+    Go To Main Page
 
 Set Username
     [Arguments]  ${username}
