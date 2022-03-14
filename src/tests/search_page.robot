@@ -11,18 +11,18 @@ User Can Open Searchpage
 Search Finds Right Tip With Exact Parameter
     Set Search  Mock Tip 1
     Search
-    Page Should Contain  Mock Tip 1
+    Page Should Contain  mockurl1
 
 Search Is Not Casesensitive
     Set Search  mock tip 1
     Search
-    Page Should Contain  Mock Tip 1
+    Page Should Contain  mockurl1
 
 Search Finds Right Results When Target Contains Parameter
     Set Search  Mock
     Search
-    Page Should Contain  Mock Tip 1
-    Page Should Contain  Mock Tip 2
+    Page Should Contain  mockurl1
+    Page Should Contain  mockurl2
 
 *** Keywords ***
 Set Search
