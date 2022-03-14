@@ -120,7 +120,6 @@ class DBManager:
     def toggle_read(self, tip_id: int, user_id: int) -> bool:
         read_tips = self.cursor.execute(
             "SELECT tip_id, user_id, is_read FROM read_tips").fetchall()
-        print(read_tips)
         try:
             if (tip_id, user_id, True) in map(lambda tip: (tip[0], tip[1], tip[2]), read_tips):
                 sql = """DELETE FROM read_tips

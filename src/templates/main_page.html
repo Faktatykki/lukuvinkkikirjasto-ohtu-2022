@@ -143,29 +143,23 @@
 						li.innerHTML = tipsToShow[i].title + ': ';
 						li.append(a);
 						ul.append(li);
-					}
-					a.href = prefix + tipsToShow[i].url;
-					a.target = '_blank';
-					li.innerHTML = tipsToShow[i].title + ' - ';
-					li.append(a);
 
-					{% if username != None %}
-					let aMarkAsRead = document.createElement('a'); 
-					let linkTextMarkAsRead = document.createTextNode(
-						( tips[i].is_read == '1') ? 'Merkitse lukemattomaksi' : 'Merkitse luetuksi'
-					);
-					aMarkAsRead.appendChild(linkTextMarkAsRead); 
-					aMarkAsRead.href = '/toggle/' + tips[i].id;
-					li.append(' - ');
-					li.append(aMarkAsRead);
+						{% if username != None %}
+						let aMarkAsRead = document.createElement('a'); 
+						let linkTextMarkAsRead = document.createTextNode(
+							( tipsToShow[i].is_read == 1) ? 'Merkitse lukemattomaksi' : 'Merkitse luetuksi'
+						);
+						aMarkAsRead.appendChild(linkTextMarkAsRead); 
+						aMarkAsRead.href = '/toggle/' + tipsToShow[i].id;
+						li.append(' - ');
+						li.append(aMarkAsRead);
 
-					if ( tips[i].is_read == '1' ){
-						let markedAsRead = document.createTextNode(' (' + tips[i].updated + ')');
-						li.append(markedAsRead);
+						if ( tipsToShow[i].is_read == 1 ){
+							let markedAsRead = document.createTextNode(' (' + tipsToShow[i].updated + ')');
+							li.append(markedAsRead);
+						}
+						{% endif %}
 					}
-					{% endif %}
-					
-					ul.append(li);
 					tipsWrapper.append(ul);
 				};
 
