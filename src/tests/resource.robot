@@ -15,6 +15,15 @@ Open And Configure Browser
     Maximize Browser Window
     Set Selenium Speed  ${DELAY}
 
+Open And Configure Browser For Search
+    Open Browser  browser=${BROWSER}
+    Maximize Browser Window
+    Set Selenium Speed  ${DELAY}
+    Create User  testi  testi  testi
+    Go To Mainpage
+    Create Tip  Otsikko  Urli
+    Create Tip  otsikkO  urli
+
 Mainpage Should Be Open
     Page Should Contain  Lukuvinkit
     Title Should Be      Lukuvinkit - Etusivu
@@ -71,3 +80,25 @@ Create Tip
 	Set Title			${title}
 	Set URL				${url}
 	Submit Vinkki
+
+Create User
+    [Arguments]  ${username}  ${password1}  ${password2}
+    Go To Signuppage
+    Set Username  ${username}
+    Set Password1  ${password1}
+    Set Password2  ${password2}
+    Click Button  submit
+    Go To Main Page
+
+Set Username
+    [Arguments]  ${username}
+    Input Text  username  ${username}
+Set Password 
+    [Arguments]  ${password}
+    Input Text  password  ${password}
+Set Password1 
+    [Arguments]  ${password1}
+    Input Text  password1  ${password1}
+Set Password2 
+    [Arguments]  ${password2}
+    Input Text  password2  ${password2}
