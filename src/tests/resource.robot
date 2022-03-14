@@ -15,6 +15,15 @@ Open And Configure Browser
     Maximize Browser Window
     Set Selenium Speed  ${DELAY}
 
+Open And Configure Browser For Search
+    Open Browser  browser=${BROWSER}
+    Maximize Browser Window
+    Set Selenium Speed  ${DELAY}
+    Create User  username  password1  Password1
+    Create Tip  Mock Tip 1  mockurl1
+    Create Tip  Mock Tip 2  mockurl2
+    Go To Searchpage
+
 Mainpage Should Be Open
     Page Should Contain  Lukuvinkit
     Title Should Be      Lukuvinkit - Etusivu

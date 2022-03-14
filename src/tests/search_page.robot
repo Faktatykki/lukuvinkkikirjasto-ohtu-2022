@@ -1,8 +1,8 @@
 *** Settings ***
 Resource  resource.robot
-Suite Setup  Open And Configure Browser
+Suite Setup  Open And Configure Browser For Search
 Suite Teardown  Close Browser
-Test Setup  Set Up Database  hakutesti  hakutesti  hakutesti
+Test Setup  Go To Searchpage
 
 *** Test Cases ***
 User Can Open Searchpage
@@ -25,13 +25,6 @@ Search Finds Right Results When Target Contains Parameter
     Page Should Contain  Mock Tip 2
 
 *** Keywords ***
-Set Up Database
-    [Arguments]  ${username}  ${password1}  ${password2}
-    resource.Create User  username  password1  Password1
-    resource.Create Tip  Mock Tip 1  mockurl1
-    resource.Create Tip  Mock Tip 2  mockurl2
-    Go To Searchpage
-
 Set Search
     [Arguments]  ${search}
     Input Text  search_param  ${search}
