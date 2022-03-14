@@ -1,104 +1,148 @@
 <!DOCTYPE html>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 <html>
 	<head>
 		<title>Lukuvinkit - Etusivu</title>
 	</head>
-	<body>
-		<header>
-			<h1>Lukuvinkit <span style="color:#a8a7aa">v0.02 :)</span></h1>
-		</header>
-		{% if username == None %}
-		<div style="margin-bottom: 20px">
-			<a href="/signup" id="signup">Luo käyttäjä</a>
-			<a href="/login" id="login">Kirjaudu sisään</a>
-			<a href = "/search" id="searchpage">Haku</a>
-		</div>
-		{% else %}
-		<div>
-			<p>
-				{{ username }} kirjautuneena
-			</p>
-			<p>
-				<a href="/logout" id="logout">Kirjaudu ulos</a>
-				<label for="ownTips">
-					<input type="checkbox" id="ownTips"> Omat vinkit
-				</label>
-				<a href = "/search" id="searchpage">Haku</a>
-			</p>
-		</div>
-		{% endif %}
-		<div id="tipsWrapper">
-		</div>
-		<div>
-			<h2>Lisää vinkki</h2>
-			<form action="/add" method="POST">
-				title <input type = "text" name = "title" id = "title"><br>
-				url <input type = "text" name = "url" id = "url"><br>
-				<input type="submit" value="Lisää" />
-			</form>
-		</div>
-		
-		<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-		<script type = "text/javascript">
-			const urlField = document.getElementById('url')
-
-			urlField.addEventListener('focusout', (e) => {
-				givenUrl = urlField.value
-					//ajax tekee asynkronisen post-pyynnön urliin '/check', joka kutsuu
-					//kerrosten kautta loppupeleissä funktiota joka tekee pyynnön
-					//pyydettyyn urliin ja kattoo mitä palauttaa.
-					//tällä hetkellä tulos palautetaan titlen input-kenttään
-					$.ajax({
-					type: "POST",
-					url: "/check",
-					data: givenUrl,
-					success: function(response) {
-						document.getElementById('title').value = response
-						console.log(response)
-					}
-				})
-			})
-		</script>
-		
-		
-
-		<script type="text/javascript">
-			{% if username != None %}
-			let ownTipsCheckbox = document.getElementById('ownTips');
-			{% endif %}
-			let tipsWrapper = document.getElementById('tipsWrapper');
-
-			let tips = [{% for t in tips[1:] %}{
-				"id": "{{ t[0] }}",
-				"title": "{{ t[1] }}",
-				"url": "{{ t[2] }}",
-				"own": {{ 1 if t[3] == user_id else 0}},
-				"is_read": {{ 1 if t[4] == '1' else 0 }},
-				"updated": "{{ t[5] }}"
-			},{% endfor %}];
-
-			let ownTips = tips.filter(t => t['own'] == 1);
-
-			const refreshTips = () => {
-				tipsWrapper.innerHTML = '';
-				{% if username != None %}
-				let tipsToShow = ownTipsCheckbox.checked ? ownTips : tips;
-				{% else %}
-				let tipsToShow = tips;
+	<div class="container">
+		<body>
+			<nav class="navbar navbar-expand-sm bg-light">
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						
+						<div style="margin-right: 40px; margin-left: -1px;" >
+							<a href="/">
+								<img src= "{{ url_for('static',filename='images/logo_lukuvinkit.png') }}" alt="logo">
+							</a>
+						</div>
+					</li>
+					{% if username == None %}
+						<li class="nav-item">
+							<a class="nav-link" href="/signup" id="signup">Luo käyttäjä</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="/login" id="login">Kirjaudu sisään</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href = "/search" id="searchpage">Haku</a>
+						</li>
+					{% else %}
+						<li class="nav-item">
+							<div class="nav-link">{{ username }} kirjautuneena</div>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="/logout" id="logout">Kirjaudu ulos</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href = "/search" id="searchpage">Haku</a>
+						</li>
+					{% endif %}
+				</ul>
+			</nav>			
+			<div style="margin-top: 25px;">
+				<h2>Lisää vinkki</h2>
+				<form action="/add" method="POST">
+					<div class="form-group" style="width: 50%;">
+						<label>url</label>
+						<input type="text" class="form-control" name = "url" id="url">
+					</div>
+					<div class="form-group" style="width: 50%;">
+						<label>Otsikko</label>
+						<input type="text" class="form-control" name = "title" id="title">
+					</div>
+					<button type="submit" class="btn btn-primary">Lisää</button>
+				</form>
+			</div>
+			<div style="margin-top: 40px;">
+				<h2>Lukuvinkit</h2>
+				{% if username %}
+					<p>
+						<label for="ownTips" style="color: grey;">
+							<input type="checkbox" id="ownTips"> Näytä vain omat vinkit
+						</label>
+                        <label for="readTips" >
+							<select class="form-control" id="readTips">
+                                <option value="unread">Lukemattomat</option>
+                                <option value="read">Luetut</option>
+                                <option value="all">Kaikki</option>
+                            </select>
+						</label>
+					</p>
 				{% endif %}
+				<table class="table table-striped"
+					<div id="tipsWrapper">
+					</div>
+				</table>
+			</div>
 
-				let ul = document.createElement('ul');
-				ul.setAttribute('id', 'tipsList');
-				for (let i = 0; i < tipsToShow.length; i++) {
-					let li = document.createElement('li');
-					let a = document.createElement('a'); 
-					let linkText = document.createTextNode(tipsToShow[i].url);
-					a.appendChild(linkText); 
-					a.title = tipsToShow[i].title;
-					let prefix = '';
-					if (tipsToShow[i].url.substring(0,4) != 'http') {
-						prefix += 'https://';
+			<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+			<script type = "text/javascript">
+				const urlField = document.getElementById('url')
+				urlField.addEventListener('focusout', (e) => {
+					givenUrl = urlField.value
+						//ajax tekee asynkronisen post-pyynnön urliin '/check', joka kutsuu
+						//kerrosten kautta loppupeleissä funktiota joka tekee pyynnön
+						//pyydettyyn urliin ja kattoo mitä palauttaa.
+						//tällä hetkellä tulos palautetaan titlen input-kenttään
+						$.ajax({
+						type: "POST",
+						url: "/check",
+						data: givenUrl,
+						success: function(response) {
+							title_field=document.getElementById('title')
+							if (title_field.value=="") {
+								title_field.value = response
+							}
+						}
+					})
+				})
+			</script>		
+
+			<script type="text/javascript">
+				{% if username != None %}
+				let ownTipsCheckbox = document.getElementById('ownTips');
+				{% endif %}
+				let tipsWrapper = document.getElementById('tipsWrapper');
+
+				let tips = [{% for t in tips[1:] %}{
+					"id": "{{ t[0] }}",
+					"title": "{{ t[1] }}",
+					"url": "{{ t[2] }}",
+					"own": {{ 1 if t[3] == user_id else 0}},
+					"is_read": {{ 1 if t[4] == '1' else 0 }},
+					"updated": "{{ t[5] }}"
+				},{% endfor %}];
+
+				let ownTips = tips.filter(t => t['own'] == 1);
+
+				const refreshTips = () => {
+					tipsWrapper.innerHTML = '';
+					{% if username != None %}
+					let tipsToShow = ownTipsCheckbox.checked ? ownTips : tips;
+					{% else %}
+					let tipsToShow = tips;
+					{% endif %}
+
+					let ul = document.createElement('ul');
+					ul.setAttribute('id', 'tipsList');
+					ul.className="list-group-flush"
+					ul.style="margin-left:-40px"
+					for (let i = 0; i < tipsToShow.length; i++) {
+						let li = document.createElement('li');
+						li.className="list-group-item"
+						let a = document.createElement('a'); 
+						let linkText = document.createTextNode(tipsToShow[i].url);
+						a.appendChild(linkText); 
+						a.title = tipsToShow[i].title;
+						let prefix = '';
+						if (tipsToShow[i].url.substring(0,4) != 'http') {
+							prefix += 'https://';
+						}
+						a.href = prefix + tipsToShow[i].url;
+						a.target = '_blank';
+						li.innerHTML = tipsToShow[i].title + ': ';
+						li.append(a);
+						ul.append(li);
 					}
 					a.href = prefix + tipsToShow[i].url;
 					a.target = '_blank';
@@ -122,15 +166,15 @@
 					{% endif %}
 					
 					ul.append(li);
-				}
-				tipsWrapper.append(ul);
-			};
+					tipsWrapper.append(ul);
+				};
 
-			{% if username != None %}
-			ownTipsCheckbox.addEventListener('click', refreshTips);
-			{% endif %}
-			refreshTips();
-		</script>
-		
-	</body>
+				{% if username != None %}
+				ownTipsCheckbox.addEventListener('click', refreshTips);
+				{% endif %}
+				refreshTips();
+			</script>
+			
+		</body>
+	</div>
 </html>

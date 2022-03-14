@@ -38,8 +38,7 @@ Lisäyslomake Should Be Open
     Page Should Contain  url
 
 Searchpage Should Be Open
-    Page Should Contain  Kotisivu
-    Page Should Contain  Tulokset
+    Page Should Contain  Hae vinkkejä
 
 Go To Mainpage
     Go To  ${HOME URL}
