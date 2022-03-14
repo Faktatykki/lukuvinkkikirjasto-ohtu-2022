@@ -52,6 +52,25 @@ User Can Not Submit Empty url
     Page Should Not Contain  Otsikko Joka Ei Näy
     Page Should Contain  URL tai otsikko ei voi olla tyhjä.
 
+User Can Search For Titles In Database
+    Go To Searchpage
+    Set Search  Ensimmäinen Otsikko
+    Search
+    Page Should Contain  Ensimmäinen Otsikko
+
+User Can Search With Case Insensitive Parameter
+    Go To Searchpage
+    Set Search  ensimmäinen otsikko
+    Search
+    Page Should Contain  Ensimmäinen Otsikko
+
+User Can Search Titles Containing Parameter
+    Go To Searchpage
+    Set Search  otsikko
+    Search
+    Page Should Contain  Ensimmäinen Otsikko
+    Page Should Contain  Uniikki Otsikko
+
 *** Keywords ***
 Set Title
     [Arguments]  ${title}
@@ -61,3 +80,10 @@ Set URL
     Input Text  url  ${url}
 Submit Vinkki
     Click Button  Lisää
+
+Set Search
+    [Arguments]  ${search}
+    Input Text  search_param  ${search}
+
+Search
+    Click Button  Hae
