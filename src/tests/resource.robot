@@ -15,15 +15,6 @@ Open And Configure Browser
     Maximize Browser Window
     Set Selenium Speed  ${DELAY}
 
-Open And Configure Browser For Search
-    Open Browser  browser=${BROWSER}
-    Maximize Browser Window
-    Set Selenium Speed  ${DELAY}
-    Create User  testi  testi  testi
-    Go To Mainpage
-    Create Tip  Otsikko  Urli
-    Create Tip  otsikko2  urli
-
 Mainpage Should Be Open
     Page Should Contain  Lukuvinkit
     Title Should Be      Lukuvinkit - Etusivu

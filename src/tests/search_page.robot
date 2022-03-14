@@ -1,6 +1,6 @@
 *** Settings ***
 Resource  resource.robot
-Suite Setup  Open And Configure Browser For Search
+Suite Setup  Open And Configure Browser
 Suite Teardown  Close Browser
 Test Setup  Go To Searchpage
 
@@ -8,24 +8,21 @@ Test Setup  Go To Searchpage
 User Can Open Searchpage
     Searchpage Should Be Open
 
-User Search Finds Right Result
-    Searchpage Should Be Open
-    Set Search  otsikko2
+Search Finds Right Tip With Exact Parameter
+    Set Search  Mock Tip 1
     Search
-    Page Should Contain  otsikko2
+    Page Should Contain  Mock Tip 1
 
-User Search Is Case Insensitive
-    Searchpage Should Be Open
-    Set Search  Otsikko2
+Search Is Not Casesensitive
+    Set Search  mock tip 1
     Search
-    Page Should Contain  otsikko2
+    Page Should Contain  Mock Tip 1
 
-User Search Searches Titles Containing Given Parameter
-    Searchpage Should Be Open
-    Set Search  otsikko
+Search Finds Right Results When Target Contains Parameter
+    Set Search  Mock
     Search
-    Page Should Contain  Otsikko
-    Page Should Contain  otsikko2
+    Page Should Contain  Mock Tip 1
+    Page Should Contain  Mock Tip 2
 
 *** Keywords ***
 Set Search
