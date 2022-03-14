@@ -70,9 +70,12 @@
 			let tipsWrapper = document.getElementById('tipsWrapper');
 
 			let tips = [{% for t in tips[1:] %}{
-				"title": "{{ t[0] }}",
-				"url": "{{ t[1] }}",
-				"own": {{ 1 if t[2] == user_id else 0}}
+				"id": "{{ t[0] }}",
+				"title": "{{ t[1] }}",
+				"url": "{{ t[2] }}",
+				"own": {{ 1 if t[3] == user_id else 0}},
+				"is_read": {{ 1 if t[4] == '1' else 0 }},
+				"updated": "{{ t[5] }}"
 			},{% endfor %}];
 
 			let ownTips = tips.filter(t => t['own'] == 1);
@@ -101,6 +104,23 @@
 					a.target = '_blank';
 					li.innerHTML = tipsToShow[i].title + ' - ';
 					li.append(a);
+
+					{% if username != None %}
+					let aMarkAsRead = document.createElement('a'); 
+					let linkTextMarkAsRead = document.createTextNode(
+						( tips[i].is_read == '1') ? 'Merkitse lukemattomaksi' : 'Merkitse luetuksi'
+					);
+					aMarkAsRead.appendChild(linkTextMarkAsRead); 
+					aMarkAsRead.href = '/toggle/' + tips[i].id;
+					li.append(' - ');
+					li.append(aMarkAsRead);
+
+					if ( tips[i].is_read == '1' ){
+						let markedAsRead = document.createTextNode(' (' + tips[i].updated + ')');
+						li.append(markedAsRead);
+					}
+					{% endif %}
+					
 					ul.append(li);
 				}
 				tipsWrapper.append(ul);

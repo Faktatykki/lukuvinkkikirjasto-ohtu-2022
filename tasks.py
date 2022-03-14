@@ -22,7 +22,7 @@ def robot(ctx):
 
 @task
 def coverage(ctx):
-    ctx.run(f'coverage run --branch -m pytest {dir_path}/src')
+    ctx.run(f'export DEV_ENVIRON=True && coverage run --branch -m pytest {dir_path}/src')
 
 @task(coverage)
 def coverage_report(ctx):

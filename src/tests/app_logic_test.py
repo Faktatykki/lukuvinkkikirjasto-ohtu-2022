@@ -17,13 +17,13 @@ class TestAppLogic(unittest.TestCase):
     def test_get_all_tips_returns_titles(self):
         titles = []
         for tip in self.logic.get_all_tips():
-            titles.append(tip[0])
+            titles.append(tip[1])
         self.assertEqual(titles, ["Mock tip 1", "Mock tip 2"])
 
     def test_get_all_tips_retrieves_urls(self):
         urls = []
         for tip in self.logic.get_all_tips():
-            urls.append(tip[1])
+            urls.append(tip[2])
         self.assertEqual(
             urls, ["http://mock_tip_1.fi", "http://mock_tip_2.fi"])
 
@@ -33,11 +33,11 @@ class TestAppLogic(unittest.TestCase):
 
     def test_add_tip_adds_tip_title(self):
         self.logic.add_tip("test_tip", "tip.test", "Jim_Hacker")
-        self.assertEqual("test_tip", self.db.get_all_tips()[-1][0])
+        self.assertEqual("test_tip", self.db.get_all_tips()[-1][1])
 
     def test_add_tip_adds_tip_url(self):
         self.logic.add_tip("test_tip", "tip.test", "Jim_Hacker")
-        self.assertEqual("tip.test", self.db.get_all_tips()[-1][1])
+        self.assertEqual("tip.test", self.db.get_all_tips()[-1][2])
 
     def test_add_tip_cannot_add_tip_if_no_url(self):
         self.logic.add_tip("test_tip", None, "Jim_Hacker")

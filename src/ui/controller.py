@@ -26,14 +26,15 @@ class Controller:
         for i in range(len(titles)):
             titles[i] = titles[i].split(";")[0]
         tips = [titles]
-        tips += self.app_logic.get_all_tips()
         if 'username' in self.session:
+            tips += self.app_logic.get_all_tips(self.session["user_id"])
             return render_template(
                 "main_page.html",
                 tips=tips,
                 username=self.session["username"],
                 user_id=self.session["user_id"]
             )
+        tips += self.app_logic.get_all_tips()
         return render_template("main_page.html", tips=tips, username=None, user_id=0)
 
     def search_tips_by_title(self, method):
@@ -42,7 +43,7 @@ class Controller:
         if method == "POST":
             search_param = request.form["search_param"]
             tips = self.app_logic.search_tips_by_title(search_param)
-            return render_template("search.html", tips = tips)
+            return render_template("search.html", tips=tips)
         if 'username' in self.session:
             return render_template("search.html", username=self.session["username"])
         return render_template("search.html", username=None)
@@ -109,7 +110,10 @@ class Controller:
 
     def check_url(self, url: str) -> str:
         '''palauttaa logiikasta saamansa titlen'''
-        #tällä hetkellä palauttaa merkkijonona tilakoodin
+        # tällä hetkellä palauttaa merkkijonona tilakoodin
         return str(self.app_logic.check_url(url))
-        
 
+    def toggle_read(self, tip_id: int):
+        if self.app_logic.toggle_read(tip_id, self.session["user_id"]):
+            return redirect("/")
+        return render_template("error.html", message="Vinkin merkitseminen epäonnistui")
