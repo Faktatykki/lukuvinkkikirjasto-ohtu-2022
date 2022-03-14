@@ -53,3 +53,21 @@ Go To Login Page
 Go To Searchpage
     Go To  ${HOME URL}
     Click Link  id=searchpage
+
+Set Title
+    [Arguments]  ${title}
+    Input Text  title  ${title}
+
+Set URL 
+    [Arguments]  ${url}
+    Input Text  url  ${url}
+
+Submit Vinkki
+    Click Button  Lisää
+
+Create Tip
+    [Arguments]  ${title}  ${url}
+	Go To Mainpage
+	Set Title			${title}
+	Set URL				${url}
+	Submit Vinkki

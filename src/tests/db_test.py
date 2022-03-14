@@ -1,7 +1,7 @@
 import unittest
+from unittest.mock import ANY
 from os import remove
 from data.db import DBManager
-from dotenv import load_dotenv
 
 
 class TestDBManager(unittest.TestCase):
@@ -16,15 +16,26 @@ class TestDBManager(unittest.TestCase):
     def test_get_all_tips_retrieves_titles(self):
         titles = []
         for tip in self.db.get_all_tips():
-            titles.append(tip[0])
+            titles.append(tip[1])
         self.assertEqual(titles, ["Mock tip 1", "Mock tip 2"])
 
     def test_get_all_tips_retrieves_urls(self):
         urls = []
         for tip in self.db.get_all_tips():
-            urls.append(tip[1])
+            urls.append(tip[2])
         self.assertEqual(
             urls, ["http://mock_tip_1.fi", "http://mock_tip_2.fi"])
+
+    def test_get_all_tips_retrieves_tips_for_logged_in_user(self):
+        tips = []
+        for tip in self.db.get_all_tips(2):
+            tips.append(tip)
+        self.assertEqual(
+            tips, [
+                (ANY, "Mock tip 1", "http://mock_tip_1.fi", ANY, ANY, ANY),
+                (ANY, "Mock tip 2", "http://mock_tip_2.fi", ANY, ANY, ANY)
+            ]
+        )
 
     def test_add_tip_adds_one_tip(self):
         self.db.add_tip("test_tip", "tip.test", "Jim_Hacker")
@@ -32,11 +43,11 @@ class TestDBManager(unittest.TestCase):
 
     def test_add_tip_adds_tip_title(self):
         self.db.add_tip("test_tip", "tip.test", "Jim_Hacker")
-        self.assertEqual("test_tip", self.db.get_all_tips()[-1][0])
+        self.assertEqual("test_tip", self.db.get_all_tips()[-1][1])
 
     def test_add_tip_adds_tip_url(self):
         self.db.add_tip("test_tip", "tip.test", "Jim_Hacker")
-        self.assertEqual("tip.test", self.db.get_all_tips()[-1][1])
+        self.assertEqual("tip.test", self.db.get_all_tips()[-1][2])
 
     def test_add_tip_cannot_add_tip_if_no_url(self):
         self.db.add_tip("test_tip", None, "Jim_Hacker")
@@ -102,3 +113,24 @@ class TestDBManager(unittest.TestCase):
     def test_searches_by_title_with_non_matching_param_returns_empty_list(self):
         tips = self.db.get_tips_by_title("Operating Systems")
         self.assertEqual(0, len(tips))
+
+    def test_mark_tip_as_read_and_unread(self):
+        user = self.db.get_user("Jim_Hacker")
+        tips = self.db.get_all_tips(user["user_id"])
+        # Merkitse vinkki luetuksi
+        is_updated = self.db.toggle_read(tips[-1][0], user["user_id"])
+        self.assertTrue(is_updated)
+        self.assertEqual(self.db.get_all_tips(user["user_id"])[-1][4], '1')
+        # Merkitse vinkki lukemattomaksi
+        is_updated = self.db.toggle_read(tips[-1][0], user["user_id"])
+        self.assertTrue(is_updated)
+        self.assertEqual(self.db.get_all_tips(user["user_id"])[-1][4], '0')
+
+    def test_marking_tip_doesnt_change_read_status_of_another_user(self):
+        user_jim = self.db.get_user("Jim_Hacker")
+        user_hum = self.db.get_user("Humphrey_Appleby")
+        tips = self.db.get_all_tips(user_jim["user_id"])
+        is_updated = self.db.toggle_read(tips[-1][0], user_jim["user_id"])
+        self.assertTrue(is_updated)
+        self.assertEqual(self.db.get_all_tips(user_jim["user_id"])[-1][4], '1')
+        self.assertEqual(self.db.get_all_tips(user_hum["user_id"])[-1][4], '0')

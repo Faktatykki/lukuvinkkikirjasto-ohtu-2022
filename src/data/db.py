@@ -52,6 +52,7 @@ class DBManager:
         self.init_connection()
         self._generate_table("tips")
         self._generate_table("users")
+        self._generate_table("read_tips")
         self.connect.commit()
 
     def _generate_mock_data(self) -> None:
@@ -72,18 +73,39 @@ class DBManager:
             "INSERT INTO users (username, password, admin) VALUES (?, ?, ?)", mock_users)
         self.connect.commit()
 
-    def get_all_tips(self) -> tuple:
+    def get_all_tips(self, user_id: int = 0) -> tuple:
         """Hae kaikki vinkit tietokannasta
+
+        Kirjautuneelle käyttäjälle haetaan:
+         - Vinkin luettu/lukematon status
+         - Luetuille vinkeille merkkauksen päivämäärä
 
         TODO:
         - Refactor: Valitse vinkin kentät annettujen parametrien perusteella
         - Refactor #2: Tee vinkeistä oma luokka, joka sisältää kaiken yksittäisen vinkin datan
 
         Returns:
-            tuple: Vinkit tuplena; (title, url, user_id)
+            tuple: Vinkit tuplena; (id, title, url, user_id, is_read, updated)
         """
         self.init_connection()
-        tips = self.cursor.execute("SELECT title, url, user_id FROM tips").fetchall()
+        if user_id > 0:
+            sql = """
+                SELECT t.id, t.title, t.url, t.user_id,
+                    CASE
+                        WHEN (
+                            SELECT is_read
+                            FROM read_tips
+                            WHERE tip_id=t.id AND user_id=:user_id)='1' THEN '1'
+                        ELSE '0'
+                    END AS is_read,
+                    ( SELECT updated
+                    FROM read_tips
+                    WHERE tip_id=t.id AND user_id=:user_id ) AS updated
+                FROM tips t"""
+        else:
+            sql = "SELECT id, title, url, user_id, NULL AS is_read, NULL AS updated FROM tips"
+
+        tips = self.cursor.execute(sql, {"user_id": user_id}).fetchall()
         return tips
 
     def get_tips_by_title(self, title: str):
@@ -92,8 +114,26 @@ class DBManager:
             result = self.cursor.execute(sql, {"title": '%' + title + '%'})
             tips = result.fetchall()
             return tips
-        except Exception as exception:
+        except Exception:
             return []
+
+    def toggle_read(self, tip_id: int, user_id: int) -> bool:
+        read_tips = self.cursor.execute(
+            "SELECT tip_id, user_id, is_read FROM read_tips").fetchall()
+        try:
+            if (tip_id, user_id, True) in map(lambda tip: (tip[0], tip[1], tip[2]), read_tips):
+                sql = """DELETE FROM read_tips
+                    WHERE user_id=:user_id
+                    AND tip_id=:tip_id"""
+            else:
+                sql = """INSERT INTO read_tips (tip_id, user_id, is_read, updated)
+                    VALUES (:tip_id, :user_id, '1', CURRENT_DATE)"""
+            self.cursor.execute(sql, {"user_id": user_id, "tip_id": tip_id})
+            self.connect.commit()
+            return True
+        except Exception as exception:
+            print(exception)
+            return False
 
     # refactor -> take tip info list instead of specifically title and url
     def add_tip(self, title: str, url: str, username: str = '') -> bool:

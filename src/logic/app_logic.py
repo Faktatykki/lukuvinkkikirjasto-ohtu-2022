@@ -2,26 +2,40 @@ import requests
 from data.db import DBManager
 from lxml.html import fromstring
 
+
 class AppLogic:
     def __init__(self, db: DBManager):
         self.db = db
 
-    def get_all_tips(self) -> list:
+    def get_all_tips(self, user_id: int = 0) -> list:
         '''kutsuu data-layeria ja saa vastaukseksi tietokannasta löytyvät vinkit'''
-        tips = self.db.get_all_tips()
-        return tips
+        return self.db.get_all_tips(user_id)
 
     def search_tips_by_title(self, title: str) -> list:
-        '''Kutsuu data-layerin metodia josta palauttaa listan tuloksia tietokannasta. Palauttaa tyhjän listan jos parametri on tyhjä'''
+        """Hakee data-kerrokselta parametria vastaavia vinkkejä
+
+        Args:
+            title (str): Haettava teksti
+
+        Returns:
+            list: Hakuehtoa vastaavat vinkit.
+                Palauttaa tyhjän listan, jos vinkkejä ei löydy, tai jos haettava teksti on tyhjä
+        """
         if not title.strip():
             return []
 
         return self.db.get_tips_by_title(title)
 
     def add_tip(self, title: str, url: str, username: str = '') -> bool:
-        """
-            passaa eteenpäin käyttöliittymästä saadut parametrit uuden vinkin lisäämiseksi data-layerille.
-            Tarkistetaan myös että parametrit eivät ole tyhjiä (myös välilyöntien varalta)
+        """Lähettää käyttöliittymästä saadut parametrit data-kerrokselle
+
+        Args:
+            title (str): Lisättävän vinkin otsikko
+            url (str): Lisättävän vinkin osoite
+            username (str, optional): Kirjautuneen käyttäjän käyttäjänimi. Kirjautumattomalla ''
+
+        Returns:
+            bool: Onnistunut lisäys palauttaa True, muutoin False
         """
         if not title or not url or not title.strip() or not url.strip():
             return False
@@ -49,3 +63,7 @@ class AppLogic:
             if title and title != "":
                 return title
         return status_code
+
+    def toggle_read(self, tip_id: int, user_id: int) -> bool:
+        self.db.toggle_read(tip_id, user_id)
+        return True
