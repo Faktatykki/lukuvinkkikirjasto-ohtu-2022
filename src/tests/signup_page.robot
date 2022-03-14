@@ -18,7 +18,6 @@ User Can Not Submit Too Short Username
     Go Back
     Signuppage Should Be Open
 
-
 User Can Not Submit Too Short Password
     Set Username  abcde
     Set Password1  a

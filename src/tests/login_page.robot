@@ -5,7 +5,6 @@ Suite Teardown  Close Browser
 Test Setup  Go To Main Page
 
 
-
 *** Test Cases ***
 User Can Open Login Page
     Click Link  Kirjaudu sisään

@@ -15,6 +15,33 @@ Open And Configure Browser
     Maximize Browser Window
     Set Selenium Speed  ${DELAY}
 
+Open And Configure Browser And Setup For Search
+    Open And Configure Browser
+    Create User  testi  testi  testi
+    Create Tip  Testi Titteli  testiurli.fi
+    Create Tip  Uniikki Otsikko  www.fi
+    Create Tip  Ensimmäinen Otsikko  wwww.uniikkilinkki.fi
+
+Create User
+    [Arguments]  ${username}  ${password1}  ${password2}
+    Go To Signuppage
+    Set Username  ${username}
+    Set Password1  ${password1}
+    Set Password2  ${password2}
+    Click Button  submit
+
+Set Username
+    [Arguments]  ${username}
+    Input Text  username  ${username}
+
+Set Password1 
+    [Arguments]  ${password}
+    Input Text  password1  ${password}
+
+Set Password2 
+    [Arguments]  ${password}
+    Input Text  password2  ${password}
+
 Mainpage Should Be Open
     Page Should Contain  Lukuvinkit
     Title Should Be      Lukuvinkit - Etusivu
