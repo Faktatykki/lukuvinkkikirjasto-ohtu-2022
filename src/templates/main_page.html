@@ -27,8 +27,8 @@
 	<div class="col">
 		<div class="form-inline justify-content-end">
 			<label for="readTips" class="mr-lg-4 mb-2 mb-lg-0">
-				<select class="form-control" id="readTips">
-					<option value="all">Kaikki</option>
+				<select class="form-control" id="readTips" onchange="refreshTips()">
+					<option value="all" selected>Kaikki</option>
 					<option value="unread">Lukemattomat</option>
 					<option value="read">Luetut</option>
 				</select>
@@ -164,7 +164,6 @@
 	};
 	{% if username != None %}
 	ownTipsCheckbox.addEventListener('click', refreshTips);
-	readTipsSelect.addEventListener('input', refreshTips);
 	{% endif %}
 	refreshTips();
 </script>
