@@ -24,7 +24,6 @@ User Finds Titles Containing Given Parameter
     Page Should Contain  mock1
     Page Should Contain  mock2
     
-
 *** Keywords ***
 Set Search
     [Arguments]  ${search}
@@ -55,9 +54,9 @@ Set Password2
 Suite Setup For Search
     Open Browser  browser=${BROWSER}
     Maximize Browser Window
-    Set Selenium Speed  1 seconds
+    Set Selenium Speed  0.1 seconds
     Create User  hakutesti  testi  testi
-    Page Should Contain  hakutesti
+    Page Should Contain  hakutesti kirjautuneena
     Page Should Contain  Lisää vinkki
     Create Tip  mock1  mockurl1
     Create Tip  mock2  mockurl2
