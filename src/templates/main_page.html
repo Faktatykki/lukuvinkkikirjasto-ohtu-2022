@@ -24,8 +24,8 @@
 				<input type="checkbox" id="ownTips"> Näytä vain omat vinkit
 			</label>
 			<label for="readTips" >
-				<select class="form-control" id="readTips">
-					<option value="all">Kaikki</option>
+				<select class="form-control" id="readTips" onchange="refreshTips()">
+					<option value="all" selected>Kaikki</option>
 					<option value="unread">Lukemattomat</option>
 					<option value="read">Luetut</option>
 				</select>
@@ -133,7 +133,6 @@
 	};
 	{% if username != None %}
 	ownTipsCheckbox.addEventListener('click', refreshTips);
-	readTipsSelect.addEventListener('input', refreshTips);
 	{% endif %}
 	refreshTips();
 </script>

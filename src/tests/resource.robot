@@ -8,6 +8,7 @@ ${BROWSER}  headlesschrome
 ${DELAY}  0 seconds
 ${HOME URL}  http://${SERVER}/
 ${LOGIN URL}  http://${SERVER}/login
+${SIGNUP URL}  http://${SERVER}/signup
 
 *** Keywords ***
 Open And Configure Browser
@@ -44,8 +45,7 @@ Go To Mainpage
     Go To  ${HOME URL}
 
 Go To Signuppage
-    Go To  ${HOME URL}
-    Click Link  id=signup
+    Go To  ${SIGNUP URL}
 
 Go To Login Page
     Go To  ${LOGIN URL}
