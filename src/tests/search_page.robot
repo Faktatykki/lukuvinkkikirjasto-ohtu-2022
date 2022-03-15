@@ -53,7 +53,9 @@ Set Password2
     Input Text  password2  ${password2}
 
 Suite Setup For Search
-    Open And Configure Browser
+    Open Browser  browser=${BROWSER}
+    Maximize Browser Window
+    Set Selenium Speed  0.2 seconds
     Create User  hakutesti  testi  testi
     Page Should Contain  hakutesti
     Page Should Contain  Lisää vinkki
