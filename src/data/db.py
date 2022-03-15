@@ -1,6 +1,7 @@
 import sqlite3
 from os import getenv
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import text
 from dotenv import load_dotenv
 
 
@@ -110,8 +111,8 @@ class DBManager:
 
     def get_tips_by_title(self, title: str):
         try:
-            sql = "SELECT title, url FROM tips WHERE LOWER(title) LIKE LOWER(:title)"
-            result = self.cursor.execute(sql, {"title": '%' + title + '%'})
+            sql = "SELECT title, url FROM tips WHERE LOWER(title) LIKE :title"
+            result = self.cursor.execute(sql, {"title": "%" + title.lower() + "%"})
             tips = result.fetchall()
             return tips
         except Exception:

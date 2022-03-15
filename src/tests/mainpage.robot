@@ -51,13 +51,3 @@ User Can Not Submit Empty url
     Submit Vinkki
     Page Should Not Contain  Otsikko Joka Ei Näy
     Page Should Contain  URL tai otsikko ei voi olla tyhjä.
-
-*** Keywords ***
-Set Title
-    [Arguments]  ${title}
-    Input Text  title  ${title}
-Set URL 
-    [Arguments]  ${url}
-    Input Text  url  ${url}
-Submit Vinkki
-    Click Button  Lisää
