@@ -25,4 +25,4 @@ Set Search
     Input Text      search_param    ${search}
 
 Search
-    Click Button    Hae
+    Click Button    searchBtn
