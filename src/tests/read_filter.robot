@@ -11,7 +11,7 @@ A Not Logged In User Should Not See Filter Select
     Page Should Not Contain  Kaikki
 
 A Logged In User Should See Filter Select 
-    Create User  Testaaja1  salasana  salasana
+    Create User  Testaaja12  salasana  salasana
     Page Should Contain  Kaikki
 
 A Logged In User Can Change Filter Selection
