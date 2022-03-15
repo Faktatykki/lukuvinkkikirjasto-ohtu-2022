@@ -43,7 +43,7 @@
 					<h2>Tulokset</h2>
 					<ul class="list-group list-group-flush">
 						{% for tip in tips %}
-							<li class="list-group-item">{{ tip.title }}: <a href = //{{ tip.url }}>{{ tip.url }}</a></li>
+							<li class="list-group-item">{{ tip[0] }}: <a href = //{{ tip[1] }}>{{ tip[1] }}</a></li>
 						{% endfor %}
 					</ul>
 				</div>
