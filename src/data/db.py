@@ -110,8 +110,9 @@ class DBManager:
 
     def get_tips_by_title(self, title: str):
         try:
-            sql = "SELECT title, url FROM tips WHERE LOWER(title) LIKE LOWER(:title)"
-            result = self.cursor.execute(sql, {"title": '%' + title + '%'})
+            low_title = title.lower()
+            sql = "SELECT title, url FROM tips WHERE LOWER(title) LIKE :title"
+            result = self.cursor.execute(sql, {"title": "%" + low_title + "%"})
             tips = result.fetchall()
             return tips
         except Exception:
