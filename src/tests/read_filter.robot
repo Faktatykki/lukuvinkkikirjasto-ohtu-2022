@@ -29,7 +29,7 @@ A Logged In User Can Filter Tips By Read Status
     Page Should Contain  toka
     Page Should Contain  kolmas.fi
     Page Should Contain  kolmas
-    Click Link  //ul[@id="tipsList"]/li[1]/a[2]
+    Click Link  //a[@class="markAsRead"][1]
     Select From List By Label  id:readTips  Luetut
     Page Should Contain  toka.fi 
     Page Should Contain  toka

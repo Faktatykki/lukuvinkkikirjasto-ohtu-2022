@@ -135,6 +135,7 @@
 
 			{% if username != None %}
 			let aMarkAsRead = document.createElement('a'); 
+			aMarkAsRead.className = 'markAsRead';
 			let linkTextMarkAsRead = document.createTextNode(
 				( tipsToShow[i].is_read == 1) ? 'Merkitse lukemattomaksi' : 'Merkitse luetuksi'
 			);

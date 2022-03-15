@@ -14,16 +14,16 @@ Test Setup		Go To Mainpage
 Logged User Can Mark Tip As Read
 	Page Should Contain			${anontip}[title]
 	Page Should Contain Link	Merkitse luetuksi
-	Click Element				//ul[@id="tipsList"]/li[1]/a[2]
+	Click Element				//a[@class="markAsRead"][1]
 	Page Should Contain Link	Merkitse lukemattomaksi
 
 Logged User Can Mark Tip As Unread
 	Page Should Contain Link	Merkitse lukemattomaksi
-	Click Element				//ul[@id="tipsList"]/li[1]/a[2]
+	Click Element				//a[@class="markAsRead"][1]
 	Page Should Contain Link	Merkitse luetuksi
 
 Marking Tip As Read Doesnt Change Status For Another User
-	Click Element					//ul[@id="tipsList"]/li[1]/a[2]
+	Click Element					//a[@class="markAsRead"][1]
 	Page Should Contain Link		Merkitse lukemattomaksi
 	Click Link						logout
 	Go To Signuppage
