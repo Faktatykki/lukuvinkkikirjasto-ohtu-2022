@@ -9,9 +9,9 @@ User Can Open Searchpage
     Searchpage Should Be Open
 
 User Finds Title With Exact Parameter
-    Set Search  mock1
+    Set Search  Oma
     Search
-    Page Should Contain  mock1
+    Page Should Contain  Oma
 
 User Finds Title With Case Insensitive Parameter
     Set Search  mock1
@@ -60,6 +60,7 @@ Suite Setup For Search
     Page Should Contain  Lisää vinkki
     Create Tip  mock1  mockurl1
     Create Tip  mock2  mockurl2
+    Go To Searchpage
 
 Teardown For Search
     Go To Mainpage
