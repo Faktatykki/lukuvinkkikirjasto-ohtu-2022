@@ -42,7 +42,9 @@ class Controller:
         if method == "POST":
             search_param = request.form["search_param"]
             tips = self.app_logic.search_tips_by_title(search_param)
-            return render_template("search.html", tips = tips)
+            if 'username' in self.session and self.session["username"]!='':
+                return render_template("search.html", tips=tips, username=self.session["username"])
+            return render_template("search.html", tips=tips, username=None)
         if 'username' in self.session and self.session["username"]!='':
             return render_template("search.html", username=self.session["username"])
         return render_template("search.html", username=None)
@@ -59,7 +61,8 @@ class Controller:
                 return redirect("/")
         return render_template("error.html", message="URL tai otsikko ei voi olla tyhjä.")
 
-    # maybe refactor so that functionality is moved to app_logic_class and user_logic is made into a class
+    # maybe refactor so that functionality is moved to app_logic_class
+    # and user_logic is made into a class
     def add_new_user(self):
         """Käsittelee uuden käyttäjän luonnin."""
         username = request.form["username"]
@@ -67,14 +70,22 @@ class Controller:
         password2 = request.form["password2"]
         if len(username) < 2 or len(username) > 20:
             return render_template(
-                "error.html", message="Käyttäjänimen tulee olla 2-20 merkkiä pitkä"
+                "error.html",
+                message="Käyttäjänimen tulee olla 2-20 merkkiä pitkä",
+                username=None
             )
         if len(password1) < 2 or len(password1) > 20:
             return render_template(
-                "error.html", message="Salasanan tulee olla 2-20 merkkiä pitkä"
+                "error.html",
+                message="Salasanan tulee olla 2-20 merkkiä pitkä",
+                username=None
             )
         if password1 != password2:
-            return render_template("error.html", message="Salasanat eivät täsmää.")
+            return render_template(
+                "error.html",
+                message="Salasanat eivät täsmää.",
+                username=None
+            )
         # (see above comment) because this self.app_logic.db isn't great
         response = self.user_logic.signup(username, password1)
         if isinstance(response, User):
@@ -82,8 +93,8 @@ class Controller:
             self.session["user_id"] = response.user_id
             return redirect("/")
         if isinstance(response, (IntegrityErrorDev, IntegrityErrorProd)):
-            return render_template("error.html", message="Käyttäjänimi on varattu.")
-        return render_template("error.html", message=response)
+            return render_template("error.html", message="Käyttäjänimi on varattu.", username=None)
+        return render_template("error.html", message=response, username=None)
 
     def get_signup_page(self):
         """Palauttaa signup-sivun"""
@@ -97,10 +108,10 @@ class Controller:
             self.session["username"] = username
             self.session["user_id"] = logged_in_user.user_id
             return redirect("/")
-        return render_template("error.html", message="Väärä käyttäjä tai salasana")
+        return render_template("error.html", message="Väärä käyttäjä tai salasana", username=None)
 
     def login_page(self):
-        return render_template("login.html")
+        return render_template("login.html", username=None)
 
     def logout(self):
         self.session.pop("username", None)
@@ -114,4 +125,8 @@ class Controller:
     def toggle_read(self, tip_id: int):
         if self.app_logic.toggle_read(tip_id, self.session["user_id"]):
             return redirect("/")
-        return render_template("error.html", message="Vinkin merkitseminen epäonnistui")
+        return render_template(
+            "error.html",
+            message="Vinkin merkitseminen epäonnistui",
+            username=None
+        )

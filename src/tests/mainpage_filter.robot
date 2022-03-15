@@ -48,14 +48,3 @@ Configure Browser And Login
 Logout And Close All Browsers
 	Click Link				logout
 	Close All Browsers
-
-Set Title
-    [Arguments]  ${title}
-    Input Text  title  ${title}
-
-Set URL 
-    [Arguments]  ${url}
-    Input Text  url  ${url}
-
-Submit Vinkki
-    Click Button  Lisää
