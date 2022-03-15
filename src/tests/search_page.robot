@@ -1,7 +1,7 @@
 *** Settings ***
 Resource  resource.robot
 Suite Setup  Suite Setup For Search
-Suite Teardown  Close Browser
+Suite Teardown  Teardown For Search
 Test Setup  Go To Searchpage
 
 *** Test Cases ***
@@ -62,4 +62,8 @@ Suite Setup For Search
     Create Tip  mock1  mockurl1
     Create Tip  mock2  mockurl2
 
+Teardown For Search
+    Go To Mainpage
+    Click Link  logout
+    Close All Browsers
 
