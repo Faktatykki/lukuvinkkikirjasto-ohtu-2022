@@ -60,6 +60,7 @@ Suite Setup For Search
     Page Should Contain  Lisää vinkki
     Create Tip  mock1  mockurl1
     Create Tip  mock2  mockurl2
+    Page Should Contain  mock1
     Go To Searchpage
 
 Teardown For Search
