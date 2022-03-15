@@ -17,25 +17,36 @@
 	</form>
 </div>
 <div class="content container">
-	<h2>Lukuvinkit</h2>
+
+	<div class="row">
+
+		<div class="col">
+			<h2>Lukuvinkit</h2>
+		</div>
 	{% if username %}
-		<p>
-			<label for="ownTips" style="color: grey;">
-				<input type="checkbox" id="ownTips"> Näytä vain omat vinkit
-			</label>
-			<label for="readTips" >
+	<div class="col">
+		<div class="form-inline justify-content-end">
+			<label for="readTips" class="mr-lg-4 mb-2 mb-lg-0">
 				<select class="form-control" id="readTips" onchange="refreshTips()">
 					<option value="all" selected>Kaikki</option>
 					<option value="unread">Lukemattomat</option>
 					<option value="read">Luetut</option>
 				</select>
 			</label>
-		</p>
-	{% endif %}
-	<table class="table table-striped"
-		<div id="tipsWrapper">
+			<br class="d-block d-lg-none" />
+			<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="ownTips">
+				<label class="form-check-label" for="ownTips">
+					Näytä vain omat vinkit
+				</label>
+			</div>
 		</div>
-	</table>
+	</div>
+	{% endif %}
+	</div>
+
+	<div id="tipsWrapper" class="content">
+	</div>
 
 <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type = "text/javascript">
@@ -92,13 +103,14 @@
 		let tipsToShow = tips;
 		{% endif %}
 
-		let ul = document.createElement('ul');
-		ul.setAttribute('id', 'tipsList');
-		ul.className="list-group-flush"
-		ul.style="margin-left:-40px"
+		let tipsList = document.createElement('div');
+		tipsList.setAttribute('id', 'tipsList');
+
 		for (let i = 0; i < tipsToShow.length; i++) {
-			let li = document.createElement('li');
-			li.className="list-group-item"
+			let row = document.createElement('div');
+
+			row.className = (i % 2 === 0) ? 'row' : 'row bg-light';
+
 			let a = document.createElement('a'); 
 			let linkText = document.createTextNode(tipsToShow[i].url);
 			a.appendChild(linkText); 
@@ -109,27 +121,47 @@
 			}
 			a.href = prefix + tipsToShow[i].url;
 			a.target = '_blank';
-			li.innerHTML = tipsToShow[i].title + ': ';
-			li.append(a);
-			ul.append(li);
+
+			let col8 = document.createElement('div');
+			col8.className = "col-8";
+
+			let pLeft = document.createElement('p');
+			pLeft.className = 'm-1';
+
+			pLeft.innerHTML = tipsToShow[i].title + ': ';
+			pLeft.append(a);
+			col8.append(pLeft);
+			row.append(col8);
 
 			{% if username != None %}
 			let aMarkAsRead = document.createElement('a'); 
+			aMarkAsRead.className = 'markAsRead';
 			let linkTextMarkAsRead = document.createTextNode(
 				( tipsToShow[i].is_read == 1) ? 'Merkitse lukemattomaksi' : 'Merkitse luetuksi'
 			);
 			aMarkAsRead.appendChild(linkTextMarkAsRead); 
 			aMarkAsRead.href = '/toggle/' + tipsToShow[i].id;
-			li.append(' - ');
-			li.append(aMarkAsRead);
+
+			let col4 = document.createElement('div');
+			col4.className = "col-4";
+			
+			let pRight = document.createElement('p');
+			pRight.className = 'text-right m-1';
+
+			pRight.innerHTML = '';
+			pRight.append(aMarkAsRead);
 
 			if ( tipsToShow[i].is_read == 1 ){
 				let markedAsRead = document.createTextNode(' (' + tipsToShow[i].updated + ')');
-				li.append(markedAsRead);
+				pRight.append(markedAsRead);
 			}
+			col4.append(pRight);
+			row.append(col4);
+
+			tipsList.append(row);
 			{% endif %}
 		}
-		tipsWrapper.append(ul);
+		tipsWrapper.append(tipsList);
 	};
 	{% if username != None %}
 	ownTipsCheckbox.addEventListener('click', refreshTips);

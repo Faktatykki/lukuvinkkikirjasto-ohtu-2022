@@ -18,23 +18,23 @@
 						</div>
 					</li>
 					{% if username == None %}
-						<li class="nav-item">
+						<li class="nav-item my-2">
 							<a class="nav-link" href="/signup" id="signup">Luo käyttäjä</a>
 						</li>
-						<li class="nav-item">
+						<li class="nav-item my-2">
 							<a class="nav-link" href="/login" id="login">Kirjaudu sisään</a>
 						</li>
-						<li class="nav-item">
+						<li class="nav-item my-2">
 							<a class="nav-link" href="/search" id="searchpage">Haku</a>
 						</li>
 					{% else %}
-						<li class="nav-item">
+						<li class="nav-item my-2">
 							<div class="nav-link">{{ username }} kirjautuneena</div>
 						</li>
-						<li class="nav-item">
+						<li class="nav-item my-2">
 							<a class="nav-link" href="/logout" id="logout">Kirjaudu ulos</a>
 						</li>
-						<li class="nav-item">
+						<li class="nav-item my-2">
 							<a class="nav-link" href="/search" id="searchpage">Haku</a>
 						</li>
 					{% endif %}
