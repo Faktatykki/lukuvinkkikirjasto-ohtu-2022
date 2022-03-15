@@ -1,7 +1,6 @@
 import sqlite3
 from os import getenv
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import text
 from dotenv import load_dotenv
 
 

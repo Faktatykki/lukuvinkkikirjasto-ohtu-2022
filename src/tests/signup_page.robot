@@ -14,7 +14,7 @@ User Can Not Submit Too Short Username
     Set Password2  abcde
     Create User
     Page Should Contain  Käyttäjänimen tulee olla 2-20 merkkiä pitkä
-    Page Should Contain  Back
+    Page Should Contain  Takaisin
     Go Back
     Signuppage Should Be Open
 
@@ -25,7 +25,7 @@ User Can Not Submit Too Short Password
     Set Password2  a
     Create User
     Page Should Contain  Salasanan tulee olla 2-20 merkkiä pitkä
-    Page Should Contain  Back
+    Page Should Contain  Takaisin
     Go Back
     Signuppage Should Be Open
 
@@ -36,7 +36,7 @@ User Can Not Submit Non-matching Passwords
     Set Password2  acb
     Create User
     Page Should Contain  Salasanat eivät täsmää.
-    Page Should Contain  Back
+    Page Should Contain  Takaisin
     Go Back
     Signuppage Should Be Open
 
