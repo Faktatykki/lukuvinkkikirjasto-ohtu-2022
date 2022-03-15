@@ -22,30 +22,22 @@ def add_tip():
     return controller.add_tip()
 
 
-@app.route("/signup", methods=["POST"])
-def add_new_user():
-    return controller.add_new_user()
-
-
-@app.route("/signup", methods=["GET"])
-def get_signup_page():
+@app.route("/signup", methods=["POST", "GET"])
+def signup():
+    if request.method == "POST":
+        return controller.add_new_user()
     return controller.get_signup_page()
-
 
 @app.route("/logout")
 def logout():
     return controller.logout()
 
 
-@app.route("/login", methods=["POST"])
+@app.route("/login", methods=["POST", "GET"])
 def login():
-    return controller.login()
-
-
-@app.route("/login", methods=["GET"])
-def login_page():
+    if request.method == "POST":
+        return controller.login()
     return controller.login_page()
-
 
 @app.route("/search", methods=["POST", "GET"])
 def search_page():

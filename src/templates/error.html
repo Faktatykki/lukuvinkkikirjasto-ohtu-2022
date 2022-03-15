@@ -1,5 +1,10 @@
-            
-</div>
-    <h1 style="color: red;">{{ message }}</h1>
-    <button name="back" style="margin-top: 10px; width: 150px; height: 30px;" onclick="window.history.back()">Back</button>
-</div>
+{% extends 'base.html' %}
+
+{% block title %}Virhe{% endblock %}
+
+{% block content %}
+<header>
+    <h2 class="text-danger">{{ message }}</h2>
+</header>
+<button type="button" class="btn btn-link" name="back" onclick="window.history.back()">Takaisin</button>
+{% endblock %}
