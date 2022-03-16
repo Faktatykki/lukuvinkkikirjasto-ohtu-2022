@@ -26,7 +26,7 @@ class Controller:
         for i in range(len(titles)):
             titles[i] = titles[i].split(";")[0]
         tips = [titles]
-        if 'username' in self.session:
+        if self._is_username_in_session():
             tips += self.app_logic.get_all_tips(self.session["user_id"])
             return render_template(
                 "main_page.html",
@@ -42,17 +42,17 @@ class Controller:
         if method == "POST":
             search_param = request.form["search_param"]
             tips = self.app_logic.search_tips_by_title(search_param)
-            if 'username' in self.session and self.session["username"]!='':
+            if self._is_username_in_session():
                 return render_template("search.html", tips=tips, username=self.session["username"])
             return render_template("search.html", tips=tips, username=None)
-        if 'username' in self.session and self.session["username"]!='':
+        if self._is_username_in_session():
             return render_template("search.html", username=self.session["username"])
         return render_template("search.html", username=None)
 
     def add_tip(self):
         title = request.form["title"]
         url = request.form["url"]
-        if 'username' in self.session:
+        if self._is_username_in_session():
             username = self.session["username"]
             if self.app_logic.add_tip(title, url, username):
                 return redirect("/")
@@ -98,7 +98,9 @@ class Controller:
 
     def get_signup_page(self):
         """Palauttaa signup-sivun"""
-        return render_template("signup.html")
+        if self._is_username_in_session():
+            return render_template("signup.html", username=self.session["username"])
+        return render_template("signup.html", username=None)
 
     def login(self):
         username = request.form["username"]
@@ -130,3 +132,8 @@ class Controller:
             message="Vinkin merkitseminen epäonnistui",
             username=None
         )
+
+    def _is_username_in_session(self) -> bool:
+        if 'username' in self.session and self.session["username"]!='':
+            return True
+        return False
