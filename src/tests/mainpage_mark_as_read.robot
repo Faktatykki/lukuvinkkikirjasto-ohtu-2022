@@ -15,15 +15,19 @@ Logged User Can Mark Tip As Read
 	Page Should Contain			${anontip}[title]
 	Page Should Contain Link	Merkitse luetuksi
 	Click Element				//a[@class="markAsRead"][1]
+    Select From List By Label	id:readTips  Luetut
 	Page Should Contain Link	Merkitse lukemattomaksi
 
 Logged User Can Mark Tip As Unread
+    Select From List By Label	id:readTips  Luetut
 	Page Should Contain Link	Merkitse lukemattomaksi
 	Click Element				//a[@class="markAsRead"][1]
-	Page Should Contain Link	Merkitse luetuksi
+    Select From List By Label	id:readTips  Luetut
+	Page Should Not Contain Link	Merkitse lukemattomaksi
 
 Marking Tip As Read Doesnt Change Status For Another User
 	Click Element					//a[@class="markAsRead"][1]
+    Select From List By Label		id:readTips  Luetut
 	Page Should Contain Link		Merkitse lukemattomaksi
 	Click Link						logout
 	Go To Signuppage
