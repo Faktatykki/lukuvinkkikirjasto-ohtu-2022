@@ -11,6 +11,8 @@ Sovellus löytyy osoitteesta: <https://lit-brushlands-38911.herokuapp.com/>
 
 [Product backlog ja Sprint backlog](https://ronindashboards.herokuapp.com/jira/shared/dashboard?boardToken=VTJGc2RHVmtYMS9TMWNIeXRZYmhFQmJCTHdkWGxxazJNUWNiNmxMNlMwK011U2ZoK0RyNkpMM2YrNG8wWGk4aEoyUmx0NEkyUC9TcEhNZ0xZWkowK1pXYUhVbHU5aHJNS3BUamFLSWI0SUhjZFdEZEwwNmVhck5RNVdBWjJzSmhhY05pZ3MvbGZSY2F4YTY2T1h6dTV3NFFxYXYrVTcvZVpicitmbEdCSld2WDhKWmFIMjlWeXFkMGRPbzhZamJOWUNvU2tPTkZMRzFlQktJWXJEQnJCNVVSaENxa1lQUlQvUUI0d3RPRm1PVXNpaHg2Zk1RMUlZZ0pTbjBwZ1plOExIblBXTDVhSmp4VHJwZUxYdVUwK1E9PQ%3D%3D)
 
+[Loppuraportti](https://confluence.external-share.com/content/2afe0a7d-4883-46cf-ac40-4941d731ee3c)
+
 ## Virtual environmentin pikaohjeet
 
 Virtuaaliympäristön luominen hakemistoon 'venv':
