@@ -31,16 +31,13 @@ class AppLogic:
 
     def check_url(self, url: str) -> int:
         '''ottaa parametrina urlin, tarkistaa requests-kirjaston avulla että saako yhteyden. Jos onnistuu, niin palauttaa sivun titlen.'''
-        req_data = url
         title = None
-        schema = ""
         if "https://" not in url:
-            schema = "https://"
-        final_url = schema + req_data
+            url = "https://" + url
         status_code = 404
         req = None
         try:
-            req = requests.get(final_url)
+            req = requests.get(url)
             status_code = req.status_code
         except Exception as exception:
             print(exception)
